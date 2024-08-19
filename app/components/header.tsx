@@ -26,7 +26,9 @@ const PAGES = [
 export default function Header() {
     return (
         <header className="bg-primary text-primary-foreground flex justify-between p-4">
-            <h1 className="text-3xl">MovieStore</h1>
+            <h1 className="text-3xl">
+                <Link href="/">MovieStore</Link>
+            </h1>
             <NavBar></NavBar>
         </header>
     );
@@ -45,7 +47,7 @@ function NavBar() {
                         <li key={page.key} className="flex items-center">
                             <Link
                                 className={cn(
-                                    "hover:bg-white : hover:text-black",
+                                    "hover:bg-white hover:text-black hover:rounded-lg p-2",
                                     path === page.href && "underline"
                                 )}
                                 href={page.href}

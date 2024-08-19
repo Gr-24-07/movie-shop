@@ -17,7 +17,7 @@ export default function MovieGenre() {
         <main className="container mx-auto my-12">
             
             <div className=" bg-blue-500 p-4 rounded-lg font-bold">
-                <h1 className="text-center">Add a New Movie Genre</h1>
+                <h1 className="text-center">Movie Genre</h1>
             </div>
 
             <form className=" p-6  mt-6 space-y-6" onSubmit={handleSubmit}>

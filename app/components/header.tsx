@@ -1,5 +1,4 @@
 import Link from "next/link";
-
 import SignIn from "./sign-in";
 import NavBar from "./navbar";
 

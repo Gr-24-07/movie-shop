@@ -45,9 +45,6 @@ export default function AddGenrePage () {
                     />
                     <FormError errors={errors?.name?._errors}/>
                 </div>
-
-               
-
                 <AddButton />
             </form>
         </main>

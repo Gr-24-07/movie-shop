@@ -11,6 +11,7 @@ export default function AddGenrePage () {
     const [errors, setErrors] = useState<AddGenreFailure["errors"] | undefined>();
 
     async function action (formData: FormData) {
+        
         const result = await AddGenreAction(formData);
 
         if (result.success) {

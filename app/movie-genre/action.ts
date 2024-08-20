@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { AddGenreSchema } from "./schema";
+import prisma from "@/lib/db";
 
 
 export type AddGenreSuccess = {
@@ -31,7 +32,9 @@ export async function AddGenreAction(formData: FormData): Promise<AddGenreResult
         };
     }
 
-    
+    await prisma.genre.create({
+        data: parseResult.data
+    });
 
    
     redirect("/");

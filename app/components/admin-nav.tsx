@@ -12,6 +12,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ChevronDown } from "lucide-react";
 
 const PAGES = [
     { key: crypto.randomUUID(), href: "/admin", name: "Dashboard" },
@@ -39,8 +40,8 @@ export default function AdminNavBar() {
         <nav className="flex justify-center">
             <ul className="flex gap-2">
                 <DropdownMenu>
-                    <DropdownMenuTrigger className="hover:bg-white hover:text-black hover:rounded-lg p-2">
-                        Admin
+                    <DropdownMenuTrigger className="flex items-center gap-1 hover:bg-white hover:text-black hover:rounded-lg p-2">
+                        Admin <ChevronDown size={20}></ChevronDown>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                         {PAGES.map((page) => {

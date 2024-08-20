@@ -31,9 +31,10 @@ export async function AddGenreAction(formData: FormData): Promise<AddGenreResult
         };
     }
 
-   
+    
 
-    redirect("/home");
+   
+    redirect("/");
 
    
 }

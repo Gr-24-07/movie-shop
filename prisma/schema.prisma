@@ -148,3 +148,4 @@ model OrderItem {
     movie   Movie  @relation(fields: [movieId], references: [id])
     movieId String
 }
+

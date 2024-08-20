@@ -12,7 +12,7 @@ export default async function Header() {
             <h1 className="text-3xl">
                 <Link href="/">MovieStore</Link>
             </h1>
-            {session?.user?.name}
+            {session?.user && `${session?.user.role} ${session?.user?.name}`}
             {session?.user ? <SignOut></SignOut> : <SignIn></SignIn>}
             <NavBar></NavBar>
         </header>

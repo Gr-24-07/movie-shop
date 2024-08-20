@@ -8,17 +8,17 @@ const PAGES = [
     { key: crypto.randomUUID(), href: "/", name: "Home" },
     {
         key: crypto.randomUUID(),
-        href: "/movies",
+        href: "/admin/movies",
         name: "Movies",
     },
     {
         key: crypto.randomUUID(),
-        href: "/genres",
+        href: "/admin/genres",
         name: "Genres",
     },
     {
         key: crypto.randomUUID(),
-        href: "/people",
+        href: "/admin/people",
         name: "People",
     },
 ];

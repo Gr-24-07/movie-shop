@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import UserDetails from "./user-details";
+import AuthProvider from "./auth-provider";
 
 export default async function UserPage() {
     const session = await auth();
@@ -10,14 +11,16 @@ export default async function UserPage() {
     }
 
     return (
-        <div className="container space-y-6 max-w-screen-lg">
-            <UserDetails user={user}></UserDetails>
+        <AuthProvider>
+            <div className="container space-y-6 max-w-screen-lg">
+                <UserDetails user={user}></UserDetails>
 
-            <div>
-                <h1 className="text-4xl text-center font-semibold">
-                    Order History
-                </h1>
+                <div>
+                    <h1 className="text-4xl text-center font-semibold">
+                        Order History
+                    </h1>
+                </div>
             </div>
-        </div>
+        </AuthProvider>
     );
 }

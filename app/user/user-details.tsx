@@ -7,14 +7,37 @@ import { User } from "next-auth";
 import Image from "next/image";
 import { useState } from "react";
 import updateUser from "../actions/user";
+import { useSession } from "next-auth/react";
 
 export default function UserDetails({ user }: { user: User }) {
     const [isEdit, setIsEdit] = useState(false);
+    const [name, setName] = useState(user.name);
+    const [email, setEmail] = useState(user.email);
+    const { data: session, update } = useSession();
 
     async function handleAction(formData: FormData) {
+        console.log(formData);
+
+        if (session === null) {
+            return;
+        }
+
         const result = await updateUser(formData);
         setIsEdit(false);
-        console.log(result);
+
+        if (!result.success) {
+            console.log(result.errors);
+        } else {
+            console.log("success");
+            await update({
+                ...session,
+                user: {
+                    ...session.user,
+                    name: result.data.name,
+                    email: result.data.email,
+                },
+            });
+        }
     }
 
     return (
@@ -39,8 +62,8 @@ export default function UserDetails({ user }: { user: User }) {
                             <div className="flex-grow">
                                 <input
                                     type="hidden"
-                                    name="id"
-                                    value={user.id}
+                                    name="prevEmail"
+                                    value={user.email || ""}
                                 />
                                 <div>
                                     <Label className="text-base" htmlFor="name">
@@ -51,7 +74,10 @@ export default function UserDetails({ user }: { user: User }) {
                                         type="text"
                                         id="name"
                                         name="name"
-                                        defaultValue={user.name || ""}
+                                        onChange={(e) => {
+                                            setName(e.target.value);
+                                        }}
+                                        value={name || ""}
                                     ></Input>
                                 </div>
                                 <div>
@@ -66,7 +92,10 @@ export default function UserDetails({ user }: { user: User }) {
                                         type="text"
                                         id="email"
                                         name="email"
-                                        defaultValue={user.email || ""}
+                                        onChange={(e) => {
+                                            setEmail(e.target.value);
+                                        }}
+                                        value={email || ""}
                                     ></Input>
                                 </div>
                             </div>

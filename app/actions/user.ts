@@ -4,16 +4,15 @@ import prisma from "@/lib/db";
 import { z } from "zod";
 
 const UpdateUserSchema = z.object({
-    id: z.string().cuid(),
     name: z.string().min(1),
     email: z.string().email(),
+    prevEmail: z.string().email(),
 });
 
 type UpdateUserFail = {
     success: false;
     errors: z.ZodFormattedError<
         {
-            id: string;
             name: string;
             email: string;
         },
@@ -23,6 +22,10 @@ type UpdateUserFail = {
 
 type UpdateUserSuccess = {
     success: true;
+    data: {
+        name: string;
+        email: string;
+    };
 };
 
 type UpdateUserResult = UpdateUserSuccess | UpdateUserFail;
@@ -49,7 +52,7 @@ export default async function updateUser(
 
     await prisma.user.update({
         where: {
-            id: data.id,
+            email: data.prevEmail,
         },
         data: {
             name: data.name,
@@ -59,5 +62,6 @@ export default async function updateUser(
 
     return {
         success: true,
+        data: data,
     };
 }

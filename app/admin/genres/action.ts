@@ -1,4 +1,4 @@
-"use server";
+"use server"
 
 import { redirect } from "next/navigation";
 import { AddGenreSchema } from "./schema";
@@ -37,7 +37,7 @@ export async function AddGenreAction(formData: FormData): Promise<AddGenreResult
     });
 
    
-    redirect("/");
+    redirect("genres");
 
    
 }

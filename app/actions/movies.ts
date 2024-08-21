@@ -14,6 +14,7 @@ const movievalidation = z.object({
 });
 
 export async function addmovie(formData: FormData) {
+
   const data = Object.fromEntries(formData.entries());
   let validatedData;
 
@@ -60,5 +61,44 @@ export default async function DeleteMovie(id: string) {
   }
 
   // redirect("/");
+  revalidatePath("/admin/movies");
+}
+
+export async function updateMovie(formData: FormData, id: string) {
+  
+  const data = Object.fromEntries(formData);
+  let validatedData;
+
+  try {
+      validatedData = await movievalidation.parseAsync(data);
+  } catch (error) {
+      console.error(error);
+      return;
+  }
+
+  if (!validatedData) {
+      console.error("No data found");
+      return;
+  }
+
+  try {
+      await prisma.movie.update({
+          where: {
+              id: id,
+          },
+          data: {
+            title: validatedData.title,
+            description: validatedData.description,
+            price: validatedData.price,
+            releaseDate: validatedData.releaseDate,
+            stock: validatedData.stock,
+            imageURL: validatedData.imageURL,
+          }
+      })
+  } catch (error) {
+      console.error(error);
+      return;
+  }
+
   revalidatePath("/admin/movies");
 }

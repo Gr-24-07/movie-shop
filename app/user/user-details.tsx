@@ -6,29 +6,28 @@ import { Label } from "@/components/ui/label";
 import { User } from "next-auth";
 import Image from "next/image";
 import { useState } from "react";
-import updateUser from "../actions/user";
+import updateUser, { UpdateUserFail } from "../actions/user";
 import { useSession } from "next-auth/react";
+import FormError from "../components/form-error";
 
 export default function UserDetails({ user }: { user: User }) {
     const [isEdit, setIsEdit] = useState(false);
+    const [errors, setErrors] = useState<UpdateUserFail["errors"]>();
     const [name, setName] = useState(user.name);
     const [email, setEmail] = useState(user.email);
     const { data: session, update } = useSession();
 
     async function handleAction(formData: FormData) {
-        console.log(formData);
-
         if (session === null) {
             return;
         }
 
         const result = await updateUser(formData);
-        setIsEdit(false);
 
         if (!result.success) {
-            console.log(result.errors);
+            setErrors(result.errors);
         } else {
-            console.log("success");
+            setIsEdit(false);
             await update({
                 ...session,
                 user: {
@@ -40,10 +39,15 @@ export default function UserDetails({ user }: { user: User }) {
         }
     }
 
+    function reset() {
+        setIsEdit(false);
+        setEmail(user.email);
+        setName(user.name);
+    }
+
     return (
         <>
             <h1 className="text-4xl text-center font-semibold">User Details</h1>
-
             <div className="flex gap-4 border-2 border-primary  p-4 rounded-lg shadow-md shadow-black">
                 <div>
                     <Image
@@ -57,7 +61,7 @@ export default function UserDetails({ user }: { user: User }) {
                     <>
                         <form
                             action={handleAction}
-                            className="space-y-2 w-full flex justify-between"
+                            className="space-y-2 w-full flex justify-between gap-2"
                         >
                             <div className="flex-grow">
                                 <input
@@ -79,6 +83,9 @@ export default function UserDetails({ user }: { user: User }) {
                                         }}
                                         value={name || ""}
                                     ></Input>
+                                    <FormError
+                                        errors={errors?.name?._errors}
+                                    ></FormError>
                                 </div>
                                 <div>
                                     <Label
@@ -97,9 +104,21 @@ export default function UserDetails({ user }: { user: User }) {
                                         }}
                                         value={email || ""}
                                     ></Input>
+                                    <FormError
+                                        errors={errors?.email?._errors}
+                                    ></FormError>
                                 </div>
                             </div>
-                            <Button className="w-16 self-end">Save</Button>
+                            <Button
+                                onClick={reset}
+                                variant="destructive"
+                                className="w-16 self-end"
+                            >
+                                Cancel
+                            </Button>
+                            <Button type="submit" className="w-16 self-end">
+                                Save
+                            </Button>
                         </form>
                     </>
                 ) : (

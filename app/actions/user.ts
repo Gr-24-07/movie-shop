@@ -9,7 +9,7 @@ const UpdateUserSchema = z.object({
     prevEmail: z.string().email(),
 });
 
-type UpdateUserFail = {
+export type UpdateUserFail = {
     success: false;
     errors: z.ZodFormattedError<
         {
@@ -20,7 +20,7 @@ type UpdateUserFail = {
     >;
 };
 
-type UpdateUserSuccess = {
+export type UpdateUserSuccess = {
     success: true;
     data: {
         name: string;
@@ -28,7 +28,7 @@ type UpdateUserSuccess = {
     };
 };
 
-type UpdateUserResult = UpdateUserSuccess | UpdateUserFail;
+export type UpdateUserResult = UpdateUserSuccess | UpdateUserFail;
 
 export default async function updateUser(
     formData: FormData

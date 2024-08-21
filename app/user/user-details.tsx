@@ -105,8 +105,8 @@ export default function UserDetails({ user }: { user: User }) {
                 ) : (
                     <>
                         <div className="space-y-2">
-                            <p>Name: {user.name}</p>
-                            <p>Email: {user.email}</p>
+                            <p>Name: {name}</p>
+                            <p>Email: {email}</p>
                             <p>Role: {user.role}</p>
                         </div>
                         <Button

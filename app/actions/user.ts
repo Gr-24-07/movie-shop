@@ -1,6 +1,9 @@
 "use server";
 
+import { auth } from "@/auth";
 import prisma from "@/lib/db";
+import { Role } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 const UpdateUserSchema = z.object({
@@ -63,5 +66,107 @@ export default async function updateUser(
     return {
         success: true,
         data: data,
+    };
+}
+
+export type AdminUpdateUserFail = {
+    success: false;
+    errors: z.ZodFormattedError<
+        {
+            id: string;
+            name?: string | undefined;
+            email?: string | undefined;
+            role?: "USER" | "ADMIN" | undefined;
+        },
+        string
+    >;
+};
+
+export type AdminUpdateUserSuccess = {
+    success: true;
+};
+
+export type AdminUpdateUserResult =
+    | AdminUpdateUserSuccess
+    | AdminUpdateUserFail;
+
+const AdminUpdateUserSchema = z.object({
+    id: z.string().cuid(),
+    name: z.string().min(1).optional(),
+    email: z
+        .string()
+        .email()
+        .refine(
+            async (value) => {
+                const count = await prisma.user.count({
+                    where: {
+                        email: value,
+                    },
+                });
+
+                if (count > 0) {
+                    return false;
+                }
+
+                return true;
+            },
+            { message: "Email is taken" }
+        )
+        .optional(),
+    role: z.nativeEnum(Role).optional(),
+});
+
+export async function adminUpdateUser(
+    id: string,
+    name: string | undefined,
+    email: string | undefined,
+    role: Role | undefined
+): Promise<AdminUpdateUserResult | void> {
+    const session = await auth();
+    session?.user.role;
+
+    if (session?.user.role !== "ADMIN") {
+        return;
+    }
+
+    console.log(id);
+    console.log(name);
+    console.log(email);
+    console.log(role);
+
+    const data = {
+        id,
+        name,
+        email,
+        role,
+    };
+
+    const parsedResult = await AdminUpdateUserSchema.safeParseAsync(data);
+
+    if (!parsedResult.success) {
+        const formattedErrors = parsedResult.error.format();
+
+        return {
+            success: false,
+            errors: formattedErrors,
+        };
+    }
+
+    await prisma.user.update({
+        where: {
+            id: parsedResult.data.id,
+        },
+
+        data: {
+            name: parsedResult.data.name,
+            email: parsedResult.data.email,
+            role: parsedResult.data.role,
+        },
+    });
+
+    revalidatePath("/admin");
+
+    return {
+        success: true,
     };
 }

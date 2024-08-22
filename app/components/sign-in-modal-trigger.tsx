@@ -5,6 +5,11 @@ import SignInModal from "./sign-in-modal";
 
 export default function SignInModalTrigger() {
     const [showModal, setShowModal] = useState(false);
+
+    function handleClose() {
+        setShowModal(false);
+    }
+
     return (
         <>
             <button
@@ -14,7 +19,7 @@ export default function SignInModalTrigger() {
             >
                 Sign in
             </button>
-            {showModal && <SignInModal />}
+            {showModal && <SignInModal handleClose={handleClose} />}
         </>
     );
 }

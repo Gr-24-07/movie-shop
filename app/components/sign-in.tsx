@@ -1,14 +1,27 @@
-import { signIn } from "@/auth";
+"use client";
 
-export default function SignIn() {
+import { Button } from "@/components/ui/button";
+import { signIn } from "next-auth/react";
+import { IconType } from "react-icons/lib";
+
+export default function SignIn({
+    provider,
+    Icon,
+}: {
+    provider: "github" | "google";
+    Icon: IconType;
+}) {
     return (
         <form
-            action={async () => {
-                "use server";
-                await signIn("github");
+            onSubmit={(e) => {
+                e.preventDefault();
+                signIn(provider);
             }}
         >
-            <button type="submit">Sign In</button>
+            <Button className="items-center" type="submit">
+                <Icon className="mr-2" />
+                Sign in with {provider}
+            </Button>
         </form>
     );
 }

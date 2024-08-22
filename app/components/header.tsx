@@ -3,6 +3,7 @@ import SignIn from "./sign-in";
 import NavBar from "./navbar";
 import { auth } from "@/auth";
 import SignOut from "./sign-out";
+import SignInModalTrigger from "./sign-in-modal-trigger";
 
 export default async function Header() {
     const session = await auth();
@@ -13,7 +14,11 @@ export default async function Header() {
                 <Link href="/">MovieStore</Link>
             </h1>
             {session?.user && `${session?.user.role} ${session?.user?.name}`}
-            {session?.user ? <SignOut></SignOut> : <SignIn></SignIn>}
+            {session?.user ? (
+                <SignOut></SignOut>
+            ) : (
+                <SignInModalTrigger></SignInModalTrigger>
+            )}
             <NavBar></NavBar>
         </header>
     );

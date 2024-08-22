@@ -1,4 +1,5 @@
 "use server";
+
 import prisma from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -14,22 +15,18 @@ const movievalidation = z.object({
 });
 
 export async function addmovie(formData: FormData) {
-
   const data = Object.fromEntries(formData.entries());
   let validatedData;
-
   try {
     validatedData = await movievalidation.parseAsync(data);
   } catch (error) {
     console.error("Validation error:", error);
     return;
   }
-
   if (!validatedData) {
     console.error("No validated data found");
     return;
   }
-
   try {
     await prisma.movie.create({
       data: {
@@ -48,7 +45,7 @@ export async function addmovie(formData: FormData) {
   revalidatePath("./movie");
 }
 
-export default async function DeleteMovie(id: string) {
+export async function DeleteMovie(id: string) {
   try {
     await prisma.movie.delete({
       where: {
@@ -59,28 +56,22 @@ export default async function DeleteMovie(id: string) {
     console.error(error);
     return;
   }
-
-  // redirect("/");
   revalidatePath("/admin/movies");
 }
 
 export async function updateMovie(formData: FormData, id: string) {
-  
   const data = Object.fromEntries(formData);
   let validatedData;
-
   try {
       validatedData = await movievalidation.parseAsync(data);
   } catch (error) {
       console.error(error);
       return;
   }
-
   if (!validatedData) {
       console.error("No data found");
       return;
   }
-
   try {
       await prisma.movie.update({
           where: {
@@ -99,6 +90,20 @@ export async function updateMovie(formData: FormData, id: string) {
       console.error(error);
       return;
   }
-
   revalidatePath("/admin/movies");
+}
+
+export async function getMovies() {
+  try {
+    const movies = await prisma.movie.findMany({
+      select: {
+        id: true,
+        title: true,
+      },
+    });
+    return movies;
+  } catch (error) {
+    console.error("Failed to fetch movies:", error);
+    return [];
+  }
 }

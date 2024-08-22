@@ -1,3 +1,5 @@
+import MovieList from '../../components/admin/people/MovieList';
+
 export default function PeoplePage() {
-    return <h1>People</h1>;
+  return <MovieList />;
 }

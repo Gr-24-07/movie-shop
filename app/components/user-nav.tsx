@@ -20,11 +20,6 @@ const PAGES = [
         href: "/checkout",
         name: "Checkout",
     },
-    {
-        key: crypto.randomUUID(),
-        href: "/user",
-        name: "User",
-    },
 ];
 
 export default function UserNavBar() {

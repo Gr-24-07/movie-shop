@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { signIn } from "next-auth/react";
 import { IconType } from "react-icons/lib";
 
-export default function SignIn({
+export default function SignInButton({
     provider,
     Icon,
 }: {
@@ -18,7 +18,7 @@ export default function SignIn({
                 signIn(provider);
             }}
         >
-            <Button className="items-center" type="submit">
+            <Button type="submit">
                 <Icon className="mr-2" />
                 Sign in with {provider}
             </Button>

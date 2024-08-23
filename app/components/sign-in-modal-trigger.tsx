@@ -13,6 +13,7 @@ export default function SignInModalTrigger() {
     return (
         <>
             <button
+                className="hover:bg-white hover:text-black hover:rounded-lg p-2"
                 onClick={() => {
                     setShowModal(true);
                 }}

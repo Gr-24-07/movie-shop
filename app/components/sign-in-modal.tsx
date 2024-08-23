@@ -1,5 +1,5 @@
 import { createPortal } from "react-dom";
-import SignIn from "./sign-in";
+import SignInButton from "./sign-in-button";
 import { FaGoogle, FaGithub } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 
@@ -22,8 +22,14 @@ export default function SignInModal({
             >
                 <div className="flex flex-col gap-2">
                     <h1 className="font-bold text-center">Sign in</h1>
-                    <SignIn provider="google" Icon={FaGoogle}></SignIn>
-                    <SignIn provider="github" Icon={FaGithub}></SignIn>
+                    <SignInButton
+                        provider="google"
+                        Icon={FaGoogle}
+                    ></SignInButton>
+                    <SignInButton
+                        provider="github"
+                        Icon={FaGithub}
+                    ></SignInButton>
                 </div>
                 <Button
                     onClick={(e) => {

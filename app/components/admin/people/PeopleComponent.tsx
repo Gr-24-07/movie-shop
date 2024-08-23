@@ -10,7 +10,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getPeople, createPerson, updatePerson, deletePerson } from '@/app/actions/people';
 
-interface PeopleClientComponentProps {
+interface PeopleComponentProps {
   movies: {
     id: string;
     title: string;
@@ -28,7 +28,7 @@ const personSchema = z.object({
   role: z.enum(["Actor", "Director"]),
 });
 
-export default function PeopleClientComponent({ movies }: PeopleClientComponentProps) {
+export default function PeopleComponent({ movies }: PeopleComponentProps) {
   const [selectedMovie, setSelectedMovie] = useState<string>('');
   const [assignedPeople, setAssignedPeople] = useState<Person[]>([]);
   const [editingPerson, setEditingPerson] = useState<Person | null>(null);
@@ -45,11 +45,15 @@ export default function PeopleClientComponent({ movies }: PeopleClientComponentP
   const fetchAssignedPeople = async (movieId: string) => {
     if (!movieId) return;
 
-    const result = await getPeople(movieId);
-    if (result.success && result.people) {
-      setAssignedPeople(result.people as Person[]);
-    } else {
-      setMessage({ type: 'error', text: result.error || "Failed to fetch assigned people." });
+    try {
+      const result = await getPeople(movieId);
+      if (result.success && result.people) {
+        setAssignedPeople(result.people);
+      } else {
+        throw new Error(result.error || "Failed to fetch assigned people.");
+      }
+    } catch (error) {
+      setMessage({ type: 'error', text: error instanceof Error ? error.message : "An error occurred while fetching people." });
     }
   };
 
@@ -59,6 +63,11 @@ export default function PeopleClientComponent({ movies }: PeopleClientComponentP
   };
 
   const handleSubmit = async (values: z.infer<typeof personSchema>) => {
+    if (!selectedMovie) {
+      setMessage({ type: 'error', text: "Please select a movie first." });
+      return;
+    }
+
     try {
       const result = editingPerson
         ? await updatePerson(editingPerson.id, { ...values, movieId: selectedMovie })
@@ -79,15 +88,23 @@ export default function PeopleClientComponent({ movies }: PeopleClientComponentP
 
   const handleDeletePerson = async (personId: string) => {
     if (selectedMovie && personId) {
-      const result = await deletePerson(selectedMovie, personId);
-      if (result.success) {
-        setMessage({ type: 'success', text: "Person removed from movie successfully." });
-        await fetchAssignedPeople(selectedMovie);
-      } else {
-        setMessage({ type: 'error', text: result.error || "Failed to remove person." });
+      try {
+        const result = await deletePerson(selectedMovie, personId);
+        if (result.success) {
+          setMessage({ type: 'success', text: "Person removed from movie successfully." });
+          await fetchAssignedPeople(selectedMovie);
+        } else {
+          throw new Error(result.error || "Failed to remove person.");
+        }
+      } catch (error) {
+        setMessage({ type: 'error', text: error instanceof Error ? error.message : "An error occurred while removing the person." });
       }
     }
   };
+
+  if (!movies || movies.length === 0) {
+    return <p className="text-center text-gray-600">No movies available. Please add some movies first.</p>;
+  }
 
   return (
     <div className="max-w-2xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
@@ -174,6 +191,10 @@ export default function PeopleClientComponent({ movies }: PeopleClientComponentP
             ))}
           </ul>
         </div>
+      )}
+
+      {selectedMovie && assignedPeople.length === 0 && (
+        <p className="mt-4 text-center text-gray-600">No people assigned to this movie yet.</p>
       )}
     </div>
   );

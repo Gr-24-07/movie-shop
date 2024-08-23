@@ -1,8 +1,17 @@
 import { getMovies } from '@/app/actions/movies';
 import PeopleComponent from './PeopleComponent';
 
-export default async function MovieList() {
-  const movies = await getMovies();
+type MovieResult = 
+  | { success: true; movies: { id: string; title: string; }[] }
+  | { success: false; error: string };
 
-  return <PeopleComponent movies={movies} />;
+export default async function MovieList() {
+  const result: MovieResult = await getMovies();
+  
+  if (!result.success) {
+    console.error("Failed to fetch movies:", result.error);
+    return <div>Failed to load movies. Please try again later.</div>;
+  }
+
+  return <PeopleComponent movies={result.movies} />;
 }

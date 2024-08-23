@@ -8,6 +8,13 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip";
+
 import { ChevronDown } from "lucide-react";
 
 export default function OrderHistory({ orders }: { orders: Order[] }) {
@@ -25,7 +32,7 @@ export default function OrderHistory({ orders }: { orders: Order[] }) {
                 <TableCaption>A list of all your orders</TableCaption>
                 <TableHeader>
                     <TableRow>
-                        <TableHead className="w-[100px]">Id</TableHead>
+                        <TableHead className="w-[150px]">Id</TableHead>
                         <TableHead>Status</TableHead>
                         <TableHead>Order Date</TableHead>
                         <TableHead className="text-right">Total</TableHead>
@@ -36,8 +43,17 @@ export default function OrderHistory({ orders }: { orders: Order[] }) {
                     {orders.map((order) => {
                         return (
                             <TableRow key={order.id}>
-                                <TableCell className="font-medium">
-                                    {order.id}
+                                <TableCell>
+                                    <TooltipProvider>
+                                        <Tooltip>
+                                            <TooltipTrigger className="whitespace-nowrap overflow-hidden text-ellipsis max-w-[150px]">
+                                                {order.id}
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                                {order.id}
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
                                 </TableCell>
                                 <TableCell>{order.status}</TableCell>
                                 <TableCell>

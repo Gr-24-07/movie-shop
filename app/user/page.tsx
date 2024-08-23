@@ -13,6 +13,9 @@ export default async function UserPage() {
             orderItems: true,
             User: true,
         },
+        where: {
+            userId: user?.id,
+        },
     });
 
     if (!user) {

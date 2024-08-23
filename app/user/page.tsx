@@ -3,10 +3,14 @@ import UserDetails from "./user-details";
 import AuthProvider from "./auth-provider";
 import prisma from "@/lib/db";
 import OrderHistory from "./order-history";
-import { Order, OrderItem } from "@prisma/client";
+import { Movie, Order, OrderItem } from "@prisma/client";
+
+export type OrderItemWithMovie = OrderItem & {
+    movie: Movie;
+};
 
 export type OrderWithItems = Order & {
-    orderItems: OrderItem[];
+    orderItems: OrderItemWithMovie[];
 };
 
 export default async function UserPage() {

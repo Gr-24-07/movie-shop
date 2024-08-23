@@ -71,7 +71,7 @@ export default function OrderHistoryRow({ order }: { order: OrderWithItems }) {
                                     return (
                                         <TableRow key={items.id}>
                                             <TableCell>
-                                                {items.movieId}
+                                                {items.movie.title}
                                             </TableCell>
                                             <TableCell className="text-right">
                                                 {currencyFormatter.format(

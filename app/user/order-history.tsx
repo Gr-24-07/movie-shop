@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/tooltip";
 
 import { ChevronDown } from "lucide-react";
+import { currencyFormatter } from "@/lib/formats";
 
 export default function OrderHistory({ orders }: { orders: Order[] }) {
     orders.map((order) => {
@@ -36,7 +37,7 @@ export default function OrderHistory({ orders }: { orders: Order[] }) {
                         <TableHead>Status</TableHead>
                         <TableHead>Order Date</TableHead>
                         <TableHead className="text-right">Total</TableHead>
-                        <TableHead>Show Items</TableHead>
+                        <TableHead>Order Items</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -60,7 +61,9 @@ export default function OrderHistory({ orders }: { orders: Order[] }) {
                                     {order.orderDate.toLocaleDateString()}
                                 </TableCell>
                                 <TableCell className="text-right">
-                                    {order.totalAmount.toString()}
+                                    {currencyFormatter.format(
+                                        Number(order.totalAmount)
+                                    )}
                                 </TableCell>
                                 <TableCell className="flex gap-2 hover:cursor-pointer">
                                     Show <ChevronDown size={20}></ChevronDown>

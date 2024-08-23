@@ -30,7 +30,7 @@ export default function AddButton({ children }: AddButtonProps) {
                 disabled={pending}
                 onClick={handleClick}
             >
-                {pending ? "Loading..." : children ?? "Add"}
+                {pending ? "Adding..." : children ?? "Add"}
             </button>
             {success && (
                 <p className="text-green-800 mt-2">Genre added successfully!</p>

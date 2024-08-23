@@ -126,21 +126,22 @@ model Job {
 }
 
 model Order {
-    id          String  @id @default(uuid())
+    id          String   @id @default(uuid())
     userId      String
-    User        User    @relation(fields: [userId], references: [id])
+    User        User     @relation(fields: [userId], references: [id])
     totalAmount Decimal
+    status      String
+    orderDate   DateTime @default(now())
 
     //Relations
     orderItems OrderItem[]
 }
 
 model OrderItem {
-    id              String   @id @default(uuid())
+    id              String  @id @default(uuid())
     priceAtPurchase Decimal
-    status          String
-    quantity        Int
-    orderDate       DateTime
+
+    quantity Int
 
     //Relations
     Order   Order  @relation(fields: [orderId], references: [id])
@@ -148,4 +149,3 @@ model OrderItem {
     movie   Movie  @relation(fields: [movieId], references: [id])
     movieId String
 }
-

@@ -1,5 +1,5 @@
 import { getMostRecentMovies, getTopPurchasedMovies, getOldestMovies, getMoviesOnSale } from '@/app/actions/movies';
-import ShoppingExperience from './LandingPage';
+import Top5MoviesGridProps from './Top5MoviesGrid';
 
 interface Movie {
   id: string;
@@ -22,7 +22,7 @@ export default async function MovieDataFetcher() {
   };
 
   return (
-    <ShoppingExperience
+    <Top5MoviesGridProps
       newArrivals={processMovies(newArrivals)}
       bestsellers={processMovies(bestsellers)}
       classics={processMovies(classics)}

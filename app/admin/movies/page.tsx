@@ -1,5 +1,8 @@
-import DeleteMovie, { addmovie, updateMovie } from "@/app/actions/movies";
+import  {deleteMovie, addMovie, updateMovie } from "@/app/actions/movies";
 import prisma from "@/lib/db";
+import Link from "next/link";
+import { useRouter } from 'next/router'
+ 
 
 export default async function AddMovie() {
   const movie = await prisma.movie.findMany();
@@ -7,7 +10,7 @@ export default async function AddMovie() {
   return (
     <>
     <div className="flex flex-col items-center">
-      <form action={addmovie} className="flex flex-col w-1/2 gap-4">
+      <form action={addMovie} className="flex flex-col w-1/2 gap-4">
         <input
           className="text-left font-bold bg-slate-100"
           type="text"
@@ -64,39 +67,7 @@ export default async function AddMovie() {
           <h1 className="p-2 bg-slate-300 text-black font-bold rounded-lg">
             Movie List
           </h1>
-          <ul>
-            {movie.map((movie) => (
-              <li className="p-2 text-justify-auto" key={movie.id}>
-                <h2 className=" p-1 border border-spacing-1 border-black text-left font-bold bg-slate-200">{`${movie.title}`}</h2>
-                <p className=" p-1 border border-spacing-1  border-black  text-left font-bold bg-slate-200">
-                  ReleaseDate: {`${movie.releaseDate}`}
-                </p>
-                <p className=" p-1 border border-spacing-1  border-black text-left font-bold bg-slate-200">
-                  Description: {movie.description}
-                </p>
-                <p className=" p-1 border border-spacing-1  border-black text-left font-bold bg-slate-200">
-                  Price: {`${movie.price}`}
-                </p>
-                <p className=" p-1 border border-spacing-1  border-black text-left font-bold bg-slate-200">
-                  Stock: {movie.stock}
-                </p>
-                <p className=" p-1 border border-spacing-1  border-black text-left font-bold bg-slate-200">
-                  imageURL: {movie.imageURL}
-                </p>
-                
-
-                <button
-                  className="w-full bg-red-500 text-white py-2 px-4 rounded-full font-bold hover:bg-gray-300 dark:hover:bg-gray-600"
-                  formAction={async () => {
-                    "use server";
-                    await DeleteMovie(movie.id);
-                    
-                  }}
-                  >
-                  Delete
-                </button>
-
-                  
+     
 
                 
             
@@ -144,15 +115,50 @@ export default async function AddMovie() {
           type="string"
           placeholder="Movie imageURL"
           name="imageURL"
+
           required
         />
-        <button formAction={async (formData) => {
+
+       
+
+
+
+
+<ul>
+{movie.map((movie) => (
+              <li className="p-2 text-justify-auto" key={movie.id}>
+                <h2 className=" p-1 border border-spacing-1 border-black text-left font-bold bg-slate-200">{`${movie.title}`}</h2>
+                <p className=" p-1 border border-spacing-1  border-black  text-left font-bold bg-slate-200">
+                  ReleaseDate: {`${movie.releaseDate}`}
+                </p>
+                <p className=" p-1 border border-spacing-1  border-black text-left font-bold bg-slate-200">
+                  Description: {movie.description}
+                </p>
+                <p className=" p-1 border border-spacing-1  border-black text-left font-bold bg-slate-200">
+                  Price: {`${movie.price}`}
+                </p>
+                <p className=" p-1 border border-spacing-1  border-black text-left font-bold bg-slate-200">
+                  Stock: {movie.stock}
+                </p>
+                <p className=" p-1 border border-spacing-1  border-black text-left font-bold bg-slate-200">
+                  imageURL: {movie.imageURL}
+                </p>
+
+                <Link href={`/admin/movies/${movie.id}`}>Link</Link>
+               
+
+                <button
+                  className="w-full bg-red-500 text-white py-2 px-4 rounded-full font-bold hover:bg-gray-300 dark:hover:bg-gray-600"
+                  formAction={async () => {
                     "use server";
-                    await updateMovie(formData,movie.id);
+                    await deleteMovie(movie.id);
                     
-                  }} className="p-2 bg-blue-600 text-white rounded-lg">
-           Update Movie
-         </button>
+                  }}
+                  >
+                  Delete
+                </button>
+                
+        
               </li>
            ))};
           </ul>

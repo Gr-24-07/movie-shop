@@ -3,22 +3,15 @@ import {
     Table,
     TableBody,
     TableCaption,
-    TableCell,
     TableHead,
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from "@/components/ui/tooltip";
 
-import { ChevronDown } from "lucide-react";
-import { currencyFormatter } from "@/lib/formats";
+import OrderHistoryRow from "./order-history-row";
+import { OrderWithItems } from "./page";
 
-export default function OrderHistory({ orders }: { orders: Order[] }) {
+export default function OrderHistory({ orders }: { orders: OrderWithItems[] }) {
     orders.map((order) => {
         console.log(order);
     });
@@ -43,32 +36,10 @@ export default function OrderHistory({ orders }: { orders: Order[] }) {
                 <TableBody>
                     {orders.map((order) => {
                         return (
-                            <TableRow key={order.id}>
-                                <TableCell>
-                                    <TooltipProvider>
-                                        <Tooltip>
-                                            <TooltipTrigger className="whitespace-nowrap overflow-hidden text-ellipsis max-w-[150px]">
-                                                {order.id}
-                                            </TooltipTrigger>
-                                            <TooltipContent>
-                                                {order.id}
-                                            </TooltipContent>
-                                        </Tooltip>
-                                    </TooltipProvider>
-                                </TableCell>
-                                <TableCell>{order.status}</TableCell>
-                                <TableCell>
-                                    {order.orderDate.toLocaleDateString()}
-                                </TableCell>
-                                <TableCell className="text-right">
-                                    {currencyFormatter.format(
-                                        Number(order.totalAmount)
-                                    )}
-                                </TableCell>
-                                <TableCell className="flex gap-2 hover:cursor-pointer">
-                                    Show <ChevronDown size={20}></ChevronDown>
-                                </TableCell>
-                            </TableRow>
+                            <OrderHistoryRow
+                                key={order.id}
+                                order={order}
+                            ></OrderHistoryRow>
                         );
                     })}
                 </TableBody>

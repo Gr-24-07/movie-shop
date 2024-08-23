@@ -48,7 +48,12 @@ export default function OrderHistoryRow({ order }: { order: OrderWithItems }) {
                     }}
                 >
                     Show
-                    <ChevronDown size={20}></ChevronDown>
+                    <ChevronDown
+                        size={20}
+                        className={`transition duration-500 ${
+                            showItems && "rotate-180"
+                        }`}
+                    ></ChevronDown>
                 </TableCell>
             </TableRow>
             {showItems && (

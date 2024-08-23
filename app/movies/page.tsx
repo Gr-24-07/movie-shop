@@ -1,6 +1,5 @@
 import Image from 'next/image'
 import prisma from "@/lib/db";
-import DeleteMovie, { addmovie, updateMovie } from "@/app/actions/movies";
 
  
 export default async function Page() {

@@ -1,3 +1,5 @@
-export default function Home() {
-    return <h1>Movie Store</h1>;
+import MovieDataFetcher from '@/app/components/landingpage/MovieDataFetcher';
+
+export default function ShoppingExperiencePage() {
+  return <MovieDataFetcher />;
 }

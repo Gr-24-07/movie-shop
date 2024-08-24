@@ -5,7 +5,7 @@ import AddButton from "./addbutton";
 
 import { useRef , useState} from "react";
 import FormError from "@/app/components/form-error";
-import GenreListWrapper from "./GenreListWrapper";
+import GenreList from "./genre-list";
 
 
 export default function AddGenrePage() {
@@ -54,7 +54,7 @@ export default function AddGenrePage() {
 
             </form>
             
-            < GenreListWrapper />
+            < GenreList />
         </main>
     );
 }

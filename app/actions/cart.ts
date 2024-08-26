@@ -60,6 +60,13 @@ export async function removeFromCart(
     revalidatePath("/cart");
 }
 
+export async function clearCart() {
+    deleteCookie();
+
+    revalidatePath("/", "layout");
+    revalidatePath("/cart");
+}
+
 function getCookie(): Cart {
     const cookie = cookies().get(CART_NAME);
 

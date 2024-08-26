@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { addToCart, getCart, removeFromCart } from "../actions/cart";
+import { addToCart, clearCart, getCart, removeFromCart } from "../actions/cart";
 import { Decimal } from "@prisma/client/runtime/library";
 
 async function handleAddAction() {
@@ -32,6 +32,9 @@ export default async function CartPage() {
             </form>
             <form action={handleRemoveAction}>
                 <Button>Remove</Button>
+            </form>
+            <form action={clearCart}>
+                <Button>Clear</Button>
             </form>
         </div>
     );

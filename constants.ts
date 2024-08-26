@@ -5,6 +5,6 @@ export const CART_NAME = "__cart";
 export const CART_OPTIONS: Partial<ResponseCookie> = {
     httpOnly: true,
     maxAge: 60 * 60 * 24,
-    sameSite: "strict",
+    sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
 };

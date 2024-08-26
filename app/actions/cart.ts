@@ -11,18 +11,47 @@ export type CartItem = Pick<Movie, "id" | "title" | "price"> & {
     quantity: number;
 };
 
+export type CartItemOptionalQuantity = Omit<CartItem, "quantity"> & {
+    quantity?: number;
+};
+
 export async function getCart() {
     return getCookie();
 }
 
-export async function addToCart(item: CartItem) {
+export async function addToCart(item: CartItemOptionalQuantity) {
     const cart = getCookie();
     const existingItem = cart[item.id];
+    const quantity = item.quantity ?? 1;
 
     if (existingItem) {
-        cart[item.id].quantity += item.quantity;
+        cart[item.id].quantity += quantity;
     } else {
-        cart[item.id] = item;
+        cart[item.id] = {
+            ...item,
+            quantity,
+        };
+    }
+
+    setCookie(cart);
+
+    revalidatePath("/", "layout");
+    revalidatePath("/cart");
+}
+
+export async function removeFromCart(
+    item: Omit<CartItemOptionalQuantity, "title" | "price">
+) {
+    const cart = getCookie();
+    const existingItem = cart[item.id];
+    const quantity = item.quantity ?? 1;
+
+    if (!existingItem) return;
+
+    cart[item.id].quantity -= quantity;
+
+    if (cart[item.id].quantity <= 0) {
+        delete cart[item.id];
     }
 
     setCookie(cart);

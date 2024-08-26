@@ -25,7 +25,7 @@ export default function Input({}: InputProps) {
 
         setTimeout(() => {
             setSuccessMessage(null);
-        }, 1500);
+        }, 1600);
     }
 
     return (

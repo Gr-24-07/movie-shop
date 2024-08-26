@@ -67,6 +67,12 @@ export async function clearCart() {
     revalidatePath("/cart");
 }
 
+export async function getCartSize(): Promise<number> {
+    const cart = getCookie();
+
+    return Object.keys(cart).length;
+}
+
 function getCookie(): Cart {
     const cookie = cookies().get(CART_NAME);
 

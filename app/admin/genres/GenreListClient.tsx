@@ -1,6 +1,5 @@
 "use client";
 
-
 import { Genre } from "@prisma/client";
 import { EditButton } from "./editbutton";
 import { DeleteButton } from "./deletebotton";

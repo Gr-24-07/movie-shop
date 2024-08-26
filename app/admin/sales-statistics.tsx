@@ -2,12 +2,16 @@ import prisma from "@/lib/db";
 import { currencyFormatter } from "@/lib/formats";
 
 export default async function SalesStatistics() {
-    const orderCount = await prisma.order.count();
     const orderTotal = await prisma.order.aggregate({
         _sum: {
             totalAmount: true,
         },
+        _count: {
+            _all: true,
+        },
     });
+
+    const orderCount = orderTotal._count._all;
 
     const totalAmount = Number(
         orderTotal._sum.totalAmount !== null ? orderTotal._sum.totalAmount : 0

@@ -11,6 +11,15 @@ async function handleAddAction() {
         title: "Jason Bourne",
     });
 }
+async function handleAddAction2() {
+    "use server";
+
+    await addToCart({
+        id: "23123",
+        price: new Decimal(11),
+        title: "Alien",
+    });
+}
 
 async function handleRemoveAction() {
     "use server";
@@ -28,6 +37,9 @@ export default async function CartPage() {
             <h1 className="text-4xl font-semibold text-center">Cart</h1>
             <pre>{JSON.stringify(cart, null, 2)}</pre>
             <form action={handleAddAction}>
+                <Button>Add</Button>
+            </form>
+            <form action={handleAddAction2}>
                 <Button>Add</Button>
             </form>
             <form action={handleRemoveAction}>

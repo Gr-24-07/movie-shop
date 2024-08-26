@@ -3,27 +3,28 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import CartIcon from "./cart-icon";
 
-const PAGES = [
-    {
-        key: crypto.randomUUID(),
-        href: "/movies",
-        name: "Movies",
-    },
-    {
-        key: crypto.randomUUID(),
-        href: "/cart",
-        name: "Cart",
-    },
-    {
-        key: crypto.randomUUID(),
-        href: "/checkout",
-        name: "Checkout",
-    },
-];
-
-export default function UserNavBar() {
+export default function UserNavBar({ cartSize }: { cartSize: number }) {
     const path = usePathname();
+
+    const PAGES = [
+        {
+            key: crypto.randomUUID(),
+            href: "/movies",
+            display: "Movies",
+        },
+        {
+            key: crypto.randomUUID(),
+            href: "/cart",
+            display: <CartIcon cartSize={cartSize}></CartIcon>,
+        },
+        {
+            key: crypto.randomUUID(),
+            href: "/checkout",
+            display: "Checkout",
+        },
+    ];
 
     return (
         <>
@@ -37,7 +38,7 @@ export default function UserNavBar() {
                             )}
                             href={page.href}
                         >
-                            {page.name}
+                            {page.display}
                         </Link>
                     </li>
                 );

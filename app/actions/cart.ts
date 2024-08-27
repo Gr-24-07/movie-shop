@@ -59,6 +59,21 @@ export async function removeFromCart(
     revalidatePath("/", "layout");
     revalidatePath("/cart");
 }
+export async function removeItemFromCart(
+    item: Omit<CartItemOptionalQuantity, "title" | "price">
+) {
+    const cart = getCookie();
+    const existingItem = cart[item.id];
+
+    if (!existingItem) return;
+
+    delete cart[item.id];
+
+    setCookie(cart);
+
+    revalidatePath("/", "layout");
+    revalidatePath("/cart");
+}
 
 export async function clearCart() {
     deleteCookie();

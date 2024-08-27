@@ -11,12 +11,14 @@ import { Decimal } from "@prisma/client/runtime/library";
 type CartTableItemProps = {
     cartItem: CartItem;
     onRemove: (id: string) => Promise<void>;
+    onRemoveItem: (id: string) => Promise<void>;
     onAdd: (id: string, title: string, price: Decimal) => Promise<void>;
 };
 
 export default function CartTableItem({
     cartItem,
     onRemove,
+    onRemoveItem,
     onAdd,
 }: CartTableItemProps) {
     const [quantity, setQuantity] = useState(cartItem.quantity);
@@ -69,9 +71,21 @@ export default function CartTableItem({
                 )}
             </TableCell>
             <TableCell>
-                <Button size={"icon"} variant={"outline"}>
-                    <Trash></Trash>
-                </Button>
+                <form
+                    action={async () => {
+                        if (
+                            confirm(
+                                `Are you sure you want to remove "${cartItem.title}" from the cart?`
+                            )
+                        ) {
+                        }
+                        await onRemoveItem(cartItem.id);
+                    }}
+                >
+                    <Button size={"icon"} variant={"outline"}>
+                        <Trash></Trash>
+                    </Button>
+                </form>
             </TableCell>
         </TableRow>
     );

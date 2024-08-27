@@ -10,6 +10,7 @@ import {
     getCart,
     removeFromCart,
     removeItemFromCart,
+    setToCart,
 } from "../actions/cart";
 import CartTableItem from "./cart-table-item";
 import { Decimal } from "@prisma/client/runtime/library";
@@ -39,6 +40,22 @@ async function handleAdd(id: string, title: string, price: Decimal) {
     });
 }
 
+async function handleSet(
+    id: string,
+    title: string,
+    price: Decimal,
+    quantity: number
+) {
+    "use server";
+
+    setToCart({
+        id: id,
+        title: title,
+        price: price,
+        quantity: quantity,
+    });
+}
+
 export default async function CartTable() {
     const cart = await getCart();
 
@@ -63,6 +80,7 @@ export default async function CartTable() {
                                 onRemove={handleRemove}
                                 onRemoveItem={handleRemoveItem}
                                 onAdd={handleAdd}
+                                onSet={handleSet}
                                 key={cartItem[0]}
                                 cartItem={cartItem[1]}
                             ></CartTableItem>

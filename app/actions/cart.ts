@@ -39,6 +39,24 @@ export async function addToCart(item: CartItemOptionalQuantity) {
     revalidatePath("/cart");
 }
 
+export async function setToCart(item: CartItem) {
+    const cart = getCookie();
+    const existingItem = cart[item.id];
+
+    if (existingItem) {
+        cart[item.id].quantity = item.quantity;
+    } else {
+        cart[item.id] = {
+            ...item,
+        };
+    }
+
+    setCookie(cart);
+
+    revalidatePath("/", "layout");
+    revalidatePath("/cart");
+}
+
 export async function removeFromCart(
     item: Omit<CartItemOptionalQuantity, "title" | "price">
 ) {

@@ -7,13 +7,18 @@ import { Minus, Plus, Trash } from "lucide-react";
 import { CartItem } from "../actions/cart";
 import { useState } from "react";
 import { Decimal } from "@prisma/client/runtime/library";
-import { log } from "console";
 
 type CartTableItemProps = {
     cartItem: CartItem;
     onRemove: (id: string) => Promise<void>;
     onRemoveItem: (id: string) => Promise<void>;
     onAdd: (id: string, title: string, price: Decimal) => Promise<void>;
+    onSet: (
+        id: string,
+        title: string,
+        price: Decimal,
+        quantity: number
+    ) => Promise<void>;
 };
 
 export default function CartTableItem({
@@ -21,6 +26,7 @@ export default function CartTableItem({
     onRemove,
     onRemoveItem,
     onAdd,
+    onSet,
 }: CartTableItemProps) {
     const [quantity, setQuantity] = useState(cartItem.quantity);
 
@@ -43,31 +49,54 @@ export default function CartTableItem({
                         <Minus />
                     </Button>
                 </form>
-                <input
-                    className="w-8 h-8 text-center text-md [appearance:textfield]"
-                    type="text"
-                    value={quantity}
-                    onKeyDown={(event) => {
-                        if (
-                            [
-                                "Backspace",
-                                "ArrowLeft",
-                                "ArrowRight",
-                                "Tab",
-                            ].includes(event.key)
-                        ) {
-                            return;
-                        }
-                        if (!/[0-9]/.test(event.key)) {
-                            event.preventDefault();
-                        }
+                <form
+                    action={async () => {
+                        alert("Test");
+                        await onSet(
+                            cartItem.id,
+                            cartItem.title,
+                            cartItem.price,
+                            quantity
+                        );
                     }}
-                    onChange={(event) => {
-                        let value = event.target.value;
+                >
+                    <input
+                        className="w-8 h-8 text-center text-md [appearance:textfield]"
+                        type="text"
+                        value={quantity}
+                        onKeyDown={(event) => {
+                            if (
+                                [
+                                    "Backspace",
+                                    "ArrowLeft",
+                                    "ArrowRight",
+                                    "Tab",
+                                ].includes(event.key)
+                            ) {
+                                return;
+                            }
+                            if (!/[0-9]/.test(event.key)) {
+                                event.preventDefault();
+                            }
+                        }}
+                        onChange={(event) => {
+                            let value = event.target.value;
 
-                        setQuantity(Number(value));
-                    }}
-                />
+                            setQuantity(Number(value));
+                        }}
+                        onBlur={async () => {
+                            if (cartItem.quantity === quantity) {
+                                return;
+                            }
+                            await onSet(
+                                cartItem.id,
+                                cartItem.title,
+                                cartItem.price,
+                                quantity
+                            );
+                        }}
+                    />
+                </form>
                 <form
                     action={async () => {
                         await onAdd(

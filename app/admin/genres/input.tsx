@@ -1,31 +1,46 @@
 "use client";
 
+import { createGenre } from "@/app/actions/genre"; 
 import { useState } from "react";
-import { createGenre } from "../../actions/genre";
+import { z } from "zod";
 
-export type InputProps = {};
+const genreSchema = z.object({
+    name: z.string().min(1, "Enter the genre "),
+});
 
-export default function Input({}: InputProps) {
+export default function Input() {
     const [genre, setGenre] = useState("");
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    const [isPending, setIsPending] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     async function handleSubmit() {
-        const trimmedGenre = genre.trim();
+        setError(null);
 
-        if (!trimmedGenre) {
-            setGenre("");
-            alert("Please provide a genre name");
+        const validation = genreSchema.safeParse({ name: genre.trim() });
+
+        if (!validation.success) {
+            setError(validation.error.errors[0]?.message);
             return;
         }
 
-        await createGenre(trimmedGenre);
-        
-        setSuccessMessage("Genre added successfully!");
-        setGenre("");
+        setIsPending(true);
+
+        try {
+         
+            await createGenre(validation.data.name);
+            
+            setSuccessMessage("Genre added successfully!");
+            setGenre(""); 
+        } catch (error) {
+            setError("An error occurred while adding the genre.");
+        } finally {
+            setIsPending(false);
+        }
 
         setTimeout(() => {
             setSuccessMessage(null);
-        }, 1600);
+        }, 3000);
     }
 
     return (
@@ -37,23 +52,27 @@ export default function Input({}: InputProps) {
             }}
         >
             <input
-                className="w-full border border-gray-400 p-2 rounded focus:outline-none focus:border-blue-400"
+                className={`w-full border p-2 rounded focus:outline-none focus:border-blue-400 ${
+                    error ? "border-red-500" : "border-gray-400"
+                }`}
                 type="text"
                 placeholder="Enter your Genre..."
                 value={genre}
                 onChange={(ev) => setGenre(ev.target.value)}
+                disabled={isPending}
             />
+            {error && <p className="text-red-500 text-sm">{error}</p>}
             <div className="flex justify-end">
                 <button
                     type="submit"
                     className="bg-black text-white rounded-lg px-4 py-3 disabled:opacity-50 hover:bg-gray-700"
+                    disabled={isPending}
                 >
-                    Add
+                    {isPending ? "Adding..." : "Add"}
                 </button>
             </div>
-            
             {successMessage && (
-                <div className="text-green-600 text-sm">
+                <div className="text-green-600">
                     {successMessage}
                 </div>
             )}

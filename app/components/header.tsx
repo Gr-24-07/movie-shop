@@ -8,7 +8,7 @@ export default async function Header() {
     const session = await auth();
 
     return (
-        <header className="bg-primary text-primary-foreground flex justify-between p-4">
+        <header className="bg-primary text-primary-foreground flex justify-between p-4 mb-6">
             <h1 className="text-3xl">
                 <Link href="/">MovieStore</Link>
             </h1>

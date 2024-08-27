@@ -39,6 +39,28 @@ export async function addToCart(item: CartItemOptionalQuantity) {
     revalidatePath("/cart");
 }
 
+export async function setToCart(item: CartItem) {
+    const cart = getCookie();
+    const existingItem = cart[item.id];
+
+    if (existingItem) {
+        cart[item.id].quantity = item.quantity;
+    } else {
+        cart[item.id] = {
+            ...item,
+        };
+    }
+
+    if (cart[item.id].quantity <= 0) {
+        delete cart[item.id];
+    }
+
+    setCookie(cart);
+
+    revalidatePath("/", "layout");
+    revalidatePath("/cart");
+}
+
 export async function removeFromCart(
     item: Omit<CartItemOptionalQuantity, "title" | "price">
 ) {
@@ -53,6 +75,21 @@ export async function removeFromCart(
     if (cart[item.id].quantity <= 0) {
         delete cart[item.id];
     }
+
+    setCookie(cart);
+
+    revalidatePath("/", "layout");
+    revalidatePath("/cart");
+}
+export async function removeItemFromCart(
+    item: Omit<CartItemOptionalQuantity, "title" | "price">
+) {
+    const cart = getCookie();
+    const existingItem = cart[item.id];
+
+    if (!existingItem) return;
+
+    delete cart[item.id];
 
     setCookie(cart);
 

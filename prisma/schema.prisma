@@ -92,7 +92,7 @@ model Movie {
 
     //Relations
     peopleJob Job[]
-    genres    Genre[]
+    genres    Genre[]   @relation("GenreMovies")
     OrderItem OrderItem[]
 }
 
@@ -101,7 +101,7 @@ model Genre {
     name String
 
     //Relations
-    movies Movie[]
+    movies Movie[]  @relation("GenreMovies")
 }
 
 model People {

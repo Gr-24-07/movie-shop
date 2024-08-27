@@ -31,6 +31,9 @@ export default function CartTableItem({
                 <form
                     action={async () => {
                         await onRemove(cartItem.id);
+                        setQuantity((prevQuantity) => {
+                            return prevQuantity - 1;
+                        });
                     }}
                 >
                     <Button size={"icon"} variant={"outline"}>
@@ -50,6 +53,9 @@ export default function CartTableItem({
                             cartItem.title,
                             cartItem.price
                         );
+                        setQuantity((prevQuantity) => {
+                            return prevQuantity + 1;
+                        });
                     }}
                 >
                     <Button size={"icon"} variant={"outline"}>

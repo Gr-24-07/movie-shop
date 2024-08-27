@@ -36,7 +36,6 @@ export default async function CartPage() {
     return (
         <div className="container space-y-6 max-w-screen-lg">
             <CartTable></CartTable>
-            <pre>{JSON.stringify(cart, null, 2)}</pre>
             <form action={handleAddAction}>
                 <Button>Add</Button>
             </form>

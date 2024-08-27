@@ -1,14 +1,32 @@
 import {
     Table,
     TableBody,
-    TableCaption,
-    TableCell,
     TableHead,
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { getCart } from "../actions/cart";
-import { currencyFormatter } from "@/lib/formats";
+import { addToCart, getCart, removeFromCart } from "../actions/cart";
+import CartTableItem from "./cart-table-item";
+import { Decimal } from "@prisma/client/runtime/library";
+
+async function handleRemove(id: string) {
+    "use server";
+    console.log("Removing...");
+
+    removeFromCart({
+        id: id,
+    });
+}
+async function handleAdd(id: string, title: string, price: Decimal) {
+    "use server";
+    console.log("Removing...");
+
+    addToCart({
+        id: id,
+        title: title,
+        price: price,
+    });
+}
 
 export default async function CartTable() {
     const cart = await getCart();
@@ -23,22 +41,19 @@ export default async function CartTable() {
                         <TableHead className="w-[100px]">Product</TableHead>
                         <TableHead className="text-right">Price</TableHead>
                         <TableHead className="text-right">Quantity</TableHead>
+                        <TableHead className="text-right">Total</TableHead>
+                        <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                     {Object.entries(cart).map((cartItem) => {
                         return (
-                            <TableRow key={cartItem[0]}>
-                                <TableCell>{cartItem[1].title}</TableCell>
-                                <TableCell className="text-right">
-                                    {currencyFormatter.format(
-                                        Number(cartItem[1].price)
-                                    )}
-                                </TableCell>
-                                <TableCell className="text-right">
-                                    {cartItem[1].quantity}
-                                </TableCell>
-                            </TableRow>
+                            <CartTableItem
+                                onRemove={handleRemove}
+                                onAdd={handleAdd}
+                                key={cartItem[0]}
+                                cartItem={cartItem[1]}
+                            ></CartTableItem>
                         );
                     })}
                 </TableBody>

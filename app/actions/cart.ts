@@ -51,6 +51,10 @@ export async function setToCart(item: CartItem) {
         };
     }
 
+    if (cart[item.id].quantity <= 0) {
+        delete cart[item.id];
+    }
+
     setCookie(cart);
 
     revalidatePath("/", "layout");

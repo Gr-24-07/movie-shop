@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { addToCart, clearCart, getCart, removeFromCart } from "../actions/cart";
 import { Decimal } from "@prisma/client/runtime/library";
+import CartTable from "./cart-table";
 
 async function handleAddAction() {
     "use server";
@@ -34,7 +35,7 @@ export default async function CartPage() {
 
     return (
         <div className="container space-y-6 max-w-screen-lg">
-            <h1 className="text-4xl font-semibold text-center">Cart</h1>
+            <CartTable></CartTable>
             <pre>{JSON.stringify(cart, null, 2)}</pre>
             <form action={handleAddAction}>
                 <Button>Add</Button>

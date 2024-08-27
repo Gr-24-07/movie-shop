@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { type Genre } from "@prisma/client";
-import { deleteGenre, updateGenre } from "../../actions/genre";
+import { updateGenre } from "@/app/actions/genre";
+
 
 export type GenreProps = {
     genre: Genre;
@@ -87,3 +88,7 @@ export default function Genre({ genre }: GenreProps) {
         </tr>
     );
 }
+function deleteGenre(id: string) {
+    throw new Error("Function not implemented.");
+}
+

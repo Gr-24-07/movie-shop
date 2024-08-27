@@ -26,16 +26,36 @@ export async function deleteGenre(id: string) {
 type UpdateGenre = {
     id: string;
     name?: string;
+    movies?: string[];
 };
 
 export async function updateGenre(updatedGenre: UpdateGenre) {
-    const { id, ...data } = updatedGenre;
+    const { id, movies, ...data } = updatedGenre;
     await prisma.genre.update({
-        where: {
-            id,
+        where: { id },
+        data: {
+            ...data,
+            movies: {
+                set: movies ? movies.map(movieId => ({ id: movieId })) : [],
+            },
         },
-        data,
     });
 
     revalidatePath("/genre");
 }
+
+export async function getGenres() {
+    return await prisma.genre.findMany({
+        select: {
+            id: true,
+            name: true,
+            movies: {
+                select: {
+                    id: true,
+                    title: true,
+                },
+            },
+        },
+    });
+}
+

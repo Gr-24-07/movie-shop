@@ -46,7 +46,7 @@ export default async function CartTable() {
         <div>
             <h1 className="text-4xl font-semibold text-center">Cart</h1>
 
-            <Table>
+            <Table className="lg:table-fixed">
                 <TableHeader>
                     <TableRow>
                         <TableHead className="w-[100px]">Product</TableHead>

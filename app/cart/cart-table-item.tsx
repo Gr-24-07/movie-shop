@@ -7,6 +7,7 @@ import { Minus, Plus, Trash } from "lucide-react";
 import { CartItem } from "../actions/cart";
 import { useState } from "react";
 import { Decimal } from "@prisma/client/runtime/library";
+import { log } from "console";
 
 type CartTableItemProps = {
     cartItem: CartItem;
@@ -44,9 +45,28 @@ export default function CartTableItem({
                 </form>
                 <input
                     className="w-8 h-8 text-center text-md [appearance:textfield]"
-                    type="number"
+                    type="text"
                     value={quantity}
-                    onChange={(e) => setQuantity(Number(e.target.value))}
+                    onKeyDown={(event) => {
+                        if (
+                            [
+                                "Backspace",
+                                "ArrowLeft",
+                                "ArrowRight",
+                                "Tab",
+                            ].includes(event.key)
+                        ) {
+                            return;
+                        }
+                        if (!/[0-9]/.test(event.key)) {
+                            event.preventDefault();
+                        }
+                    }}
+                    onChange={(event) => {
+                        let value = event.target.value;
+
+                        setQuantity(Number(value));
+                    }}
                 />
                 <form
                     action={async () => {
@@ -66,9 +86,7 @@ export default function CartTableItem({
                 </form>
             </TableCell>
             <TableCell className="text-right">
-                {currencyFormatter.format(
-                    Number(cartItem.price) * cartItem.quantity
-                )}
+                {currencyFormatter.format(Number(cartItem.price) * quantity)}
             </TableCell>
             <TableCell>
                 <form

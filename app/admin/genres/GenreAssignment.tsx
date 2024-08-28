@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getGenres, updateGenre } from "@/app/actions/genre";
+import { getGenres, updateGenre } from "@/app/actions/genres";
 import { Genre } from "@prisma/client";
 import { getMovies } from "./movie";
 
@@ -49,12 +49,13 @@ export default function GenreAssignment() {
     }, [successMessage]);
 
     return (
+        
         <div className="p-6 mt-6 space-y-6 bg-gray-50 rounded-lg shadow-inner flex flex-col">
             <div>
-                <label htmlFor="genre-select" className="block text-sm font-medium text-gray-700">Select Genre</label>
+                <label htmlFor="genre-select" className="block text-md  text-black">Select Genre</label>
                 <select
                     id="genre-select"
-                    className="mt-1 block w-full"
+                    className="mt-2 w-full text-gray-600 text-sm border border-gray-400 rounded-lg p-2"
                     onChange={(e) => setSelectedGenreId(e.target.value)}
                     value={selectedGenreId || ""}
                 >
@@ -95,7 +96,7 @@ export default function GenreAssignment() {
             <div className="flex justify-end">
                 <button
                     onClick={handleSave}
-                    className="bg-black text-white rounded-lg px-4 py-3 mt-4 hover:bg-gray-700"
+                    className="bg-black text-white rounded-lg px-4 py-2  hover:bg-gray-700"
                 >
                     Save Changes
                 </button>
@@ -107,5 +108,6 @@ export default function GenreAssignment() {
                 </div>
             )}
         </div>
+       
     );
 }

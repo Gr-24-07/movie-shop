@@ -1,6 +1,6 @@
 "use client";
 
-import { createGenre } from "@/app/actions/genre"; 
+import { createGenre } from "@/app/actions/genres"; 
 import { useState } from "react";
 import { z } from "zod";
 
@@ -44,13 +44,15 @@ export default function Input() {
     }
 
     return (
+       
         <form
-            className="p-6 mt-6 space-y-6 bg-gray-50 rounded-lg shadow-inner flex flex-col"
+            className="p-6 space-y-3 bg-gray-50 rounded-lg shadow-inner flex flex-col"
             onSubmit={(ev) => {
                 ev.preventDefault();
                 handleSubmit();
             }}
         >
+            <label className="text-md  text-black">Genre</label>
             <input
                 className={`w-full border p-2 rounded focus:outline-none focus:border-blue-400 ${
                     error ? "border-red-500" : "border-gray-400"
@@ -65,7 +67,7 @@ export default function Input() {
             <div className="flex justify-end">
                 <button
                     type="submit"
-                    className="bg-black text-white rounded-lg px-4 py-3 disabled:opacity-50 hover:bg-gray-700"
+                    className="bg-black text-white rounded-lg px-4 py-2 disabled:opacity-50 hover:bg-gray-700"
                     disabled={isPending}
                 >
                     {isPending ? "Adding..." : "Add"}
@@ -77,5 +79,6 @@ export default function Input() {
                 </div>
             )}
         </form>
+      
     );
 }

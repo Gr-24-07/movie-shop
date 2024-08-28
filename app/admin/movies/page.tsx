@@ -1,172 +1,169 @@
-import  {deleteMovie, addMovie, updateMovie } from "@/app/actions/movies";
+import { deleteMovie, addMovie, updateMovie } from "@/app/actions/movies";
 import prisma from "@/lib/db";
 import Link from "next/link";
-import { useRouter } from 'next/router'
- 
+import { useRouter } from "next/router";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+import { currencyFormatter } from "@/lib/formats";
+
 
 export default async function AddMovie() {
   const movie = await prisma.movie.findMany();
 
   return (
     <>
-    <div className="flex flex-col items-center">
-      <form action={addMovie} className="flex flex-col w-1/2 gap-4">
-        <input
-          className="text-left font-bold bg-slate-100"
-          type="text"
-          placeholder="Movie Title"
-          required
-          name="title"
-        />
-        <input
-          className="text-left font-bold bg-slate-100"
-          type="text"
-          placeholder="Movie Description"
-          name="description"
-          required
-        />
-        <input
-          className="text-left font-bold bg-slate-100"
-          type="number"
-          placeholder="Movie Price"
-          name="price"
-          required
-        />
-
-        <input
-          className="text-left font-bold bg-slate-100"
-          type="date"
-          placeholder="Movie releaseDate"
-          name="releaseDate"
-          required
-        />
-
-        <input
-          className="text-left font-bold bg-slate-100"
-          type="number"
-          placeholder="Movie Stock"
-          name="stock"
-          required
-        />
-
-        <input
-          className="text-left font-bold bg-slate-100"
-          type="string"
-          placeholder="Movie imageURL"
-          name="imageURL"
-          required
-        />
-
-        <button className="p-2 bg-blue-600 text-white rounded-lg">
-          Add Movie
-        </button>
-      </form>
-
-      <div className="flex  ">
-        <form className="flex flex-col w-fit gap-4  bg-blue-300"> 
-          <h1 className="p-2 bg-slate-300 text-black font-bold rounded-lg">
-            Movie List
-          </h1>
-     
-
-                
-            
-
-        <input
-          className="text-left font-bold bg-slate-100"
-          type="text"
-          placeholder="Movie Title"
-          required
-          name="title"
-        />
-        <input
-          className="text-left font-bold bg-slate-100"
-          type="text"
-          placeholder="Movie Description"
-          name="description"
-          required
-        />
-        <input
-          className="text-left font-bold bg-slate-100"
-          type="number"
-          placeholder="Movie Price"
-          name="price"
-          required
-        />
-
-        <input
-          className="text-left font-bold bg-slate-100"
-          type="date"
-          placeholder="Movie releaseDate"
-          name="releaseDate"
-          required
-        />
-
-        <input
-          className="text-left font-bold bg-slate-100"
-          type="number"
-          placeholder="Movie Stock"
-          name="stock"
-          required
-        />
-
-        <input
-          className="text-left font-bold bg-slate-100"
-          type="string"
-          placeholder="Movie imageURL"
-          name="imageURL"
-
-          required
-        />
-
-       
-
-
-
-
-<ul>
-{movie.map((movie) => (
-              <li className="p-2 text-justify-auto" key={movie.id}>
-                <h2 className=" p-1 border border-spacing-1 border-black text-left font-bold bg-slate-200">{`${movie.title}`}</h2>
-                <p className=" p-1 border border-spacing-1  border-black  text-left font-bold bg-slate-200">
-                  ReleaseDate: {`${movie.releaseDate}`}
-                </p>
-                <p className=" p-1 border border-spacing-1  border-black text-left font-bold bg-slate-200">
-                  Description: {movie.description}
-                </p>
-                <p className=" p-1 border border-spacing-1  border-black text-left font-bold bg-slate-200">
-                  Price: {`${movie.price}`}
-                </p>
-                <p className=" p-1 border border-spacing-1  border-black text-left font-bold bg-slate-200">
-                  Stock: {movie.stock}
-                </p>
-                <p className=" p-1 border border-spacing-1  border-black text-left font-bold bg-slate-200">
-                  imageURL: {movie.imageURL}
-                </p>
-
-                <Link href={`/admin/movies/${movie.id}`}>Link</Link>
-               
-
-                <button
-                  className="w-full bg-red-500 text-white py-2 px-4 rounded-full font-bold hover:bg-gray-300 dark:hover:bg-gray-600"
-                  formAction={async () => {
-                    "use server";
-                    await deleteMovie(movie.id);
+      <div className="flex flex-col items-center my-4 shadow-md rounded-lg">
+        <form className="flex flex-col gap-4 w-96">
+          <h2 className="text-2xl font-bold text-center mb-4">Add Movie</h2>
+          <div className="flex flex-col gap-2">
+            <label className="text-lg font-semibold" htmlFor="title">
+              Title
+            </label>
+            <input
+              className="p-2 rounded-md border border-gray-300"
+              type="text"
+              id="title"
+              placeholder="Movie Title"
+              required
+              name="title"
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <label className="text-lg font-semibold" htmlFor="description">
+              Description
+            </label>
+            <textarea
+              className="p-2 rounded-md border border-gray-300 resize-none"
+              id="description"
+              placeholder="Movie Description"
+              required
+              name="description"
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <label className="text-lg font-semibold" htmlFor="price">
+              Price
+            </label>
+            <input
+              className="p-2 rounded-md border border-gray-300"
+              type="number"
+              id="price"
+              placeholder="Movie Price"
+              required
+              name="price"
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <label className="text-lg font-semibold" htmlFor="releaseDate">
+              Release Date
+            </label>
+            <input
+              className="p-2 rounded-md border border-gray-300"
+              type="date"
+              id="releaseDate"
+              placeholder="Movie releaseDate"
+              required
+              name="releaseDate"
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <label className="text-lg font-semibold" htmlFor="stock">
+              Stock
+            </label>
+            <input
+              className="p-2 rounded-md border border-gray-300"
+              type="number"
+              id="stock"
+              placeholder="Movie Stock"
+              required
+              name="stock"
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <label className="text-lg font-semibold" htmlFor="imageURL">
+              Image URL
+            </label>
+            <input
+              className="p-2 rounded-md border border-gray-300"
+              type="string"
+              id="imageURL"
+              placeholder="Movie imageURL"
+              required
+              name="imageURL"
+            />
+          </div>
+          <button className="p-2 bg-blue-600 text-white rounded-md mt-4">
+            Add Movie
+          </button>
+        </form>
+        <div className="flex  ">
+          <form className="flex flex-col w-fit gap-4  bg-blue-300">
+            <h1 className="p-2 bg-blue-300 text-black font-bold rounded-lg">
+              Movie List
+            </h1>
+            <>
+            <Table className="flex flex-col gap-4 bg-slate-300">
+              <TableHeader className="flex  bg-slate-300">
+                <TableRow>
+                <TableHead className="p-2 text-center font-bold flex-1">Title</TableHead>
+                <TableHead className="p-2 text-center font-bold flex-1">ReleaseDate</TableHead>
+                <TableHead className="p-2 text-center font-bold flex-1">Description</TableHead>
+                <TableHead className="p-2 text-center font-bold flex-1">Price</TableHead>
+                <TableHead className="p-2 text-center font-bold flex-1">Stock</TableHead>
+                <TableHead className="p-2 text-center font-bold flex-1">imageURL</TableHead>
+                </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {movie.map((movie) =>{
+                    return(
+                      <TableRow
+                      key={movie.id}
+                  
+                     >
+                      <TableCell className="p-2 text-center font-bold flex-1">{movie.title}</TableCell>
+                      <TableCell className="p-2 text-center font-bold flex-1">{movie.releaseDate.toLocaleDateString()}</TableCell>
+                      <TableCell className="p-2 text-center font-bold flex-1">{movie.description}</TableCell>
+                      <TableCell className="p-2 text-center font-bold flex-1">{currencyFormatter.format(Number(movie.price))}</TableCell>
+                      <TableCell className="p-2 text-center font-bold flex-1">{movie.stock}</TableCell>
+                      <TableCell className="p-2 text-center font-bold flex-1">{movie.imageURL}</TableCell>
+                      <TableCell><Link
+                      className="text-center font-bold bg-green-700 h-10 w-24 rounded-l-md"
+                      href={`/admin/movies/${movie.id}`}
+                    >
+                      Link
+                    </Link>
+                    <button
+                      className="h-9 w-36 bg-red-800 text-white font-bold  rounded-lg hover:bg-blue-800"
+                      formAction={async () => {
+                        "use server";
+                        await deleteMovie(movie.id);
+                      }}
+                    >
+                      Delete
+                    </button></TableCell>
+                      
+                     </TableRow>
+                    );
+                  } )}
+                </TableBody>
+              
                     
-                  }}
-                  >
-                  Delete
-                </button>
-                
-        
-              </li>
-           ))};
-          </ul>
-          </form>
-         
-      </div>
-    </div>
-    </>
-  );
+                    
+                  </Table>
+                 </>
+                 </form>
+                 </div>
+                 </div>
+                 </>
+                 );
+                 }
+    
+  
 
-}

@@ -1,7 +1,7 @@
 import GenreList from "./genre-list";
 import GenreAssignment from "./GenreAssignment";
 import Input from "./input";
-import { getGenres } from "@/app/actions/genre";
+import { getGenres } from "@/app/actions/genres";
 
 export default async function GenrePage() {
     const genres = await getGenres();

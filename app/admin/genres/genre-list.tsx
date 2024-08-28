@@ -1,8 +1,11 @@
 "use client";
 
-import { Genre } from "@prisma/client";
-import { deleteGenre, updateGenre } from "@/app/actions/genre";
+import { type Genre } from "@prisma/client";
+import { deleteGenre as deleteGenreAPI, updateGenre as updateGenreAPI } from "@/app/actions/genres";
 import { useState } from "react";
+import { Trash } from "lucide-react";
+import { Edit } from "lucide-react";
+import { Save } from "lucide-react";
 
 export type GenreListProps = {
     genres: (Genre & { movies: { id: string; title: string }[] })[];
@@ -18,20 +21,24 @@ export default function GenreList({ genres }: GenreListProps) {
     };
 
     const handleSave = async (genreId: string) => {
-        await updateGenre({ id: genreId, name: newGenreName });
+        if (!newGenreName.trim()) {
+            alert("Genre name cannot be empty.");
+            return;
+        }
+        await updateGenreAPI({ id: genreId, name: newGenreName.trim() });
         setIsEditing(null);
     };
 
     const handleDelete = async (genreId: string) => {
-        const confirmed = confirm("Are you sure you want to delete this genre?");
+        const confirmed = confirm("Are you sure? Do you want to delete this genre?");
         if (confirmed) {
-            await deleteGenre(genreId);
+            await deleteGenreAPI(genreId);
         }
     };
 
     return (
         <div className="flex justify-center my-4">
-            <table className="shadow-md rounded-lg overflow-hidden bg-slate-300 min-w-96 text-center">
+            <table className="shadow-md rounded-lg overflow-hidden bg-slate-300 min-w-96 text-center boder border-black">
                 <thead className="bg-gray-700 text-white">
                     <tr>
                         <th className="px-6 py-3 text-left text-sm tracking-wider">Genre Name</th>
@@ -48,6 +55,19 @@ export default function GenreList({ genres }: GenreListProps) {
                                         value={newGenreName}
                                         onChange={(e) => setNewGenreName(e.target.value)}
                                         className="border p-1 rounded"
+                                        autoFocus
+                                        onKeyUp={(e) => {
+                                            switch (e.code) {
+                                                case "Enter":
+                                                    handleSave(genre.id);
+                                                    break;
+                                                case "Escape":
+                                                    setIsEditing(null);
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                        }}
                                     />
                                 ) : (
                                     genre.name
@@ -68,23 +88,23 @@ export default function GenreList({ genres }: GenreListProps) {
                                 {isEditing === genre.id ? (
                                     <button
                                         onClick={() => handleSave(genre.id)}
-                                        className="px-4 py-1 bg-green-500 text-white font-bold rounded-lg hover:bg-green-800"
+                                        className="px-4 py-1 bg-green-300 rounded-lg hover:bg-green-800"
                                     >
-                                        Save
+                                        < Save />
                                     </button>
                                 ) : (
                                     <button
                                         onClick={() => handleEdit(genre.id, genre.name)}
-                                        className="px-4 py-1 bg-blue-500 text-white font-bold rounded-lg hover:bg-blue-800 "
+                                        className="px-4 py-1 bg-blue-300  rounded-lg hover:bg-blue-500"
                                     >
-                                        Edit
+                                        < Edit />
                                     </button>
                                 )}
                                 <button
                                     onClick={() => handleDelete(genre.id)}
-                                    className="px-4 py-1 bg-red-500 text-white font-bold rounded-lg hover:bg-red-800 mx-2"
+                                    className="px-4 py-1 bg-red-300 rounded-lg hover:bg-red-500 mx-2"
                                 >
-                                    Delete
+                                    <Trash />
                                 </button>
                             </td>
                         </tr>

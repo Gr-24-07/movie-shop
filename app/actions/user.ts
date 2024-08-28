@@ -171,6 +171,26 @@ export async function adminUpdateUser(
     };
 }
 
+export type SetUserAddressFail = {
+    success: false;
+    errors: z.ZodFormattedError<
+        {
+            id: string;
+            country: string;
+            city: string;
+            address: string;
+            zip: string;
+        },
+        string
+    >;
+};
+
+export type SetUserAddressSuccess = {
+    success: true;
+};
+
+export type SetUserAddressResult = SetUserAddressSuccess | SetUserAddressFail;
+
 const UserAddressSchema = z.object({
     id: z.string().min(1),
     address: z.string().min(1),
@@ -179,7 +199,9 @@ const UserAddressSchema = z.object({
     zip: z.string().min(1),
 });
 
-export async function setUserAddress(formData: FormData) {
+export async function setUserAddress(
+    formData: FormData
+): Promise<SetUserAddressResult> {
     console.log(formData);
 
     const data = Object.fromEntries(formData.entries());

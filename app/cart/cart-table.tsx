@@ -14,6 +14,7 @@ import {
 } from "../actions/cart";
 import CartTableItem from "./cart-table-item";
 import { Decimal } from "@prisma/client/runtime/library";
+import { currencyFormatter } from "@/lib/formats";
 
 async function handleRemove(id: string) {
     "use server";
@@ -61,9 +62,7 @@ export default async function CartTable() {
 
     return (
         <div>
-            <h1 className="text-4xl font-semibold text-center">Cart</h1>
-
-            <Table className="lg:table-fixed">
+            <Table className="lg:table-fixed mb-2">
                 <TableHeader>
                     <TableRow>
                         <TableHead className="w-[100px]">Product</TableHead>
@@ -88,6 +87,17 @@ export default async function CartTable() {
                     })}
                 </TableBody>
             </Table>
+            <p className="text-right font-semibold">
+                Total:{" "}
+                {currencyFormatter.format(
+                    Object.entries(cart).reduce((total, cartItem) => {
+                        return (
+                            total +
+                            Number(cartItem[1].price) * cartItem[1].quantity
+                        );
+                    }, 0)
+                )}
+            </p>
         </div>
     );
 }

@@ -10,17 +10,21 @@ export async function sendOrder(userId: string, cart: Cart) {
 
     const cartArr = Object.values(cart);
 
+    const orderItemsData = cartArr.map((cartItem) => ({
+        movieId: cartItem.id,
+        quantity: cartItem.quantity,
+        priceAtPurchase: cartItem.price,
+    }));
+
     await prisma.order.create({
         data: {
             status: "Pending",
             totalAmount: total,
-            // orderItems: {
-            //     createMany: {
-            //         data: {
-            //             movieId:
-            //         },
-            //     },
-            // },
+            orderItems: {
+                createMany: {
+                    data: orderItemsData,
+                },
+            },
             User: {
                 connect: {
                     id: userId,

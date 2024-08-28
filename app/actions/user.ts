@@ -170,3 +170,15 @@ export async function adminUpdateUser(
         success: true,
     };
 }
+
+const UserAddressSchema = z.object({
+    address: z.string().min(1),
+});
+
+export async function setUserAddress(formData: FormData) {
+    console.log(formData);
+
+    const data = Object.fromEntries(formData.entries());
+
+    const parsedResult = await UpdateUserSchema.safeParseAsync(data);
+}

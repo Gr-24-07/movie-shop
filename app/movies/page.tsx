@@ -26,7 +26,7 @@ export default async function Page() {
             
            
             />
-            <Link href={`/movies/${movie.id}`}>Link
+            <Link className="h-7 w-10 bg-blue-500 text-white font-bold rounded-lg hover:bg-blue-800 "href={`/movies/${movie.id}`}>Link
             </Link>
              <button className="p-2 text-justify font-bold bg-green-500 px-2 py-3 rounded-lg">
                 Buy Movie

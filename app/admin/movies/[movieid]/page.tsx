@@ -22,7 +22,7 @@ export default async function UpdateMovie({params}: { params: {
   
   return (
     <>
-    <div className="flex flex-col items-center">
+    <div className="flex justify-center my-4 shadow-md rounded-lg overflow-hidden bg-slate-300 min-w-96 text-center">
 
       <form >
       

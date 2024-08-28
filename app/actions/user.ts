@@ -193,10 +193,10 @@ export type SetUserAddressResult = SetUserAddressSuccess | SetUserAddressFail;
 
 const UserAddressSchema = z.object({
     id: z.string().min(1),
-    address: z.string().min(1),
-    country: z.string().min(1),
-    city: z.string().min(1),
-    zip: z.string().min(1),
+    address: z.string().min(1, "Please enter an address"),
+    country: z.string().min(1, "Please select a country"),
+    city: z.string().min(1, "Please enter a city"),
+    zip: z.string().min(1, "Please enter a zipcode"),
 });
 
 export async function setUserAddress(

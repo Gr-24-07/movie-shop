@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -15,14 +14,13 @@ import countries from "@/countries.json";
 import { useState } from "react";
 import { setUserAddress, SetUserAddressFail } from "../actions/user";
 import { User } from "next-auth";
-import { set } from "zod";
 import FormError from "../components/form-error";
+import SubmitButton from "../components/submit-button";
 
 export default function AddressForm({ user }: { user: User }) {
     const [selectedCountry, setSelectedCountry] = useState("");
     const [errors, setErrors] = useState<SetUserAddressFail["errors"] | null>();
-
-    console.log(user);
+    const [toast, setToast] = useState("");
 
     return (
         <form
@@ -34,13 +32,14 @@ export default function AddressForm({ user }: { user: User }) {
                     setErrors(res.errors);
                 } else {
                     setErrors(null);
+                    setToast("Address was successfully saved");
                 }
             }}
             className="flex flex-col gap-4 w-full max-w-sm"
         >
             <Select onValueChange={(value) => setSelectedCountry(value)}>
                 <input type="hidden" name="id" value={user.id} />
-                <SelectTrigger className="w-[180px]">
+                <SelectTrigger>
                     <SelectValue placeholder="Country" />
                 </SelectTrigger>
                 <SelectContent>
@@ -57,6 +56,7 @@ export default function AddressForm({ user }: { user: User }) {
                         })}
                     </SelectGroup>
                 </SelectContent>
+                <FormError errors={errors?.country?._errors}></FormError>
             </Select>
             <div>
                 <Label htmlFor="city">City</Label>
@@ -73,7 +73,8 @@ export default function AddressForm({ user }: { user: User }) {
                 <Input name="zip" id="zip"></Input>
                 <FormError errors={errors?.zip?._errors}></FormError>
             </div>
-            <Button>Save</Button>
+            <SubmitButton>Save</SubmitButton>
+            {toast && <p className="text-green-500 text-center">{toast}</p>}
         </form>
     );
 }

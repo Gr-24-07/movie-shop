@@ -172,7 +172,11 @@ export async function adminUpdateUser(
 }
 
 const UserAddressSchema = z.object({
+    id: z.string().min(1),
     address: z.string().min(1),
+    country: z.string().min(1),
+    city: z.string().min(1),
+    zip: z.string().min(1),
 });
 
 export async function setUserAddress(formData: FormData) {
@@ -180,5 +184,28 @@ export async function setUserAddress(formData: FormData) {
 
     const data = Object.fromEntries(formData.entries());
 
-    const parsedResult = await UpdateUserSchema.safeParseAsync(data);
+    const parsedResult = await UserAddressSchema.safeParseAsync(data);
+
+    if (!parsedResult.success) {
+        const formattedErrors = parsedResult.error.format();
+
+        return {
+            success: false,
+            errors: formattedErrors,
+        };
+    }
+
+    const parsedData = parsedResult.data;
+
+    await prisma.user.update({
+        where: { id: parsedData.id },
+        data: {
+            country: parsedData.country,
+            address: parsedData.address,
+            city: parsedData.city,
+            zip: parsedData.zip,
+        },
+    });
+
+    return { success: true };
 }

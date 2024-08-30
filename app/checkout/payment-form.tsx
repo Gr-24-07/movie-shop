@@ -7,6 +7,8 @@ import { User } from "next-auth";
 import { sendOrder } from "../actions/order";
 import { Cart, clearCart } from "../actions/cart";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import FormError from "../components/form-error";
 
 export default function PaymentForm({
     user,
@@ -16,12 +18,19 @@ export default function PaymentForm({
     cart: Cart;
 }) {
     const router = useRouter();
+    const [error, setError] = useState("");
     return (
         <form
             action={async () => {
                 const res = await sendOrder(user.id || "", cart);
+
+                if (!res.success) {
+                    setError(res.error);
+                    return;
+                }
+
                 await clearCart();
-                router.push(`order-confirmation/${res.id}`);
+                router.push(`order-confirmation/${res.order.id}`);
             }}
             className="flex flex-col gap-4 w-full max-w-sm"
         >
@@ -44,11 +53,11 @@ export default function PaymentForm({
                 <div>
                     <Label htmlFor="cvc">CVC/CVV</Label>
                     <Input name="cvc" id="cvc"></Input>
-                    {/* <FormError errors={errors?.city?._errors}></FormError> */}
                 </div>
             </div>
 
             <SubmitButton>Send Order</SubmitButton>
+            <FormError errors={[error]}></FormError>
         </form>
     );
 }

@@ -43,7 +43,7 @@ export default function AddressCheck({ address, user }: AddressCheckProps) {
                             setHasAddress(true);
                         }}
                     >
-                        Update address
+                        Change Address
                     </Button>
                 </div>
             )}

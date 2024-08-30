@@ -13,7 +13,6 @@ export default async function UserAddressDisplay({
 }: UserAddressDisplayProps) {
     return (
         <div>
-            <h1 className="font-semibold text-lg">Delivering to:</h1>
             <p>
                 <span className="font-semibold">Country: </span>
                 {country}

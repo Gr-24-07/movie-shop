@@ -3,12 +3,10 @@
 import { Label } from "@/components/ui/label";
 import SubmitButton from "../components/submit-button";
 import { Input } from "@/components/ui/input";
-import FormError from "../components/form-error";
 import { User } from "next-auth";
 import { sendOrder } from "../actions/order";
-import { Cart } from "../actions/cart";
+import { Cart, clearCart } from "../actions/cart";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 
 export default function PaymentForm({
     user,
@@ -22,6 +20,7 @@ export default function PaymentForm({
         <form
             action={async () => {
                 const res = await sendOrder(user.id || "", cart);
+                await clearCart();
                 router.push(`order-confirmation/${res.id}`);
             }}
             className="flex flex-col gap-4 w-full max-w-sm"

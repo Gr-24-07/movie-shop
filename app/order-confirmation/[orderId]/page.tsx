@@ -66,12 +66,16 @@ export default async function OrderConfirmation({
                 </p>
             </div>
             <OrderItemsTable orderItems={order?.orderItems}></OrderItemsTable>
-            <UserAddressDisplay
-                country={address?.country || ""}
-                city={address?.city || ""}
-                zip={address?.zip || ""}
-                address={address?.address || ""}
-            ></UserAddressDisplay>
+            <div>
+                <h1 className="font-semibold text-lg">Delivering to:</h1>
+                <UserAddressDisplay
+                    country={address?.country || ""}
+                    city={address?.city || ""}
+                    zip={address?.zip || ""}
+                    address={address?.address || ""}
+                ></UserAddressDisplay>
+            </div>
+
             <p>
                 <span className="font-semibold">Need Help? </span>
                 Contact our customer support at{" "}

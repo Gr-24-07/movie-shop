@@ -19,11 +19,6 @@ export default function UserNavBar({ cartSize }: { cartSize: number }) {
             href: "/cart",
             display: <CartIcon cartSize={cartSize}></CartIcon>,
         },
-        {
-            key: crypto.randomUUID(),
-            href: "/checkout",
-            display: "Checkout",
-        },
     ];
 
     return (

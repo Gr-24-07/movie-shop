@@ -48,7 +48,7 @@ export default function UserDetails({ user }: { user: User }) {
     return (
         <>
             <h1 className="text-4xl text-center font-semibold">User Details</h1>
-            <div className="flex gap-4 border-2 border-primary  p-4 rounded-lg shadow-md shadow-black">
+            <div className="flex gap-4">
                 <div>
                     <Image
                         src={user.image || ""}

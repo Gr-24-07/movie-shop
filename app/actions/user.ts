@@ -229,5 +229,33 @@ export async function setUserAddress(
         },
     });
 
+    revalidatePath("/checkout");
+    revalidatePath("/user");
+
     return { success: true };
+}
+
+export async function getUserAddress(id: string) {
+    const address = await prisma.user.findUnique({
+        where: {
+            id: id,
+        },
+        select: {
+            country: true,
+            city: true,
+            address: true,
+            zip: true,
+        },
+    });
+
+    if (
+        address?.address === null &&
+        address.city === null &&
+        address.country === null &&
+        address.zip === null
+    ) {
+        return null;
+    }
+
+    return address;
 }

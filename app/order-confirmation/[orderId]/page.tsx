@@ -1,5 +1,6 @@
 import OrderItemsTable from "@/app/components/order-items-table";
 import UserAddressDisplay from "@/app/components/user-address-display";
+import { auth } from "@/auth";
 import prisma from "@/lib/db";
 import { currencyFormatter } from "@/lib/formats";
 import { notFound } from "next/navigation";
@@ -13,7 +14,23 @@ type OrderConfirmationType = {
 export default async function OrderConfirmation({
     params,
 }: OrderConfirmationType) {
+    const session = await auth();
+
     const orderId = params.orderId;
+
+    const user = await prisma.order.findUnique({
+        where: {
+            id: orderId,
+        },
+        select: {
+            userId: true,
+        },
+    });
+
+    if (user?.userId !== session?.user.id) {
+        return notFound();
+    }
+
     const order = await prisma.order.findUnique({
         where: {
             id: orderId,

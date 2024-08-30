@@ -16,7 +16,7 @@ export async function sendOrder(userId: string, cart: Cart) {
         priceAtPurchase: cartItem.price,
     }));
 
-    await prisma.order.create({
+    const res = await prisma.order.create({
         data: {
             status: "Pending",
             totalAmount: total,
@@ -32,4 +32,6 @@ export async function sendOrder(userId: string, cart: Cart) {
             },
         },
     });
+
+    return res;
 }

@@ -20,6 +20,7 @@ import { currencyFormatter } from "@/lib/formats";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { OrderWithItems } from "./page";
+import OrderItemsTable from "../components/order-items-table";
 
 export default function OrderHistoryRow({ order }: { order: OrderWithItems }) {
     const [showItems, setShowItems] = useState(false);
@@ -37,7 +38,9 @@ export default function OrderHistoryRow({ order }: { order: OrderWithItems }) {
                     </TooltipProvider>
                 </TableCell>
                 <TableCell>{order.status}</TableCell>
-                <TableCell>{order.orderDate.toLocaleDateString()}</TableCell>
+                <TableCell>
+                    {order.orderDate.toLocaleDateString("sv")}
+                </TableCell>
                 <TableCell className="text-right">
                     {currencyFormatter.format(Number(order.totalAmount))}
                 </TableCell>
@@ -59,40 +62,9 @@ export default function OrderHistoryRow({ order }: { order: OrderWithItems }) {
             {showItems && (
                 <TableRow className="bg-slate-200">
                     <TableCell colSpan={5}>
-                        <Table>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead>Product</TableHead>
-                                    <TableHead className="text-right">
-                                        Price
-                                    </TableHead>
-                                    <TableHead className="text-right">
-                                        Quantity
-                                    </TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {order.orderItems.map((items) => {
-                                    return (
-                                        <TableRow key={items.id}>
-                                            <TableCell>
-                                                {items.movie.title}
-                                            </TableCell>
-                                            <TableCell className="text-right">
-                                                {currencyFormatter.format(
-                                                    Number(
-                                                        items.priceAtPurchase
-                                                    )
-                                                )}
-                                            </TableCell>
-                                            <TableCell className="text-right">
-                                                {items.quantity}
-                                            </TableCell>
-                                        </TableRow>
-                                    );
-                                })}
-                            </TableBody>
-                        </Table>
+                        <OrderItemsTable
+                            orderItems={order.orderItems}
+                        ></OrderItemsTable>
                     </TableCell>
                 </TableRow>
             )}

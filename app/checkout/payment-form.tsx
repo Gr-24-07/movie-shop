@@ -7,6 +7,8 @@ import FormError from "../components/form-error";
 import { User } from "next-auth";
 import { sendOrder } from "../actions/order";
 import { Cart } from "../actions/cart";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function PaymentForm({
     user,
@@ -15,10 +17,12 @@ export default function PaymentForm({
     user: User;
     cart: Cart;
 }) {
+    const router = useRouter();
     return (
         <form
             action={async () => {
-                await sendOrder(user.id || "", cart);
+                const res = await sendOrder(user.id || "", cart);
+                router.push(`order-confirmation/${res.id}`);
             }}
             className="flex flex-col gap-4 w-full max-w-sm"
         >

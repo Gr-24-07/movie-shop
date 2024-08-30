@@ -5,6 +5,7 @@ import prisma from "@/lib/db";
 import OrderHistory from "./order-history";
 import { Movie, Order, OrderItem } from "@prisma/client";
 import UserAddressDisplay from "../components/user-address-display";
+import { getUserAddress } from "../actions/user";
 
 export type OrderItemWithMovie = OrderItem & {
     movie: Movie;
@@ -32,21 +33,11 @@ export default async function UserPage() {
         },
     })) as OrderWithItems[];
 
-    const address = await prisma.user.findUnique({
-        where: {
-            id: user?.id,
-        },
-        select: {
-            country: true,
-            city: true,
-            address: true,
-            zip: true,
-        },
-    });
-
     if (!user) {
         return <h1>No user</h1>;
     }
+
+    const address = await getUserAddress(user?.id);
 
     return (
         <AuthProvider>

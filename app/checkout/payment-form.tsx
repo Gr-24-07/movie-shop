@@ -37,7 +37,7 @@ export default function PaymentForm({
             <div>
                 <Label htmlFor="cardnumber">Cardnumber</Label>
                 <Input name="cardnumber" id="cardnumber"></Input>
-                {/* <FormError errors={errors?.city?._errors}></FormError> */}
+                {/* <FormError errors={errors?.cardnumber?._errors}></FormError> */}
             </div>
             <div className="flex gap-2">
                 <div>
@@ -48,16 +48,17 @@ export default function PaymentForm({
                         id="date"
                         placeholder="MM/YY"
                     ></Input>
-                    {/* <FormError errors={errors?.city?._errors}></FormError> */}
+                    {/* <FormError errors={errors?.date?._errors}></FormError> */}
                 </div>
                 <div>
                     <Label htmlFor="cvc">CVC/CVV</Label>
                     <Input name="cvc" id="cvc"></Input>
                 </div>
             </div>
-
-            <SubmitButton>Send Order</SubmitButton>
-            <FormError errors={[error]}></FormError>
+            <div className="flex flex-col">
+                <SubmitButton>Send Order</SubmitButton>
+                <FormError errors={[error]}></FormError>
+            </div>
         </form>
     );
 }

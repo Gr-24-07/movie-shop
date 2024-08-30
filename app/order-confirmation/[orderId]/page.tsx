@@ -1,3 +1,4 @@
+import { getUserAddress } from "@/app/actions/user";
 import OrderItemsTable from "@/app/components/order-items-table";
 import UserAddressDisplay from "@/app/components/user-address-display";
 import { auth } from "@/auth";
@@ -44,17 +45,11 @@ export default async function OrderConfirmation({
         },
     });
 
-    const address = await prisma.user.findUnique({
-        where: {
-            id: order?.userId,
-        },
-        select: {
-            country: true,
-            city: true,
-            address: true,
-            zip: true,
-        },
-    });
+    if (!order) {
+        return notFound();
+    }
+
+    const address = await getUserAddress(order?.userId);
 
     if (!order) {
         return notFound();

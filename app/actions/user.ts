@@ -231,3 +231,19 @@ export async function setUserAddress(
 
     return { success: true };
 }
+
+export async function getUserAddress(id: string) {
+    const address = await prisma.user.findUnique({
+        where: {
+            id: id,
+        },
+        select: {
+            country: true,
+            city: true,
+            address: true,
+            zip: true,
+        },
+    });
+
+    return address;
+}

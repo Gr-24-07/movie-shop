@@ -21,17 +21,19 @@ export default async function CheckoutPage() {
                 <h1 className="text-2xl font-semibold text-center">Cart</h1>
                 <CartTable></CartTable>
             </div>
-            <div className="flex flex-col items-center">
-                <h1 className="text-2xl font-semibold text-center mb-4">
-                    Address
-                </h1>
-                <AddressForm user={user}></AddressForm>
-            </div>
-            <div className="flex flex-col items-center">
-                <h1 className="text-2xl font-semibold text-center mb-4">
-                    Payment
-                </h1>
-                <PaymentForm user={user} cart={cart}></PaymentForm>
+            <div className="flex justify-evenly gap-2">
+                <div className="flex flex-col items-center border-2 p-4 w-1/2">
+                    <h1 className="text-2xl font-semibold text-center mb-4">
+                        Address
+                    </h1>
+                    <AddressForm user={user}></AddressForm>
+                </div>
+                <div className="flex flex-col items-center border-2 p-4 w-1/2">
+                    <h1 className="text-2xl font-semibold text-center mb-4">
+                        Payment
+                    </h1>
+                    <PaymentForm user={user} cart={cart}></PaymentForm>
+                </div>
             </div>
         </div>
     );

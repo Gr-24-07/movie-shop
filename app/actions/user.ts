@@ -245,5 +245,14 @@ export async function getUserAddress(id: string) {
         },
     });
 
+    if (
+        address?.address === null &&
+        address.city === null &&
+        address.country === null &&
+        address.zip === null
+    ) {
+        return null;
+    }
+
     return address;
 }

@@ -1,11 +1,11 @@
 import { auth } from "@/auth";
 import CartTable from "../cart/cart-table";
-import AddressForm from "./address-form";
 import { notFound } from "next/navigation";
 import PaymentForm from "./payment-form";
 import { getCart } from "../actions/cart";
 import { getUserAddress } from "../actions/user";
-import { Divide } from "lucide-react";
+
+import AddressCheck from "./address-check";
 
 export default async function CheckoutPage() {
     const session = await auth();
@@ -30,10 +30,7 @@ export default async function CheckoutPage() {
                     <h1 className="text-2xl font-semibold text-center mb-4">
                         Address
                     </h1>
-                    {!address && (
-                        <p className="">You need to enter an address</p>
-                    )}
-                    <AddressForm user={user}></AddressForm>
+                    <AddressCheck user={user} address={address}></AddressCheck>
                 </div>
                 <div className="flex flex-col items-center border-2 p-4 w-1/2 relative">
                     {!address && (

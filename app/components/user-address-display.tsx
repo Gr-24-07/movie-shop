@@ -1,11 +1,13 @@
-type UserAddressDisplayProps = {
-    country: string;
-    city: string;
-    zip: string;
-    address: string;
+export type Address = {
+    country: string | null;
+    city: string | null;
+    zip: string | null;
+    address: string | null;
 };
 
-export default async function UserAddressDisplay({
+type UserAddressDisplayProps = Address;
+
+export default function UserAddressDisplay({
     country,
     address,
     city,

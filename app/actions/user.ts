@@ -229,6 +229,9 @@ export async function setUserAddress(
         },
     });
 
+    revalidatePath("/checkout");
+    revalidatePath("/user");
+
     return { success: true };
 }
 

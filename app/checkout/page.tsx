@@ -31,18 +31,22 @@ export default async function CheckoutPage() {
                         Address
                     </h1>
                     {!address && (
-                        <div className="">You need to enter an address</div>
+                        <p className="">You need to enter an address</p>
                     )}
                     <AddressForm user={user}></AddressForm>
                 </div>
                 <div className="flex flex-col items-center border-2 p-4 w-1/2 relative">
                     {!address && (
-                        <div className="opacity-40 absolute w-full h-full bg-black top-0 left-0"></div>
+                        <div className="opacity-30 absolute w-full h-full bg-black top-0 left-0"></div>
                     )}
                     <h1 className="text-2xl font-semibold text-center mb-4">
                         Payment
                     </h1>
-                    <PaymentForm user={user} cart={cart}></PaymentForm>
+                    <PaymentForm
+                        user={user}
+                        cart={cart}
+                        disabled={!address}
+                    ></PaymentForm>
                 </div>
             </div>
         </div>

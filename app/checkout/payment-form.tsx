@@ -13,9 +13,11 @@ import FormError from "../components/form-error";
 export default function PaymentForm({
     user,
     cart,
+    disabled,
 }: {
     user: User;
     cart: Cart;
+    disabled: boolean;
 }) {
     const router = useRouter();
     const [error, setError] = useState("");
@@ -36,13 +38,18 @@ export default function PaymentForm({
         >
             <div>
                 <Label htmlFor="cardnumber">Cardnumber</Label>
-                <Input name="cardnumber" id="cardnumber"></Input>
+                <Input
+                    disabled={disabled}
+                    name="cardnumber"
+                    id="cardnumber"
+                ></Input>
                 {/* <FormError errors={errors?.cardnumber?._errors}></FormError> */}
             </div>
             <div className="flex gap-2">
                 <div>
                     <Label htmlFor="date">Expiration date</Label>
                     <Input
+                        disabled={disabled}
                         type="text"
                         name="date"
                         id="date"
@@ -52,11 +59,11 @@ export default function PaymentForm({
                 </div>
                 <div>
                     <Label htmlFor="cvc">CVC/CVV</Label>
-                    <Input name="cvc" id="cvc"></Input>
+                    <Input disabled={disabled} name="cvc" id="cvc"></Input>
                 </div>
             </div>
             <div className="flex flex-col">
-                <SubmitButton>Send Order</SubmitButton>
+                <SubmitButton disabled={disabled}>Send Order</SubmitButton>
                 <FormError errors={[error]}></FormError>
             </div>
         </form>

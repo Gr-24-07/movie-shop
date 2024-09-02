@@ -22,7 +22,7 @@ export default function AddressForm({
     handleSubmit,
 }: {
     user: User;
-    handleSubmit: () => void;
+    handleSubmit?: () => void;
 }) {
     const [selectedCountry, setSelectedCountry] = useState("");
     const [errors, setErrors] = useState<SetUserAddressFail["errors"] | null>();
@@ -39,7 +39,7 @@ export default function AddressForm({
                 } else {
                     setErrors(null);
                     setToast("Address was successfully saved");
-                    handleSubmit();
+                    handleSubmit?.();
                 }
             }}
             className="flex flex-col gap-4 w-full max-w-sm"

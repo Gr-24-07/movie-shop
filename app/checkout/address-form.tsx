@@ -17,7 +17,13 @@ import { User } from "next-auth";
 import FormError from "../components/form-error";
 import SubmitButton from "../components/submit-button";
 
-export default function AddressForm({ user }: { user: User }) {
+export default function AddressForm({
+    user,
+    handleSubmit,
+}: {
+    user: User;
+    handleSubmit: () => void;
+}) {
     const [selectedCountry, setSelectedCountry] = useState("");
     const [errors, setErrors] = useState<SetUserAddressFail["errors"] | null>();
     const [toast, setToast] = useState("");
@@ -33,6 +39,7 @@ export default function AddressForm({ user }: { user: User }) {
                 } else {
                     setErrors(null);
                     setToast("Address was successfully saved");
+                    handleSubmit();
                 }
             }}
             className="flex flex-col gap-4 w-full max-w-sm"

@@ -2,7 +2,7 @@ import { auth } from "@/auth";
 import AdminNavBar from "./admin-nav";
 import UserNavBar from "./user-nav";
 import { getCartSize } from "../actions/cart";
-import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
+import { Sheet, SheetTrigger, SheetContent} from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 

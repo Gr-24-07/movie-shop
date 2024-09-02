@@ -305,7 +305,7 @@ export async function getRecommendations(userId: string) {
 
     const topGenre = sortedGenreObjects[0]?.genre || "";
 
-    const movies = await prisma.movie.findMany({
+    const moviesFromTopGenre = await prisma.movie.findMany({
         where: {
             genres: {
                 some: {
@@ -313,9 +313,30 @@ export async function getRecommendations(userId: string) {
                 },
             },
         },
+        orderBy: {
+            OrderItem: { _count: "desc" },
+        },
     });
 
-    console.log(topGenre);
+    let ownedMovies: string[] = [];
 
-    return movies;
+    orders.forEach((order) => {
+        order.orderItems.forEach((orderItem) => {
+            ownedMovies.push(orderItem.movieId);
+        });
+    });
+
+    console.log(ownedMovies);
+
+    console.log(moviesFromTopGenre);
+
+    const filteredMovies = moviesFromTopGenre.filter((movie) => {
+        return !ownedMovies.includes(movie.id);
+    });
+
+    console.log("owned");
+
+    console.log(filteredMovies);
+
+    return filteredMovies;
 }

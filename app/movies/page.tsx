@@ -5,15 +5,13 @@ export default async function Page() {
     const movies = await prisma.movie.findMany();
 
     return (
-        <div>
+        <div className="container space-y-6 max-w-screen-lg">
             <div>
-                <ul className="grid grid-cols-4 gap-4">
+                <div className="flex gap-4 justify-between flex-wrap">
                     {movies.map((movie) => (
-                        <li key={movie.id}>
-                            <MovieCard movie={movie} />
-                        </li>
+                        <MovieCard key={movie.id} movie={movie} />
                     ))}
-                </ul>
+                </div>
             </div>
         </div>
     );

@@ -338,5 +338,5 @@ export async function getRecommendations(userId: string) {
 
     console.log(filteredMovies);
 
-    return filteredMovies;
+    return filteredMovies.slice(0, 5);
 }

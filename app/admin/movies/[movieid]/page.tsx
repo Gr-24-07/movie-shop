@@ -1,12 +1,12 @@
-
+"use client";
 
 import  { updateMovie } from "@/app/actions/movies";
 import prisma from "@/lib/db";
 import { currencyFormatter } from "@/lib/formats";
 import { useRouter } from 'next/router'
+import { useSearchParams } from 'next/navigation';
+import {Form} from'react-hook-form';
 
-
- 
 
 
 export default async function UpdateMovie({params}: { params: {
@@ -19,10 +19,28 @@ export default async function UpdateMovie({params}: { params: {
 //     name: updateMovie.name,
 // });
 // const [isEditing, setIsEditing] = useState(false);
+async  function SearchMovie() {
+  const search = useSearchParams();
+ 
+  function handleSearch(term: string) {
+    const params = new URLSearchParams(search);
+    if (term) {
+      params.set('query', term);
+    } else {
+      params.delete('query');
+    }
+  }
+  // ...
+}
+
+
+  
+
   
   
   return (
     <>
+    
     <div className="flex justify-center my-4 shadow-md rounded-lg overflow-hidden bg-white min-w-96 text-center">
 
         <form className="flex flex-col gap-4 w-96" action={async (formData) => {
@@ -118,6 +136,7 @@ export default async function UpdateMovie({params}: { params: {
           <button type="submit" className="p-2 bg-blue-600 text-white rounded-lg">
              Update Movie
            </button> 
+          
         </form>
          </div>
          </>

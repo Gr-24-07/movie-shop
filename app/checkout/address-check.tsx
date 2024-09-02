@@ -14,16 +14,21 @@ type AddressCheckProps = {
 };
 
 export default function AddressCheck({ address, user }: AddressCheckProps) {
-    const [hasAddress, setHasAddress] = useState(!address);
+    const [showAddressForm, setshowAddressForm] = useState(address === null);
     return (
         <>
-            {hasAddress ? (
+            {showAddressForm ? (
                 <div className="flex flex-col align-bottom w-full max-w-sm gap-4">
-                    <AddressForm user={user}></AddressForm>
+                    <AddressForm
+                        user={user}
+                        handleSubmit={() => {
+                            setshowAddressForm(false);
+                        }}
+                    ></AddressForm>
                     {address && (
                         <Button
                             onClick={() => {
-                                setHasAddress(false);
+                                setshowAddressForm(false);
                             }}
                         >
                             Cancel
@@ -40,7 +45,7 @@ export default function AddressCheck({ address, user }: AddressCheckProps) {
                     ></UserAddressDisplay>
                     <Button
                         onClick={() => {
-                            setHasAddress(true);
+                            setshowAddressForm(true);
                         }}
                     >
                         Change Address

@@ -13,13 +13,18 @@ import {
 } from "@/components/ui/table";
 import { currencyFormatter } from "@/lib/formats";
 import Image from "next/image";
+import Search from "./search";
 
-export default async function AddMovie() {
-  const movie = await prisma.movie.findMany();
+export default async function AddMovie(){
+  const movie = await prisma.movie.findMany({
+      
+      });
+    
 
   return (
     <>
       <div className="flex flex-col items-center my-4 shadow-md rounded-lg">
+    
         <form className="flex flex-col gap-4 w-96">
           <h2 className="text-2xl font-bold text-center mb-4">Add Movie</h2>
           <div className="flex flex-col gap-2">

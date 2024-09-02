@@ -22,18 +22,15 @@ export default async function Page({
 
 
     return (
-        <div className="space-y-8">
+        <div className="container space-y-6 max-w-screen-lg">
             <Search
                 query={query}
             />
-
-            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="flex gap-4 justify-between flex-wrap">
                 {movies.map((movie) => (
-                    <li key={movie.id} className="flex flex-col space-y-4">
-                        <MovieCard movie={movie} />
-                    </li>
+                    <MovieCard key={movie.id} movie={movie} />
                 ))}
-            </ul>
+            </div>
         </div>
     );
 }

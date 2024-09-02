@@ -12,7 +12,7 @@ export default async function Recommendations() {
             <h1 className="text-2xl font-semibold text-center">
                 You might also like:
             </h1>
-            <div className="flex gap-4">
+            <div className="flex gap-4 justify-center">
                 {movies.map((movie) => {
                     return <MovieCard key={movie.id} movie={movie}></MovieCard>;
                 })}

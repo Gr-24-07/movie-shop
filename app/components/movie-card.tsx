@@ -11,14 +11,18 @@ export default function MovieCard({ movie }: { movie: Movie }) {
                 <Image src={movie.imageURL || ""} alt="" fill />
             </div>
             <div className="flex flex-col justify-between flex-grow">
-                <h2>
+                <h2 className="flex-grow">
                     <Link
-                        className="text-blue-500 hover:text-blue-700"
+                        className="text-blue-500 hover:text-blue-700 line-clamp-2"
                         href={`/movies/${movie.id}`}
                     >{`${movie.title}`}</Link>
                 </h2>
-                <p>{`${movie.releaseDate.toLocaleDateString()}`} </p>
-                <p>{`${currencyFormatter.format(Number(movie.price))}`}</p>
+                <p className="text-sm italic">
+                    {`${movie.releaseDate.toLocaleDateString()}`}{" "}
+                </p>
+                <p className="font-semibold">{`${currencyFormatter.format(
+                    Number(movie.price)
+                )}`}</p>
                 <form
                     action={async () => {
                         "use server";

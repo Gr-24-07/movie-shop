@@ -23,6 +23,7 @@ export default function OrderItemsTable({ orderItems }: OrderItemsTableProps) {
                     <TableHead></TableHead>
                     <TableHead className="text-right">Price</TableHead>
                     <TableHead className="text-right">Quantity</TableHead>
+                    <TableHead className="text-right">Total</TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
@@ -46,6 +47,12 @@ export default function OrderItemsTable({ orderItems }: OrderItemsTableProps) {
                             </TableCell>
                             <TableCell className="text-right">
                                 {items.quantity}
+                            </TableCell>
+                            <TableCell className="text-right">
+                                {currencyFormatter.format(
+                                    items.quantity *
+                                        Number(items.priceAtPurchase)
+                                )}
                             </TableCell>
                         </TableRow>
                     );

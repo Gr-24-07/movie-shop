@@ -259,3 +259,63 @@ export async function getUserAddress(id: string) {
 
     return address;
 }
+
+export async function getRecommendations(userId: string) {
+    const orders = await prisma.order.findMany({
+        where: {
+            userId: userId,
+        },
+        include: {
+            orderItems: {
+                include: {
+                    movie: {
+                        include: {
+                            genres: true,
+                        },
+                    },
+                },
+            },
+        },
+    });
+
+    let genresArray: string[] = [];
+
+    orders.forEach((order) => {
+        order.orderItems.forEach((orderItem) => {
+            orderItem.movie.genres.forEach((genre) => {
+                genresArray.push(genre.name);
+            });
+        });
+    });
+
+    const genreCountMap = new Map<string, number>();
+
+    genresArray.forEach((genre) => {
+        genreCountMap.set(genre, (genreCountMap.get(genre) || 0) + 1);
+    });
+
+    let sortedGenreArray = Array.from(genreCountMap.entries());
+
+    sortedGenreArray.sort((a, b) => b[1] - a[1]);
+
+    const sortedGenreObjects = sortedGenreArray.map(([genre, count]) => ({
+        genre,
+        count,
+    }));
+
+    const topGenre = sortedGenreObjects[0].genre;
+
+    const movies = await prisma.movie.findMany({
+        where: {
+            genres: {
+                some: {
+                    name: topGenre,
+                },
+            },
+        },
+    });
+
+    console.log(topGenre);
+
+    return movies;
+}

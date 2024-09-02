@@ -303,7 +303,7 @@ export async function getRecommendations(userId: string) {
         count,
     }));
 
-    const topGenre = sortedGenreObjects[0].genre;
+    const topGenre = sortedGenreObjects[0]?.genre || "";
 
     const movies = await prisma.movie.findMany({
         where: {

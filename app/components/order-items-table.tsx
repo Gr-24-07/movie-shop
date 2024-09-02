@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/table";
 import { currencyFormatter } from "@/lib/formats";
 import { OrderItemWithMovie } from "../user/page";
+import Image from "next/image";
 
 type OrderItemsTableProps = {
     orderItems: OrderItemWithMovie[];
@@ -19,6 +20,7 @@ export default function OrderItemsTable({ orderItems }: OrderItemsTableProps) {
             <TableHeader>
                 <TableRow>
                     <TableHead>Product</TableHead>
+                    <TableHead></TableHead>
                     <TableHead className="text-right">Price</TableHead>
                     <TableHead className="text-right">Quantity</TableHead>
                 </TableRow>
@@ -28,6 +30,15 @@ export default function OrderItemsTable({ orderItems }: OrderItemsTableProps) {
                     return (
                         <TableRow key={items.id}>
                             <TableCell>{items.movie.title}</TableCell>
+                            <TableCell>
+                                <div className="relative aspect-[9/16] w-16">
+                                    <Image
+                                        src={items.movie.imageURL || ""}
+                                        alt=""
+                                        fill
+                                    />
+                                </div>
+                            </TableCell>
                             <TableCell className="text-right">
                                 {currencyFormatter.format(
                                     Number(items.priceAtPurchase)

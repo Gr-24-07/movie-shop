@@ -12,10 +12,6 @@ import OrderHistoryRow from "./order-history-row";
 import { OrderWithItems } from "./page";
 
 export default function OrderHistory({ orders }: { orders: OrderWithItems[] }) {
-    orders.map((order) => {
-        console.log(order);
-    });
-
     return (
         <div className="space-y-4">
             <h1 className="text-4xl text-center font-semibold my-8">

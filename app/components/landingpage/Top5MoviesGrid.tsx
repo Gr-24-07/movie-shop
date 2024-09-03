@@ -1,11 +1,7 @@
 import React from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import Image from "next/image";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import MovieCard from "../movie-card";
 import { Movie } from "@prisma/client";
-import Link from "next/link";
+import { serializeMovie } from "@/lib/utils";
 
 interface Top5MoviesGridProps {
     newArrivals: Movie[];
@@ -24,7 +20,10 @@ const ProductGrid: React.FC<{ title: string; movies: Movie[] }> = ({
         </div>
         <div className="flex gap-4 justify-between">
             {movies.map((movie) => (
-                <MovieCard key={movie.id} movie={movie}></MovieCard>
+                <MovieCard
+                    key={movie.id}
+                    movie={serializeMovie(movie)}
+                ></MovieCard>
             ))}
         </div>
     </section>

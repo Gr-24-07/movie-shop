@@ -36,8 +36,6 @@ export type UpdateUserResult = UpdateUserSuccess | UpdateUserFail;
 export default async function updateUser(
     formData: FormData
 ): Promise<UpdateUserResult> {
-    console.log("Updating User");
-
     const result = Object.fromEntries(formData.entries());
 
     const parsedResult = await UpdateUserSchema.safeParseAsync(result);
@@ -129,11 +127,6 @@ export async function adminUpdateUser(
         return;
     }
 
-    console.log(id);
-    console.log(name);
-    console.log(email);
-    console.log(role);
-
     const data = {
         id,
         name,
@@ -202,8 +195,6 @@ const UserAddressSchema = z.object({
 export async function setUserAddress(
     formData: FormData
 ): Promise<SetUserAddressResult> {
-    console.log(formData);
-
     const data = Object.fromEntries(formData.entries());
 
     const parsedResult = await UserAddressSchema.safeParseAsync(data);
@@ -258,4 +249,77 @@ export async function getUserAddress(id: string) {
     }
 
     return address;
+}
+
+export async function getRecommendations(userId: string) {
+    const orders = await prisma.order.findMany({
+        where: {
+            userId: userId,
+        },
+        include: {
+            orderItems: {
+                include: {
+                    movie: {
+                        include: {
+                            genres: true,
+                        },
+                    },
+                },
+            },
+        },
+    });
+
+    let genresArray: string[] = [];
+
+    orders.forEach((order) => {
+        order.orderItems.forEach((orderItem) => {
+            orderItem.movie.genres.forEach((genre) => {
+                genresArray.push(genre.name);
+            });
+        });
+    });
+
+    const genreCountMap = new Map<string, number>();
+
+    genresArray.forEach((genre) => {
+        genreCountMap.set(genre, (genreCountMap.get(genre) || 0) + 1);
+    });
+
+    let sortedGenreArray = Array.from(genreCountMap.entries());
+
+    sortedGenreArray.sort((a, b) => b[1] - a[1]);
+
+    const sortedGenreObjects = sortedGenreArray.map(([genre, count]) => ({
+        genre,
+        count,
+    }));
+
+    const topGenre = sortedGenreObjects[0]?.genre || "";
+
+    const moviesFromTopGenre = await prisma.movie.findMany({
+        where: {
+            genres: {
+                some: {
+                    name: topGenre,
+                },
+            },
+        },
+        orderBy: {
+            OrderItem: { _count: "desc" },
+        },
+    });
+
+    let ownedMovies: string[] = [];
+
+    orders.forEach((order) => {
+        order.orderItems.forEach((orderItem) => {
+            ownedMovies.push(orderItem.movieId);
+        });
+    });
+
+    const filteredMovies = moviesFromTopGenre.filter((movie) => {
+        return !ownedMovies.includes(movie.id);
+    });
+
+    return filteredMovies.slice(0, 5);
 }

@@ -2,6 +2,7 @@ import prisma from "@/lib/db";
 import MovieCard from "../components/movie-card";
 import Search from "../admin/movies/search";
 import GenreFilter from "./genrefilter";
+import { serializeMovie } from "@/lib/utils";
 
 export default async function Page({
     searchParams,
@@ -30,10 +31,9 @@ export default async function Page({
   const genres = await prisma.genre.findMany();
 
 
-
     return (
-        <div className="space-y-8">
-          <div className="flex justify-center ">
+        <div className="container space-y-6 max-w-screen-lg">
+                      <div className="flex justify-center ">
 
             <Search
                 query={query}
@@ -41,13 +41,11 @@ export default async function Page({
             />
           <GenreFilter query={genre} genres={genres}/>
           </div>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="flex gap-4 justify-between flex-wrap">
                 {movies.map((movie) => (
-                    <li key={movie.id} className="flex flex-col space-y-4">
-                        <MovieCard movie={movie} />
-                    </li>
+                    <MovieCard key={movie.id} movie={serializeMovie(movie)} />
                 ))}
-            </ul>
+            </div>
         </div>
     );
 }

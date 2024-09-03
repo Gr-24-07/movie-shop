@@ -5,6 +5,10 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { Movie } from "@prisma/client";
 
+export type SerializedMovie = Omit<Movie, "price"> & {
+    price: string;
+};
+
 // Define and export MovieResult type
 export type MovieResult =
     | { success: true; movies: Movie[] }

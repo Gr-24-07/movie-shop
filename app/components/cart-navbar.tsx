@@ -3,15 +3,16 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import CartIcon from "./cart-icon";
 
-export default function UserNavBar() {
+export default function CartNavBar({ cartSize }: { cartSize: number }) {
     const path = usePathname();
 
     const PAGES = [
         {
             key: crypto.randomUUID(),
-            href: "/movies",
-            display: "Movies",
+            href: "/cart",
+            display: <CartIcon cartSize={cartSize}></CartIcon>,
         },
     ];
 

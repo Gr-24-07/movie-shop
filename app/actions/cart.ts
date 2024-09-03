@@ -7,8 +7,9 @@ import { cookies } from "next/headers";
 
 export type Cart = Record<string, CartItem>;
 
-export type CartItem = Pick<Movie, "id" | "title" | "price"> & {
+export type CartItem = Pick<Movie, "id" | "title"> & {
     quantity: number;
+    price: number;
 };
 
 export type CartItemOptionalQuantity = Omit<CartItem, "quantity"> & {

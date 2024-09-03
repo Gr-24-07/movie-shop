@@ -13,7 +13,6 @@ import {
     setToCart,
 } from "../actions/cart";
 import CartTableItem from "./cart-table-item";
-import { Decimal } from "@prisma/client/runtime/library";
 import { currencyFormatter } from "@/lib/formats";
 
 async function handleRemove(id: string) {
@@ -31,7 +30,7 @@ async function handleRemoveItem(id: string) {
         id: id,
     });
 }
-async function handleAdd(id: string, title: string, price: Decimal) {
+async function handleAdd(id: string, title: string, price: number) {
     "use server";
 
     addToCart({
@@ -44,7 +43,7 @@ async function handleAdd(id: string, title: string, price: Decimal) {
 async function handleSet(
     id: string,
     title: string,
-    price: Decimal,
+    price: number,
     quantity: number
 ) {
     "use server";

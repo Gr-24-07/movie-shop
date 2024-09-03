@@ -2,9 +2,27 @@
 
 import prisma from "@/lib/db";
 import { Cart } from "./cart";
-import { Order } from "@prisma/client";
+import { Order, OrderItem } from "@prisma/client";
+import { OrderItemWithMovie } from "../user/page";
+import { SerializedMovie } from "./movies";
+import { serializeOrder } from "@/lib/utils";
 
-export type OrderSuccess = { success: true; order: Order };
+export type SerializedOrder = Omit<Order, "totalAmount"> & {
+    totalAmount: string;
+};
+export type SerializedOrderItem = Omit<OrderItem, "priceAtPurchase"> & {
+    priceAtPurchase: string;
+};
+
+export type SerializedOrderItemWithMovie = SerializedOrderItem & {
+    movie: SerializedMovie;
+};
+
+export type SerializedOrderWithItems = SerializedOrder & {
+    orderItems: SerializedOrderItemWithMovie[];
+};
+
+export type OrderSuccess = { success: true; order: SerializedOrder };
 export type OrderFail = { success: false; error: string };
 
 export type OrderResult = OrderSuccess | OrderFail;
@@ -46,5 +64,5 @@ export async function sendOrder(
         },
     });
 
-    return { success: true, order: res };
+    return { success: true, order: serializeOrder(res) };
 }

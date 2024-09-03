@@ -5,6 +5,7 @@ import { getCartSize } from "../actions/cart";
 import { Sheet, SheetTrigger, SheetContent} from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
+import CartNavBar from "./cart-navbar";
 
 export default async function NavBar() {
     const session = await auth();
@@ -14,12 +15,14 @@ export default async function NavBar() {
         <div className="container mx-auto">       
         <nav className="justify-center hidden sm:flex">
             <ul className="flex gap-2">
-                {session?.user.role === "ADMIN" && <AdminNavBar></AdminNavBar>}
-                <UserNavBar cartSize={cartSize}></UserNavBar>
+                {session?.user.role === "ADMIN" && 
+                <AdminNavBar/>}
+                <UserNavBar />
+                <CartNavBar cartSize={cartSize}/>
             </ul>
         </nav>
 
-        <nav className="block sm:hidden">
+        <nav className="sm:hidden flex">
             <Sheet>
                 <SheetTrigger asChild>
                     <Button size="icon" variant="ghost">
@@ -28,11 +31,13 @@ export default async function NavBar() {
                 </SheetTrigger>
                 <SheetContent side = "left" className="flex flex-col gap-4">
                     <ul className="flex gap-2">
-                        {session?.user.role === "ADMIN" && <AdminNavBar></AdminNavBar>}
-                        <UserNavBar cartSize={cartSize}></UserNavBar>
+                        {session?.user.role === "ADMIN" && 
+                        <AdminNavBar/>}
+                        <UserNavBar />
                     </ul>
                 </SheetContent>
             </Sheet>
+            <CartNavBar cartSize={cartSize}/>
         </nav>
         </div>
     );

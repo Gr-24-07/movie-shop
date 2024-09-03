@@ -11,7 +11,7 @@ export type GenreListProps = {
 export default function GenreList({ genres }: GenreListProps) {
     const [isEditing, setIsEditing] = useState<string | null>(null);
     const [newGenreName, setNewGenreName] = useState("");
-    const [isMenuOpen, setIsMenuOpen] = useState<string | null>(null);
+    const [isDropDownOpen, setIsDropDownOpen] = useState<string | null>(null);
 
     const handleEdit = (genreId: string, currentName: string) => {
         setIsEditing(genreId);
@@ -34,8 +34,8 @@ export default function GenreList({ genres }: GenreListProps) {
         }
     };
 
-    const toggleMenu = (genreId: string) => {
-        setIsMenuOpen(isMenuOpen === genreId ? null : genreId);
+    const toggleDropDown = (genreId: string) => {
+        setIsDropDownOpen(isDropDownOpen === genreId ? null : genreId);
     };
 
     return (
@@ -122,11 +122,11 @@ export default function GenreList({ genres }: GenreListProps) {
                     <div key={genre.id} className="border border-gray-400 rounded-lg mb-4">
                         <div className="flex justify-between items-center bg-gray-700 text-white p-4">
                             <span>{genre.name}</span>
-                            <button onClick={() => toggleMenu(genre.id)}>
+                            <button onClick={() => toggleDropDown(genre.id)}>
                                 <ChevronDown />
                             </button>
                         </div>
-                        {isMenuOpen === genre.id && (
+                        {isDropDownOpen === genre.id && (
                             <div className="bg-gray-200 p-4">
                                 <div>
                                     <strong>Movies:</strong>
@@ -171,14 +171,14 @@ export default function GenreList({ genres }: GenreListProps) {
                                     ) : (
                                         <button
                                             onClick={() => handleEdit(genre.id, genre.name)}
-                                            className="px-4 py-1 bg-blue-400 rounded-lg hover:bg-blue-500 flex-1"
+                                            className="px-4 py-1 bg-blue-400 rounded-lg hover:bg-blue-800 "
                                         >
                                             <Edit />
                                         </button>
                                     )}
                                     <button
                                         onClick={() => handleDelete(genre.id)}
-                                        className="px-4 py-1 bg-red-400 rounded-lg hover:bg-red-500 flex-1"
+                                        className="px-4 py-1 bg-red-400 rounded-lg hover:bg-red-800 "
                                     >
                                         <Trash />
                                     </button>

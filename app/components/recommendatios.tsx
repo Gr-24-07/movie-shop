@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { getRecommendations } from "../actions/user";
 import MovieCard from "./movie-card";
+import { serializeMovie } from "@/lib/utils";
 
 export default async function Recommendations() {
     const session = await auth();
@@ -14,7 +15,12 @@ export default async function Recommendations() {
             </h1>
             <div className="flex gap-4 justify-center">
                 {movies.map((movie) => {
-                    return <MovieCard key={movie.id} movie={movie}></MovieCard>;
+                    return (
+                        <MovieCard
+                            key={movie.id}
+                            movie={serializeMovie(movie)}
+                        ></MovieCard>
+                    );
                 })}
             </div>
         </div>

@@ -63,7 +63,7 @@ export default async function DetailsMovie({
         />
       </div>
       <div className="flex flex-grow-4 my-4 rounded-lg  bg-slate-300 min-w-96 text-center">
-        <h1 className="text-center font-extrabold border-separate border-black border-gray-900">
+        <h1 className="text-center font-extrabold border-separate border-black border-2">
           Genres
         </h1>
         <ul className="flex flex-wrap gap-2">

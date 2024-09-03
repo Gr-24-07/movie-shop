@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Trash, Edit, Save, Menu, ChevronDown } from "lucide-react";
+import { Trash, Edit, Save, ChevronDown } from "lucide-react";
 import { Genre } from "@prisma/client";
 
 export type GenreListProps = {
@@ -91,21 +91,21 @@ export default function GenreList({ genres }: GenreListProps) {
                                     {isEditing === genre.id ? (
                                         <button
                                             onClick={() => handleSave(genre.id)}
-                                            className="px-4 py-1 bg-green-300 rounded-lg hover:bg-green-800"
+                                            className="px-4 py-1 bg-green-400 rounded-lg hover:bg-green-800"
                                         >
                                             <Save />
                                         </button>
                                     ) : (
                                         <button
                                             onClick={() => handleEdit(genre.id, genre.name)}
-                                            className="px-4 py-1 bg-blue-300  rounded-lg hover:bg-blue-500"
+                                            className="px-4 py-1 bg-blue-400  rounded-lg hover:bg-blue-500"
                                         >
                                             <Edit />
                                         </button>
                                     )}
                                     <button
                                         onClick={() => handleDelete(genre.id)}
-                                        className="px-4 py-1 bg-red-300 rounded-lg hover:bg-red-500 mx-2"
+                                        className="px-4 py-1 bg-red-400 rounded-lg hover:bg-red-500 mx-2"
                                     >
                                         <Trash />
                                     </button>
@@ -163,7 +163,7 @@ export default function GenreList({ genres }: GenreListProps) {
                                             />
                                             <button
                                                 onClick={() => handleSave(genre.id)}
-                                                className="px-4 py-1 bg-green-300 rounded-lg hover:bg-green-800"
+                                                className="px-4 py-1 bg-green-400 rounded-lg hover:bg-green-800"
                                             >
                                                 <Save />
                                             </button>
@@ -171,14 +171,14 @@ export default function GenreList({ genres }: GenreListProps) {
                                     ) : (
                                         <button
                                             onClick={() => handleEdit(genre.id, genre.name)}
-                                            className="px-4 py-1 bg-blue-300 rounded-lg hover:bg-blue-500 flex-1"
+                                            className="px-4 py-1 bg-blue-400 rounded-lg hover:bg-blue-500 flex-1"
                                         >
                                             <Edit />
                                         </button>
                                     )}
                                     <button
                                         onClick={() => handleDelete(genre.id)}
-                                        className="px-4 py-1 bg-red-300 rounded-lg hover:bg-red-500 flex-1"
+                                        className="px-4 py-1 bg-red-400 rounded-lg hover:bg-red-500 flex-1"
                                     >
                                         <Trash />
                                     </button>

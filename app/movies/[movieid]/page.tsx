@@ -48,7 +48,39 @@ export default async function DetailsMovie({
                     </p>
                 </div>
             </div>
-
+      <div className="flex items-center justify-center">
+        <Image
+          src={movie?.imageURL || ""}
+          alt="Picture of the movie"
+          width={200}
+          height={300}
+          className="rounded-lg"
+        />
+      </div>
+      <div className="flex flex-grow-4 my-4 rounded-lg  bg-slate-300 min-w-96 text-center">
+        <h1 className="text-center font-extrabold border-separate border-black border-2">
+          Genres
+        </h1>
+        <ul className="flex flex-wrap gap-2">
+          {movie?.genres.map((genre) => (
+            <li
+              className="flex flex-col place-items-center rounded-lg bg-slate-200 p-2"
+              key={genre.id}
+            >
+              {genre.name}
+            </li>
+          ))}
+          {movie?.peopleJob.map((peoplejob) => (
+            <li
+              className="flex flex-col place-items-center rounded-lg bg-slate-200 p-2"
+              key={peoplejob.id}
+            >
+              <p className="text-center text-lg font-bold">{peoplejob.jobTitle}</p>
+              <p className="text-center text-sm">{peoplejob.people.name}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
             <div className="flex items-center justify-center">
                 <p className="text-2xl font-bold text-center text-cyan-600">
                     Stock: {movie?.stock}

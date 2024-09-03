@@ -12,11 +12,11 @@ type CartTableItemProps = {
     cartItem: CartItem;
     onRemove: (id: string) => Promise<void>;
     onRemoveItem: (id: string) => Promise<void>;
-    onAdd: (id: string, title: string, price: Decimal) => Promise<void>;
+    onAdd: (id: string, title: string, price: number) => Promise<void>;
     onSet: (
         id: string,
         title: string,
-        price: Decimal,
+        price: number,
         quantity: number
     ) => Promise<void>;
 };

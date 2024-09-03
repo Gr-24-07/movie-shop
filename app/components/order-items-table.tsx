@@ -7,11 +7,11 @@ import {
     TableCell,
 } from "@/components/ui/table";
 import { currencyFormatter } from "@/lib/formats";
-import { OrderItemWithMovie } from "../user/page";
 import Image from "next/image";
+import { SerializedOrderItemWithMovie } from "../actions/order";
 
 type OrderItemsTableProps = {
-    orderItems: OrderItemWithMovie[];
+    orderItems: SerializedOrderItemWithMovie[];
 };
 
 export default function OrderItemsTable({ orderItems }: OrderItemsTableProps) {

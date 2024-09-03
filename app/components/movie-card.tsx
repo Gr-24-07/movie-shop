@@ -1,10 +1,8 @@
 import { currencyFormatter } from "@/lib/formats";
-import { Movie } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import { addToCart } from "../actions/cart";
 import { SerializedMovie } from "../actions/movies";
-import { Decimal } from "@prisma/client/runtime/library";
 
 type MovieCardProps = { movie: SerializedMovie };
 
@@ -32,7 +30,7 @@ export default function MovieCard({ movie }: MovieCardProps) {
                         "use server";
                         await addToCart({
                             id: movie.id,
-                            price: new Decimal(movie.price),
+                            price: Number(movie.price),
                             title: movie.title,
                         });
                     }}

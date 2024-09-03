@@ -4,6 +4,7 @@ import UserAddressDisplay from "@/app/components/user-address-display";
 import { auth } from "@/auth";
 import prisma from "@/lib/db";
 import { currencyFormatter } from "@/lib/formats";
+import { serializeOrder } from "@/lib/utils";
 import { notFound } from "next/navigation";
 
 type OrderConfirmationType = {
@@ -49,11 +50,9 @@ export default async function OrderConfirmation({
         return notFound();
     }
 
-    const address = await getUserAddress(order?.userId);
+    const serializedOrder = serializeOrder(order);
 
-    if (!order) {
-        return notFound();
-    }
+    const address = await getUserAddress(order?.userId);
 
     return (
         <div className="container space-y-6 max-w-screen-lg">
@@ -74,10 +73,15 @@ export default async function OrderConfirmation({
                 </p>
                 <p>
                     <span className="font-semibold">Total: </span>
-                    {currencyFormatter.format(Number(order?.totalAmount))}
+                    {currencyFormatter.format(order?.totalAmount.toNumber())}
                 </p>
             </div>
-            <OrderItemsTable orderItems={order?.orderItems}></OrderItemsTable>
+            {serializedOrder && "orderItems" in serializedOrder && (
+                <OrderItemsTable
+                    orderItems={serializedOrder?.orderItems}
+                ></OrderItemsTable>
+            )}
+
             <div>
                 <h1 className="font-semibold text-lg">Delivering to:</h1>
                 <UserAddressDisplay

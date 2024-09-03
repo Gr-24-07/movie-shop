@@ -1,4 +1,3 @@
-import { Order } from "@prisma/client";
 import {
     Table,
     TableBody,
@@ -9,9 +8,13 @@ import {
 } from "@/components/ui/table";
 
 import OrderHistoryRow from "./order-history-row";
-import { OrderWithItems } from "./page";
+import { SerializedOrderWithItems } from "../actions/order";
 
-export default function OrderHistory({ orders }: { orders: OrderWithItems[] }) {
+export default function OrderHistory({
+    orders,
+}: {
+    orders: SerializedOrderWithItems[];
+}) {
     return (
         <div className="space-y-4">
             <h1 className="text-4xl text-center font-semibold my-8">

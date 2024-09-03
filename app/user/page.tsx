@@ -6,6 +6,11 @@ import OrderHistory from "./order-history";
 import { Movie, Order, OrderItem } from "@prisma/client";
 import UserAddressDisplay from "../components/user-address-display";
 import { getUserAddress } from "../actions/user";
+import { serializeOrder } from "@/lib/utils";
+import {
+    SerializedOrderItem,
+    SerializedOrderWithItems,
+} from "../actions/order";
 
 export type OrderItemWithMovie = OrderItem & {
     movie: Movie;
@@ -19,7 +24,7 @@ export default async function UserPage() {
     const session = await auth();
     const user = session?.user;
 
-    const orders = (await prisma.order.findMany({
+    const orders = await prisma.order.findMany({
         include: {
             orderItems: {
                 include: {
@@ -31,7 +36,15 @@ export default async function UserPage() {
         where: {
             userId: user?.id,
         },
-    })) as OrderWithItems[];
+    });
+
+    const serializedOrders = orders
+        .map((order) => {
+            return serializeOrder(order);
+        })
+        .filter((order) => {
+            return "orderItems" in order;
+        });
 
     if (!user) {
         return <h1>No user</h1>;
@@ -57,9 +70,7 @@ export default async function UserPage() {
                     ></UserAddressDisplay>
                 </div>
 
-                <OrderHistory
-                    orders={orders as OrderWithItems[]}
-                ></OrderHistory>
+                <OrderHistory orders={serializedOrders}></OrderHistory>
             </div>
         </AuthProvider>
     );

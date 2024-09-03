@@ -1,14 +1,6 @@
 "use client";
 
-import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table";
+import { TableCell, TableRow } from "@/components/ui/table";
 import {
     Tooltip,
     TooltipContent,
@@ -16,13 +8,16 @@ import {
     TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { currencyFormatter } from "@/lib/formats";
-
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
-import { OrderWithItems } from "./page";
 import OrderItemsTable from "../components/order-items-table";
+import { SerializedOrderWithItems } from "../actions/order";
 
-export default function OrderHistoryRow({ order }: { order: OrderWithItems }) {
+export default function OrderHistoryRow({
+    order,
+}: {
+    order: SerializedOrderWithItems;
+}) {
     const [showItems, setShowItems] = useState(false);
     return (
         <>

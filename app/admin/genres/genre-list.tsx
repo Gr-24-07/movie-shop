@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Trash, Edit, Save, Menu } from "lucide-react";
+import { Trash, Edit, Save, Menu, ChevronDown } from "lucide-react";
 import { Genre } from "@prisma/client";
 
 export type GenreListProps = {
@@ -123,7 +123,7 @@ export default function GenreList({ genres }: GenreListProps) {
                         <div className="flex justify-between items-center bg-gray-700 text-white p-4">
                             <span>{genre.name}</span>
                             <button onClick={() => toggleMenu(genre.id)}>
-                                <Menu />
+                                <ChevronDown />
                             </button>
                         </div>
                         {isMenuOpen === genre.id && (

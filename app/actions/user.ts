@@ -36,8 +36,6 @@ export type UpdateUserResult = UpdateUserSuccess | UpdateUserFail;
 export default async function updateUser(
     formData: FormData
 ): Promise<UpdateUserResult> {
-    console.log("Updating User");
-
     const result = Object.fromEntries(formData.entries());
 
     const parsedResult = await UpdateUserSchema.safeParseAsync(result);
@@ -129,11 +127,6 @@ export async function adminUpdateUser(
         return;
     }
 
-    console.log(id);
-    console.log(name);
-    console.log(email);
-    console.log(role);
-
     const data = {
         id,
         name,
@@ -202,8 +195,6 @@ const UserAddressSchema = z.object({
 export async function setUserAddress(
     formData: FormData
 ): Promise<SetUserAddressResult> {
-    console.log(formData);
-
     const data = Object.fromEntries(formData.entries());
 
     const parsedResult = await UserAddressSchema.safeParseAsync(data);
@@ -326,17 +317,9 @@ export async function getRecommendations(userId: string) {
         });
     });
 
-    console.log(ownedMovies);
-
-    console.log(moviesFromTopGenre);
-
     const filteredMovies = moviesFromTopGenre.filter((movie) => {
         return !ownedMovies.includes(movie.id);
     });
-
-    console.log("owned");
-
-    console.log(filteredMovies);
 
     return filteredMovies.slice(0, 5);
 }

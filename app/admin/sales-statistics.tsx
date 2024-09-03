@@ -17,8 +17,6 @@ export default async function SalesStatistics() {
         orderTotal._sum.totalAmount !== null ? orderTotal._sum.totalAmount : 0
     );
 
-    console.log(orderTotal);
-
     return (
         <div>
             <h1 className="text-3xl font-semibold">Statistics</h1>

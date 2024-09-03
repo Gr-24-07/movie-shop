@@ -3,8 +3,12 @@ import { Movie } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import { addToCart } from "../actions/cart";
+import { SerializedMovie } from "../actions/movies";
+import { Decimal } from "@prisma/client/runtime/library";
 
-export default function MovieCard({ movie }: { movie: Movie }) {
+type MovieCardProps = { movie: SerializedMovie };
+
+export default function MovieCard({ movie }: MovieCardProps) {
     return (
         <div className="flex flex-col aspect-[9/16] gap-1 w-40">
             <div className="relative aspect-[9/16] w-full">
@@ -28,7 +32,7 @@ export default function MovieCard({ movie }: { movie: Movie }) {
                         "use server";
                         await addToCart({
                             id: movie.id,
-                            price: movie.price,
+                            price: new Decimal(movie.price),
                             title: movie.title,
                         });
                     }}

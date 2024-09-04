@@ -1,7 +1,6 @@
-import { deleteMovie, addMovie, updateMovie } from "@/app/actions/movies";
+import { deleteMovie, addMovie } from "@/app/actions/movies";
 import prisma from "@/lib/db";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import {
   Table,
   TableBody,
@@ -13,7 +12,6 @@ import {
 } from "@/components/ui/table";
 import { currencyFormatter } from "@/lib/formats";
 import Image from "next/image";
-import Search from "./search";
 
 export default async function AddMovie(){
   const movie = await prisma.movie.findMany({
@@ -24,8 +22,11 @@ export default async function AddMovie(){
   return (
     <>
       <div className="flex flex-col items-center my-4 shadow-md rounded-lg">
-    
-        <form className="flex flex-col gap-4 w-96">
+      
+        <form className="flex flex-col gap-4 w-96"
+         action={addMovie}
+         
+         >
           <h2 className="text-2xl font-bold text-center mb-4">Add Movie</h2>
           <div className="flex flex-col gap-2">
             <label className="text-lg font-semibold" htmlFor="title">

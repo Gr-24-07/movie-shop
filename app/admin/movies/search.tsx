@@ -1,8 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import { GetServerSideProps } from "next";
-import { title } from "process";
-import { Replace } from "lucide-react";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
 interface Movie {

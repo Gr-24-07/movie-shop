@@ -1,51 +1,31 @@
-"use client";
+
 
 import  { updateMovie } from "@/app/actions/movies";
 import prisma from "@/lib/db";
-import { currencyFormatter } from "@/lib/formats";
-import { useRouter } from 'next/router'
-import { useSearchParams } from 'next/navigation';
-import {Form} from'react-hook-form';
+import { revalidatePath } from "next/cache";
+import {  redirect } from "next/navigation";
 
 
 
 export default async function UpdateMovie({params}: { params: {
-  movieid: string
+  movieid: string;
 }}) {
 
   const id = params.movieid
-  const movie = await prisma.movie.findUnique({ where: {id: id}})
-//   const [formData, setFormData] = useState({
-//     name: updateMovie.name,
-// });
-// const [isEditing, setIsEditing] = useState(false);
-async  function SearchMovie() {
-  const search = useSearchParams();
+  const movie = await prisma.movie.findUnique({ where: {id: id}
+  })
  
-  function handleSearch(term: string) {
-    const params = new URLSearchParams(search);
-    if (term) {
-      params.set('query', term);
-    } else {
-      params.delete('query');
-    }
-  }
-  // ...
-}
-
-
   
 
-  
-  
   return (
     <>
     
     <div className="flex justify-center my-4 shadow-md rounded-lg overflow-hidden bg-white min-w-96 text-center">
-
         <form className="flex flex-col gap-4 w-96" action={async (formData) => {
                     "use server";
                     await updateMovie(formData, id);
+                   revalidatePath("/admin/movies")
+                   redirect("/admin/movies")
         
                     
          }} method="POST">
@@ -62,6 +42,7 @@ async  function SearchMovie() {
               defaultValue={movie?.title}
               required
               name="title"
+            
             />
           </div>
           <div className="flex flex-col gap-2">
@@ -86,7 +67,7 @@ async  function SearchMovie() {
               type="number"
               id="price"
               placeholder="Movie Price"
-              defaultValue={currencyFormatter.format(Number(movie?.price))}
+              defaultValue={Number(movie?.price)}
               required
               name="price"
             />

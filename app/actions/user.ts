@@ -35,7 +35,9 @@ export type UpdateUserResult = UpdateUserSuccess | UpdateUserFail;
 
 export default async function updateUser(
     formData: FormData
-): Promise<UpdateUserResult> {
+): Promise<UpdateUserResult | undefined> {
+    const session = await auth();
+
     const result = Object.fromEntries(formData.entries());
 
     const parsedResult = await UpdateUserSchema.safeParseAsync(result);
@@ -50,6 +52,10 @@ export default async function updateUser(
     }
 
     const data = parsedResult.data;
+
+    if (session?.user.email !== data.prevEmail) {
+        return;
+    }
 
     await prisma.user.update({
         where: {

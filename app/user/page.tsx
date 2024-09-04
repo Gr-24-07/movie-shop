@@ -7,10 +7,6 @@ import { Movie, Order, OrderItem } from "@prisma/client";
 import UserAddressDisplay from "../components/user-address-display";
 import { getUserAddress } from "../actions/user";
 import { serializeOrder } from "@/lib/utils";
-import {
-    SerializedOrderItem,
-    SerializedOrderWithItems,
-} from "../actions/order";
 
 export type OrderItemWithMovie = OrderItem & {
     movie: Movie;

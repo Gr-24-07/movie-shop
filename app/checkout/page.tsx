@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import CartTable from "../cart/cart-table";
-import { notFound } from "next/navigation";
+import { redirect } from "next/navigation";
 import PaymentForm from "./payment-form";
 import { getCart } from "../actions/cart";
 import { getUserAddress } from "../actions/user";
@@ -13,7 +13,7 @@ export default async function CheckoutPage() {
     const cart = await getCart();
 
     if (!user) {
-        return notFound();
+        redirect("/api/auth/signin");
     }
 
     const address = await getUserAddress(user.id);

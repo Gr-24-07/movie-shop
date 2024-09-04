@@ -35,7 +35,7 @@ export default function MovieCard({ movie }: MovieCardProps) {
                         });
                     }}
                 >
-                    <button className="w-full p-2 text-justify font-bold bg-green-500 px-2 py-3 rounded-sm hover:bg-green-600 active:bg-green-700">
+                    <button className="w-full p-2 text-center font-bold bg-green-500 px-2 py-3 rounded-sm hover:bg-green-600 active:bg-green-700">
                         Add To Cart
                     </button>
                 </form>

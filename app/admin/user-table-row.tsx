@@ -38,11 +38,6 @@ export default function UserTableRow({ user }: { user: User }) {
             newRole
         );
 
-        if (result === undefined) {
-            alert("Not autheticated");
-            return;
-        }
-
         if (!result?.success) {
             setErrors(result.errors);
         } else {

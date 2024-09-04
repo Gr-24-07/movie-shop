@@ -3,9 +3,9 @@
 import prisma from "@/lib/db";
 import { Cart } from "./cart";
 import { Order, OrderItem } from "@prisma/client";
-import { OrderItemWithMovie } from "../user/page";
 import { SerializedMovie } from "./movies";
 import { serializeOrder } from "@/lib/utils";
+import { auth } from "@/auth";
 
 export type SerializedOrder = Omit<Order, "totalAmount"> & {
     totalAmount: string;
@@ -31,6 +31,11 @@ export async function sendOrder(
     userId: string,
     cart: Cart
 ): Promise<OrderResult> {
+    const session = await auth();
+    if (session?.user.id !== userId && session?.user.role !== "ADMIN") {
+        throw new Error("Unauthorized");
+    }
+
     const cartArr = Object.values(cart);
 
     if (cartArr.length === 0) {

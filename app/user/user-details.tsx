@@ -24,11 +24,6 @@ export default function UserDetails({ user }: { user: User }) {
 
         const result = await updateUser(formData);
 
-        if (result === undefined) {
-            alert("Not authorized");
-            return;
-        }
-
         if (!result.success) {
             setErrors(result.errors);
         } else {

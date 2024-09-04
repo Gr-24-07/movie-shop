@@ -34,6 +34,11 @@ export default function AddressForm({
                 formData.append("country", selectedCountry);
                 const res = await setUserAddress(formData);
 
+                if (res === undefined) {
+                    alert("Not authorized");
+                    return;
+                }
+
                 if (!res.success) {
                     setErrors(res.errors);
                 } else {

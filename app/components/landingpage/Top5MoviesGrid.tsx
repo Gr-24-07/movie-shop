@@ -15,7 +15,7 @@ const ProductGrid: React.FC<{ title: string; movies: Movie[] }> = ({
     movies,
 }) => (
     <section className="mb-16">
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex items-center mb-6 justify-center">
             <h2 className="text-medium font-bold text-gray-900">{title}</h2>
         </div>
         <div className="flex gap-4 justify-evenly flex-wrap">

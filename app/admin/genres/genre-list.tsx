@@ -1,8 +1,10 @@
 "use client";
 
+import { type Genre } from "@prisma/client";
+import { deleteGenre as deleteGenreAPI, updateGenre as updateGenreAPI } from "@/app/actions/genres";
 import { useState } from "react";
 import { Trash, Edit, Save, ChevronDown } from "lucide-react";
-import { Genre } from "@prisma/client";
+
 
 export type GenreListProps = {
     genres: (Genre & { movies: { id: string; title: string }[] })[];
@@ -11,7 +13,7 @@ export type GenreListProps = {
 export default function GenreList({ genres }: GenreListProps) {
     const [isEditing, setIsEditing] = useState<string | null>(null);
     const [newGenreName, setNewGenreName] = useState("");
-    const [isDropDownOpen, setIsDropDownOpen] = useState<string | null>(null);
+    const [isDropDownOpen, setIsDropDownOpen ] = useState<string | null>(null);
 
     const handleEdit = (genreId: string, currentName: string) => {
         setIsEditing(genreId);
@@ -33,15 +35,17 @@ export default function GenreList({ genres }: GenreListProps) {
             await deleteGenreAPI(genreId);
         }
     };
+    
 
     const toggleDropDown = (genreId: string) => {
         setIsDropDownOpen(isDropDownOpen === genreId ? null : genreId);
     };
 
     return (
-        <div className="flex flex-col items-center my-4 w-full">
+        
+        <div className="flex justify-center items-center min-h-screen my-4">
             <div className="hidden sm:block w-full">
-                <table className="shadow-md rounded-lg overflow-hidden bg-slate-300 min-w-96 text-center border border-black w-full">
+                <table className="shadow-md rounded-lg overflow-hidden bg-slate-300 min-w-96 text-center border border-black mx-auto">
                     <thead className="bg-gray-700 text-white">
                         <tr>
                             <th className="px-6 py-3 text-left text-sm tracking-wider">Genre Name</th>
@@ -91,21 +95,21 @@ export default function GenreList({ genres }: GenreListProps) {
                                     {isEditing === genre.id ? (
                                         <button
                                             onClick={() => handleSave(genre.id)}
-                                            className="px-4 py-1 bg-green-400 rounded-lg hover:bg-green-800"
+                                            className="px-4 py-1 bg-green-500 rounded-lg hover:bg-green-800"
                                         >
-                                            <Save />
+                                            < Save />
                                         </button>
                                     ) : (
                                         <button
                                             onClick={() => handleEdit(genre.id, genre.name)}
-                                            className="px-4 py-1 bg-blue-400  rounded-lg hover:bg-blue-500"
+                                            className="px-4 py-1 bg-blue-500  rounded-lg hover:bg-blue-900"
                                         >
-                                            <Edit />
+                                            < Edit />
                                         </button>
                                     )}
                                     <button
                                         onClick={() => handleDelete(genre.id)}
-                                        className="px-4 py-1 bg-red-400 rounded-lg hover:bg-red-500 mx-2"
+                                        className="px-4 py-1 bg-red-500 rounded-lg hover:bg-red-900 mx-2"
                                     >
                                         <Trash />
                                     </button>
@@ -116,86 +120,77 @@ export default function GenreList({ genres }: GenreListProps) {
                 </table>
             </div>
 
-           
             <div className="sm:hidden w-full">
-                {genres.map((genre) => (
-                    <div key={genre.id} className="border border-gray-400 rounded-lg mb-4">
-                        <div className="flex justify-between items-center bg-gray-700 text-white p-4">
-                            <span>{genre.name}</span>
-                            <button onClick={() => toggleDropDown(genre.id)}>
-                                <ChevronDown />
-                            </button>
-                        </div>
-                        {isDropDownOpen === genre.id && (
-                            <div className="bg-gray-200 p-4">
-                                <div>
-                                    <strong>Movies:</strong>
-                                    {genre.movies.length > 0 ? (
-                                        <ul>
-                                            {genre.movies.map((movie) => (
-                                                <li key={movie.id}>{movie.title}</li>
-                                            ))}
-                                        </ul>
-                                    ) : (
-                                        <span>No movies assigned</span>
-                                    )}
-                                </div>
-                                <div className="mt-2 flex space-x-2">
-                                    {isEditing === genre.id ? (
-                                        <>
-                                            <input
-                                                value={newGenreName}
-                                                onChange={(e) => setNewGenreName(e.target.value)}
-                                                className="border p-1 rounded flex-1"
-                                                autoFocus
-                                                onKeyUp={(e) => {
-                                                    switch (e.code) {
-                                                        case "Enter":
-                                                            handleSave(genre.id);
-                                                            break;
-                                                        case "Escape":
-                                                            setIsEditing(null);
-                                                            break;
-                                                        default:
-                                                            break;
-                                                    }
-                                                }}
-                                            />
-                                            <button
-                                                onClick={() => handleSave(genre.id)}
-                                                className="px-4 py-1 bg-green-400 rounded-lg hover:bg-green-800"
-                                            >
-                                                <Save />
-                                            </button>
-                                        </>
-                                    ) : (
-                                        <button
-                                            onClick={() => handleEdit(genre.id, genre.name)}
-                                            className="px-4 py-1 bg-blue-400 rounded-lg hover:bg-blue-800 "
-                                        >
-                                            <Edit />
-                                        </button>
-                                    )}
-                                    <button
-                                        onClick={() => handleDelete(genre.id)}
-                                        className="px-4 py-1 bg-red-400 rounded-lg hover:bg-red-800 "
-                                    >
-                                        <Trash />
-                                    </button>
-                                </div>
-                            </div>
-                        )}
+            {genres.map((genre) => (
+                <div key={genre.id} className="border border-gray-400 rounded-lg mb-4">
+                    <div className="flex justify-between items-center bg-gray-700 text-white p-4">
+                        <span>{genre.name}</span>
+                        <button onClick={() => toggleDropDown(genre.id)}>
+                            <ChevronDown />
+                        </button>
                     </div>
-                ))}
+                    {isDropDownOpen === genre.id && (
+                        <div className="bg-gray-200 p-4">
+                            <div>
+                                <strong>Movies:</strong>
+                                {genre.movies.length > 0 ? (
+                                    <ul>
+                                        {genre.movies.map((movie) => (
+                                            <li key={movie.id}>{movie.title}</li>
+                                        ))}
+                                    </ul>
+                                ) : (
+                                    <span>No movies assigned</span>
+                                )}
+                            </div>
+                            <div className="mt-2 flex space-x-2">
+                                {isEditing === genre.id ? (
+                                    <>
+                                        <input
+                                            value={newGenreName}
+                                            onChange={(e) => setNewGenreName(e.target.value)}
+                                            className="border p-1 rounded flex-1"
+                                            autoFocus
+                                            onKeyUp={(e) => {
+                                                switch (e.code) {
+                                                    case "Enter":
+                                                        handleSave(genre.id);
+                                                        break;
+                                                    case "Escape":
+                                                        setIsEditing(null);
+                                                        break;
+                                                    default:
+                                                        break;
+                                                }
+                                            }}
+                                        />
+                                        <button
+                                            onClick={() => handleSave(genre.id)}
+                                            className="px-4 py-1 bg-green-500 rounded-lg hover:bg-green-800"
+                                        >
+                                            <Save />
+                                        </button>
+                                    </>
+                                ) : (
+                                    <button
+                                        onClick={() => handleEdit(genre.id, genre.name)}
+                                        className="px-4 py-1 bg-blue-500 rounded-lg hover:bg-blue-900"
+                                    >
+                                        <Edit />
+                                    </button>
+                                )}
+                                <button
+                                    onClick={() => handleDelete(genre.id)}
+                                    className="px-4 py-1 bg-red-500 rounded-lg hover:bg-red-900"
+                                >
+                                    <Trash />
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            ))}
             </div>
         </div>
     );
 }
-function updateGenreAPI(arg0: { id: string; name: string; }) {
-    throw new Error("Function not implemented.");
-}
-
-function deleteGenreAPI(genreId: string) {
-    throw new Error("Function not implemented.");
-}
-

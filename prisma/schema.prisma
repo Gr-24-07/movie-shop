@@ -98,7 +98,7 @@ model Movie {
 
 model Genre {
     id   String @id @default(uuid())
-    name String
+    name Stringzzz
 
     //Relations
     movies Movie[]  @relation("GenreMovies")

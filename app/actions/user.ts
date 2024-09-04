@@ -6,6 +6,12 @@ import { Role } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
+export type Unauthorized = {
+    success: false;
+    status: "401";
+    message: string;
+};
+
 const UpdateUserSchema = z.object({
     name: z.string().min(1),
     email: z.string().email(),
@@ -36,6 +42,8 @@ export type UpdateUserResult = UpdateUserSuccess | UpdateUserFail;
 export default async function updateUser(
     formData: FormData
 ): Promise<UpdateUserResult> {
+    const session = await auth();
+
     const result = Object.fromEntries(formData.entries());
 
     const parsedResult = await UpdateUserSchema.safeParseAsync(result);
@@ -50,6 +58,10 @@ export default async function updateUser(
     }
 
     const data = parsedResult.data;
+
+    if (session?.user.email !== data.prevEmail) {
+        throw new Error("Unauthorized");
+    }
 
     await prisma.user.update({
         where: {
@@ -119,12 +131,12 @@ export async function adminUpdateUser(
     name: string | undefined,
     email: string | undefined,
     role: Role | undefined
-): Promise<AdminUpdateUserResult | void> {
+): Promise<AdminUpdateUserResult> {
     const session = await auth();
     session?.user.role;
 
     if (session?.user.role !== "ADMIN") {
-        return;
+        throw new Error("Unauthorized");
     }
 
     const data = {
@@ -195,6 +207,15 @@ const UserAddressSchema = z.object({
 export async function setUserAddress(
     formData: FormData
 ): Promise<SetUserAddressResult> {
+    const session = await auth();
+
+    if (
+        session?.user.id !== formData.get("id") &&
+        session?.user.role !== "ADMIN"
+    ) {
+        throw new Error("Unauthorized");
+    }
+
     const data = Object.fromEntries(formData.entries());
 
     const parsedResult = await UserAddressSchema.safeParseAsync(data);
@@ -227,6 +248,12 @@ export async function setUserAddress(
 }
 
 export async function getUserAddress(id: string) {
+    const session = await auth();
+
+    if (session?.user.id !== id && session?.user.role !== "ADMIN") {
+        throw new Error("Unauthorized");
+    }
+
     const address = await prisma.user.findUnique({
         where: {
             id: id,

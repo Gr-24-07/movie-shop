@@ -9,7 +9,7 @@ import { User } from "next-auth";
 import { useState } from "react";
 
 type AddressCheckProps = {
-    address: Address | null;
+    address: Address | null | undefined;
     user: User;
 };
 

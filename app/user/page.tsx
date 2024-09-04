@@ -7,10 +7,7 @@ import { Movie, Order, OrderItem } from "@prisma/client";
 import UserAddressDisplay from "../components/user-address-display";
 import { getUserAddress } from "../actions/user";
 import { serializeOrder } from "@/lib/utils";
-import {
-    SerializedOrderItem,
-    SerializedOrderWithItems,
-} from "../actions/order";
+import { notFound, redirect } from "next/navigation";
 
 export type OrderItemWithMovie = OrderItem & {
     movie: Movie;
@@ -47,7 +44,7 @@ export default async function UserPage() {
         });
 
     if (!user) {
-        return <h1>No user</h1>;
+        redirect("/api/auth/signin");
     }
 
     const address = await getUserAddress(user?.id);

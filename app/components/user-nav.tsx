@@ -29,7 +29,7 @@ export default function UserNavBar({ isSheet }: { isSheet?: boolean }) {
                                 )}
                                 href={page.href}
                             >
-                                {page.display}2
+                                {page.display}
                             </Link>
                         </SheetClose>
                     );

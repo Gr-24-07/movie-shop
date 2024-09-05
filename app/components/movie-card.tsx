@@ -10,7 +10,13 @@ export default function MovieCard({ movie }: MovieCardProps) {
     return (
         <div className="flex flex-col aspect-[9/16] gap-1 w-40">
             <div className="relative aspect-[9/16] w-full">
-                <Image src={movie.imageURL || ""} alt="" fill />
+                <Image
+                    src={movie.imageURL || ""}
+                    alt=""
+                    fill
+                    sizes="160px"
+                    priority
+                />
             </div>
             <div className="flex flex-col justify-between flex-grow">
                 <h2 className="flex-grow">

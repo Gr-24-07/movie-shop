@@ -37,34 +37,33 @@ export default function AdminNavBar() {
     const path = usePathname();
 
     return (
-        <nav className="flex justify-center">
-            <ul className="flex gap-2">
-                <DropdownMenu>
-                    <DropdownMenuTrigger className="flex items-center gap-1 hover:bg-white hover:text-black hover:rounded-lg p-2">
-                        Admin <ChevronDown size={20}></ChevronDown>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                        {PAGES.map((page) => {
-                            return (
-                                <DropdownMenuItem key={page.key}>
-                                    <li className="flex items-center">
-                                        <Link
-                                            className={cn(
-                                                "hover:bg-white hover:text-black hover:rounded-lg p-2",
-                                                path === page.href &&
-                                                    "underline"
-                                            )}
-                                            href={page.href}
-                                        >
-                                            {page.name}
-                                        </Link>
-                                    </li>
-                                </DropdownMenuItem>
-                            );
-                        })}
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            </ul>
+        <nav>
+            <DropdownMenu>
+                <DropdownMenuTrigger className="flex items-center gap-1 hover:bg-white hover:text-black hover:rounded-lg p-2">
+                    Admin <ChevronDown size={20}></ChevronDown>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                    {PAGES.map((page) => {
+                        return (
+                            <DropdownMenuItem
+                                key={page.key}
+                                asChild
+                                className="p-4"
+                            >
+                                <Link
+                                    className={cn(
+                                        "hover:cursor-pointer",
+                                        path === page.href && "underline"
+                                    )}
+                                    href={page.href}
+                                >
+                                    {page.name}
+                                </Link>
+                            </DropdownMenuItem>
+                        );
+                    })}
+                </DropdownMenuContent>
+            </DropdownMenu>
         </nav>
     );
 }

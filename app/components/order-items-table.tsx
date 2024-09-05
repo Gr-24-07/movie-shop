@@ -37,6 +37,7 @@ export default function OrderItemsTable({ orderItems }: OrderItemsTableProps) {
                                         src={items.movie.imageURL || ""}
                                         alt=""
                                         fill
+                                        sizes="140px"
                                     />
                                 </div>
                             </TableCell>

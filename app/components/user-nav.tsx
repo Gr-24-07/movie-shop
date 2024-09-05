@@ -1,10 +1,11 @@
 "use client";
 
+import { SheetClose } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export default function UserNavBar() {
+export default function UserNavBar({ isSheet }: { isSheet?: boolean }) {
     const path = usePathname();
 
     const PAGES = [
@@ -14,6 +15,28 @@ export default function UserNavBar() {
             display: "Movies",
         },
     ];
+
+    if (isSheet) {
+        return (
+            <>
+                {PAGES.map((page) => {
+                    return (
+                        <SheetClose key={page.key} asChild>
+                            <Link
+                                className={cn(
+                                    "hover:bg-white hover:text-black hover:rounded-lg p-2",
+                                    path === page.href && "underline"
+                                )}
+                                href={page.href}
+                            >
+                                {page.display}
+                            </Link>
+                        </SheetClose>
+                    );
+                })}
+            </>
+        );
+    }
 
     return (
         <>

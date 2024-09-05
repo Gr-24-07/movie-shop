@@ -97,8 +97,9 @@ model Movie {
 }
 
 model Genre {
-    id   String @id @default(uuid())
-    name String
+    id          String @id @default(uuid())
+    name        String
+    deletedDate DateTime? 
 
     //Relations
     movies Movie[]  @relation("GenreMovies")

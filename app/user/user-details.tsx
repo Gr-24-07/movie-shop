@@ -12,7 +12,9 @@ import FormError from "../components/form-error";
 
 export default function UserDetails({ user }: { user: User }) {
     const [isEdit, setIsEdit] = useState(false);
-    const [errors, setErrors] = useState<UpdateUserFail["errors"]>();
+    const [errors, setErrors] = useState<
+        UpdateUserFail["errors"] | undefined
+    >();
     const [name, setName] = useState(user.name);
     const [email, setEmail] = useState(user.email);
     const { data: session, update } = useSession();
@@ -43,6 +45,7 @@ export default function UserDetails({ user }: { user: User }) {
         setIsEdit(false);
         setEmail(user.email);
         setName(user.name);
+        setErrors(undefined);
     }
 
     return (

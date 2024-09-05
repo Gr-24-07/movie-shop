@@ -14,8 +14,8 @@ import {
 import { Check, Pencil, X } from "lucide-react";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
-import { adminUpdateUser, AdminUpdateUserFail } from "../actions/user";
-import FormError from "../components/form-error";
+import { adminUpdateUser, AdminUpdateUserFail } from "../../actions/user";
+import FormError from "../../components/form-error";
 
 export default function UserTableRow({ user }: { user: User }) {
     const [isEdit, setIsEdit] = useState(false);

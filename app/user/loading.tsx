@@ -1,8 +1,4 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import user from "../actions/user";
-import UserAddressDisplay from "../components/user-address-display";
-import OrderHistory from "./order-history";
-import UserDetails from "./user-details";
 import {
     Table,
     TableBody,
@@ -11,7 +7,6 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import OrderHistoryRow from "./order-history-row";
 
 export default function LoadingUser() {
     return (

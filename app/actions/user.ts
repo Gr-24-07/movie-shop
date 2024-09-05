@@ -13,7 +13,7 @@ export type Unauthorized = {
 };
 
 const UpdateUserSchema = z.object({
-    name: z.string().min(1),
+    name: z.string().min(1, "Name is required"),
     email: z.string().email(),
     prevEmail: z.string().email(),
 });
@@ -102,7 +102,7 @@ export type AdminUpdateUserResult =
 
 const AdminUpdateUserSchema = z.object({
     id: z.string().cuid(),
-    name: z.string().min(1).optional(),
+    name: z.string().min(1, "Name is required").optional(),
     email: z
         .string()
         .email()

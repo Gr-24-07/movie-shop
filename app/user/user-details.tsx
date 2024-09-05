@@ -48,8 +48,8 @@ export default function UserDetails({ user }: { user: User }) {
     return (
         <>
             <h1 className="text-4xl text-center font-semibold">User Details</h1>
-            <div className="flex gap-4">
-                <div>
+            <div className="flex flex-col gap-4 sm:flex-row">
+                <div className="self-center sm:self-start">
                     <Image
                         src={user.image || ""}
                         alt=""
@@ -61,7 +61,7 @@ export default function UserDetails({ user }: { user: User }) {
                     <>
                         <form
                             action={handleAction}
-                            className="space-y-2 w-full flex justify-between gap-2"
+                            className="space-y-2 w-full flex flex-col gap-4 sm:flex-row"
                         >
                             <div className="flex-grow">
                                 <input
@@ -74,7 +74,7 @@ export default function UserDetails({ user }: { user: User }) {
                                         Name:
                                     </Label>
                                     <Input
-                                        className="text-base w-3/5"
+                                        className="text-base w-full sm:w-3/5"
                                         type="text"
                                         id="name"
                                         name="name"
@@ -95,7 +95,7 @@ export default function UserDetails({ user }: { user: User }) {
                                         Email:
                                     </Label>
                                     <Input
-                                        className="text-base w-3/5"
+                                        className="text-base  w-full sm:w-3/5"
                                         type="text"
                                         id="email"
                                         name="email"
@@ -112,11 +112,14 @@ export default function UserDetails({ user }: { user: User }) {
                             <Button
                                 onClick={reset}
                                 variant="destructive"
-                                className="w-16 self-end"
+                                className="w-full sm:w-16 self-center sm:self-end"
                             >
                                 Cancel
                             </Button>
-                            <Button type="submit" className="w-16 self-end">
+                            <Button
+                                type="submit"
+                                className="w-full sm:w-16 self-center sm:self-end"
+                            >
                                 Save
                             </Button>
                         </form>

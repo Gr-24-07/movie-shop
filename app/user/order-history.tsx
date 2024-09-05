@@ -22,7 +22,6 @@ export default function OrderHistory({
             </h1>
 
             <Table>
-                <TableCaption>A list of all your orders</TableCaption>
                 <TableHeader>
                     <TableRow>
                         <TableHead className="w-[150px]">Id</TableHead>

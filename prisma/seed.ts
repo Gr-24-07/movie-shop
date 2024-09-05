@@ -109,7 +109,7 @@ async function main() {
         data: movieList,
     });
 
-    const genreList: Omit<Genre, "id">[] = [
+    const genreList: Omit<Genre, "id" | "deletedDate">[] = [
         {
             name: "Action",
         },

@@ -59,7 +59,7 @@ export default function UserTableRow({ user }: { user: User }) {
                 <TableRow key={user.id}>
                     <TableCell className="font-medium">
                         <Input
-                            className="w-full"
+                            className="w-full min-w-32"
                             type="text"
                             name="name"
                             onChange={(e) => {
@@ -71,7 +71,7 @@ export default function UserTableRow({ user }: { user: User }) {
                     </TableCell>
                     <TableCell>
                         <Input
-                            className="w-full"
+                            className="w-full min-w-40"
                             type="text"
                             name="email"
                             onChange={(e) => {

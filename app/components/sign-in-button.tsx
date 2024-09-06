@@ -18,7 +18,7 @@ export default function SignInButton({
                 signIn(provider);
             }}
         >
-            <Button type="submit">
+            <Button type="submit" className="w-full">
                 <Icon className="mr-2" />
                 Sign in with {provider}
             </Button>

@@ -7,12 +7,12 @@ import {
     TableBody,
     TableCell,
 } from "@/components/ui/table";
-import MovieCardSkeleton from "../components/movie-card-skeleton";
 
 export default function LoadingCheckout() {
     return (
         <div className="container space-y-6 max-w-screen-lg">
-            <h1 className="text-4xl font-semibold text-center">Cart</h1>
+            <h1 className="text-4xl font-semibold text-center">Checkout</h1>
+            <h1 className="text-2xl font-semibold text-center">Cart</h1>
             <Table>
                 <TableHeader>
                     <TableRow>

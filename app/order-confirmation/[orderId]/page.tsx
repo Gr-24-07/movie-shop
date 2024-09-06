@@ -1,5 +1,6 @@
 import { getUserAddress } from "@/app/actions/user";
 import OrderItemsTable from "@/app/components/order-items-table";
+import Recommendations from "@/app/components/recommendatios";
 import UserAddressDisplay from "@/app/components/user-address-display";
 import { auth } from "@/auth";
 import prisma from "@/lib/db";
@@ -102,6 +103,7 @@ export default async function OrderConfirmation({
                     support@fakemoviestore.com
                 </a>
             </p>
+            <Recommendations></Recommendations>
         </div>
     );
 }

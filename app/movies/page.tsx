@@ -4,6 +4,7 @@ import Search from "./search";
 import GenreFilter from "./genrefilter";
 import { serializeMovie } from "@/lib/utils";
 import { ReleaseDateFilter } from "@/components/component/release-date-filter";
+import ClearSearchParamsButton from "./clear-search-params-button";
 
 export default async function Page({
     searchParams,
@@ -49,6 +50,7 @@ export default async function Page({
                 <ReleaseDateFilter></ReleaseDateFilter>
                 <GenreFilter query={genre} genres={genres} />
                 <Search query={query} />
+                <ClearSearchParamsButton></ClearSearchParamsButton>
             </div>
             <div className="flex gap-4 justify-evenly flex-wrap">
                 {movies.map((movie) => (

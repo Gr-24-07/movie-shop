@@ -1,6 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 interface Movie {
     id: string;
@@ -36,19 +38,19 @@ export default function MovieSearch({ query }: { query?: string }) {
                     handleSearch(searchTerm);
                 }}
             >
-                <input
+                <Input
                     type="text"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder="Search movies by title"
+                    placeholder="Search"
                     className="w-full p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
-                <button
+                <Button
                     type="submit"
                     className="px-4 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-blue-600"
                 >
                     Search
-                </button>
+                </Button>
             </form>
         </div>
     );

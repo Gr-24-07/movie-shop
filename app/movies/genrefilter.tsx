@@ -2,6 +2,13 @@
 import React, { useState } from "react";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { Genre } from "@prisma/client";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 
 export default function GenreFilter({
     query,
@@ -44,7 +51,7 @@ export default function GenreFilter({
                             setGenreTerm(e.target.value);
                             handlegenrefilter(e.target.value);
                         }}
-                        className="bg-white w-full p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1"
                     >
                         <option value="">All Genres</option>
                         {genres.map((GenreFilter) => (

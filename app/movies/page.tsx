@@ -32,9 +32,9 @@ export default async function Page({
 
     return (
         <div className="container space-y-6 max-w-screen-lg">
-            <div className="flex justify-center ">
-                <Search query={query} />
+            <div className="flex justify-center gap-2">
                 <GenreFilter query={genre} genres={genres} />
+                <Search query={query} />
             </div>
             <div className="flex gap-4 justify-evenly flex-wrap">
                 {movies.map((movie) => (

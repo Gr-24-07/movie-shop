@@ -40,6 +40,9 @@ export default function Input() {
 
         setTimeout(() => {
             setSuccessMessage(null);
+
+            // Refresh the page after the delay
+            window.location.reload();
         }, 3000);
     }
 

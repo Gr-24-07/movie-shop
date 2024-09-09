@@ -1,13 +1,16 @@
+"use client";
+
 import { createPortal } from "react-dom";
-import SignInButton from "./sign-in-button";
-import { FaGoogle, FaGithub } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
+import SignInForm from "./sign-in-form";
+import { useRouter } from "next/navigation";
 
 export default function SignInModal({
     handleClose,
 }: {
     handleClose: () => void;
 }) {
+    const router = useRouter();
     return createPortal(
         <div
             onClick={handleClose}
@@ -20,17 +23,7 @@ export default function SignInModal({
                 }}
                 className="bg-white p-4 h-72 w-56 rounded-md flex flex-col justify-between items-center gap-2"
             >
-                <div className="flex flex-col gap-2">
-                    <h1 className="font-bold text-center">Sign in</h1>
-                    <SignInButton
-                        provider="google"
-                        Icon={FaGoogle}
-                    ></SignInButton>
-                    <SignInButton
-                        provider="github"
-                        Icon={FaGithub}
-                    ></SignInButton>
-                </div>
+                <SignInForm></SignInForm>
                 <Button
                     onClick={(e) => {
                         handleClose();

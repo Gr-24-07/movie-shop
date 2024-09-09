@@ -77,9 +77,6 @@ export default function CartSkeleton() {
                     </TableRow>
                 </TableBody>
             </Table>
-            {/* <Button size={"lg"} asChild>
-                <Link href="/checkout">Checkout</Link>
-            </Button> */}
             <div className="flex flex-col gap-4">
                 <h1 className="text-2xl font-semibold text-center">
                     You might also like:

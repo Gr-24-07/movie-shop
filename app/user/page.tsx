@@ -21,6 +21,10 @@ export default async function UserPage() {
     const session = await auth();
     const user = session?.user;
 
+    if (!user) {
+        redirect("/signin?next=/user");
+    }
+
     const orders = await prisma.order.findMany({
         include: {
             orderItems: {
@@ -42,10 +46,6 @@ export default async function UserPage() {
         .filter((order) => {
             return "orderItems" in order;
         });
-
-    if (!user) {
-        redirect("/api/auth/signin");
-    }
 
     const address = await getUserAddress(user?.id);
 

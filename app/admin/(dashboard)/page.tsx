@@ -7,7 +7,7 @@ export default async function AdminPage() {
     const session = await auth();
 
     if (!session?.user) {
-        redirect("api/auth/signin");
+        redirect("/signin?next=/admin");
     }
     if (session?.user.role !== "ADMIN") {
         throw new Error("Forbidden");

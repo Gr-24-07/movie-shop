@@ -14,11 +14,15 @@ export default function GenreList({ genres }: GenreListProps) {
     const [newGenreName, setNewGenreName] = useState("");
     const [isDropDownOpen, setIsDropDownOpen ] = useState<string | null>(null);
 
+
+     // Trigger editing mode for a specific genre
     const handleEdit = (genreId: string, currentName: string) => {
         setIsEditing(genreId);
         setNewGenreName(currentName);
     };
 
+
+    // Save the updated genre name
     const handleSave = async (genreId: string) => {
         if (!newGenreName.trim()) {
             alert("Genre name cannot be empty.");
@@ -26,25 +30,27 @@ export default function GenreList({ genres }: GenreListProps) {
         }
         await updateGenreAPI({ id: genreId, name: newGenreName.trim() });
         setIsEditing(null);
-        // Refresh the page after the delay
-        window.location.reload();
+        window.location.reload();           // Refresh the page after the delay
     };
 
+    // Delete a genre after user confirmation
     const handleDelete = async (genreId: string) => {
         const confirmed = confirm("Are you sure? Do you want to delete this genre?");
         if (confirmed) {
             await deleteGenreAPI(genreId);
         }
-        // Refresh the page after the delay
-        window.location.reload();
+        window.location.reload();           // Refresh the page after the delay
     };
 
+    // Toggle dropdown visibility for a specific genre
     const toggleDropDown = (genreId: string) => {
         setIsDropDownOpen(isDropDownOpen === genreId ? null : genreId);
     };
 
     return (
         <div className="flex justify-center items-center min-h-screen my-4">
+            
+             {/* Table for larger screens */}
             <div className="hidden sm:block w-full">
                 <table className="shadow-md rounded-lg overflow-hidden bg-slate-300 min-w-96 text-center border border-black mx-auto">
                     <thead className="bg-gray-700 text-white">
@@ -121,7 +127,7 @@ export default function GenreList({ genres }: GenreListProps) {
                 </table>
             </div>
 
-
+            {/* Table for for smaller screens */}
             <div className="sm:hidden w-full">
                 {genres.map((genre) => (
                     <div key={genre.id} className="border border-gray-400 rounded-lg mb-4">

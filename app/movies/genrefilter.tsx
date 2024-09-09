@@ -21,7 +21,7 @@ export default function GenreFilter({
     const searchParams = useSearchParams();
 
     const pathname = usePathname();
-    const { replace } = useRouter();
+    const { push } = useRouter();
 
     function handlegenrefilter(term: string) {
         console.log(`filter... ${term}`);
@@ -32,7 +32,7 @@ export default function GenreFilter({
         } else {
             params.delete("genre");
         }
-        replace(`${pathname}?${params.toString()}`);
+        push(`${pathname}?${params.toString()}`);
     }
 
     return (

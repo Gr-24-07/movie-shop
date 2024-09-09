@@ -2,21 +2,13 @@
 import React, { useState } from "react";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-
-interface Movie {
-    id: string;
-    title: string;
-    imageURL?: string;
-    price: number;
-}
 
 export default function MovieSearch({ query }: { query?: string }) {
     const [searchTerm, setSearchTerm] = useState(query || "");
     const searchParams = useSearchParams();
 
     const pathname = usePathname();
-    const { replace } = useRouter();
+    const { push } = useRouter();
     function handleSearch(term: string) {
         console.log(`Searching... ${term}`);
 
@@ -26,7 +18,7 @@ export default function MovieSearch({ query }: { query?: string }) {
         } else {
             params.delete("query");
         }
-        replace(`${pathname}?${params.toString()}`);
+        push(`${pathname}?${params.toString()}`);
     }
 
     return (

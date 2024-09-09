@@ -6,7 +6,7 @@ export default async function PeoplePage() {
     const session = await auth();
 
     if (!session?.user) {
-        redirect("api/auth/signin");
+        redirect("/signin?next=/admin/people");
     }
     if (session?.user.role !== "ADMIN") {
         throw new Error("Forbidden");

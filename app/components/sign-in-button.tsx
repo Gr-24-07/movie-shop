@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { signIn } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { IconType } from "react-icons/lib";
 
 export default function SignInButton({
@@ -11,11 +12,13 @@ export default function SignInButton({
     provider: "github" | "google";
     Icon: IconType;
 }) {
+    const params = useSearchParams();
+    const next = params.get("next");
     return (
         <form
             onSubmit={(e) => {
                 e.preventDefault();
-                signIn(provider);
+                signIn(provider, { redirect: true, callbackUrl: next || "" });
             }}
         >
             <Button type="submit" className="w-full">

@@ -10,12 +10,12 @@ import AddressCheck from "./address-check";
 export default async function CheckoutPage() {
     const session = await auth();
     const user = session?.user;
-    const cart = await getCart();
 
     if (!user) {
-        redirect("/api/auth/signin");
+        redirect("/signin?next=/checkout");
     }
 
+    const cart = await getCart();
     const address = await getUserAddress(user.id);
 
     return (

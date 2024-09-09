@@ -36,9 +36,9 @@ export default function GenreFilter({
     }
 
     return (
-        <div className="mt-4 flex flex-col items-center md:mt-8">
+        <div className="flex flex-col items-center">
             <form
-                className="flex min-w-2 mt-4 space-x-2"
+                className="flex min-w-2 space-x-2"
                 onSubmit={(e) => {
                     e.preventDefault();
                     handlegenrefilter(genreTerm);

@@ -69,6 +69,7 @@ CREATE TABLE "Movie" (
 CREATE TABLE "Genre" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
+    "deletedDate" TIMESTAMP(3),
 
     CONSTRAINT "Genre_pkey" PRIMARY KEY ("id")
 );
@@ -96,6 +97,8 @@ CREATE TABLE "Order" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "totalAmount" DECIMAL(65,30) NOT NULL,
+    "status" TEXT NOT NULL,
+    "orderDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Order_pkey" PRIMARY KEY ("id")
 );
@@ -104,9 +107,7 @@ CREATE TABLE "Order" (
 CREATE TABLE "OrderItem" (
     "id" TEXT NOT NULL,
     "priceAtPurchase" DECIMAL(65,30) NOT NULL,
-    "status" TEXT NOT NULL,
     "quantity" INTEGER NOT NULL,
-    "orderDate" TIMESTAMP(3) NOT NULL,
     "orderId" TEXT NOT NULL,
     "movieId" TEXT NOT NULL,
 
@@ -114,7 +115,7 @@ CREATE TABLE "OrderItem" (
 );
 
 -- CreateTable
-CREATE TABLE "_GenreToMovie" (
+CREATE TABLE "_GenreMovies" (
     "A" TEXT NOT NULL,
     "B" TEXT NOT NULL
 );
@@ -135,10 +136,10 @@ CREATE UNIQUE INDEX "verificationtokens_identifier_token_key" ON "verificationto
 CREATE UNIQUE INDEX "Job_movieId_peopleId_jobTitle_key" ON "Job"("movieId", "peopleId", "jobTitle");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "_GenreToMovie_AB_unique" ON "_GenreToMovie"("A", "B");
+CREATE UNIQUE INDEX "_GenreMovies_AB_unique" ON "_GenreMovies"("A", "B");
 
 -- CreateIndex
-CREATE INDEX "_GenreToMovie_B_index" ON "_GenreToMovie"("B");
+CREATE INDEX "_GenreMovies_B_index" ON "_GenreMovies"("B");
 
 -- AddForeignKey
 ALTER TABLE "accounts" ADD CONSTRAINT "accounts_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -162,7 +163,7 @@ ALTER TABLE "OrderItem" ADD CONSTRAINT "OrderItem_orderId_fkey" FOREIGN KEY ("or
 ALTER TABLE "OrderItem" ADD CONSTRAINT "OrderItem_movieId_fkey" FOREIGN KEY ("movieId") REFERENCES "Movie"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_GenreToMovie" ADD CONSTRAINT "_GenreToMovie_A_fkey" FOREIGN KEY ("A") REFERENCES "Genre"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "_GenreMovies" ADD CONSTRAINT "_GenreMovies_A_fkey" FOREIGN KEY ("A") REFERENCES "Genre"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_GenreToMovie" ADD CONSTRAINT "_GenreToMovie_B_fkey" FOREIGN KEY ("B") REFERENCES "Movie"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "_GenreMovies" ADD CONSTRAINT "_GenreMovies_B_fkey" FOREIGN KEY ("B") REFERENCES "Movie"("id") ON DELETE CASCADE ON UPDATE CASCADE;

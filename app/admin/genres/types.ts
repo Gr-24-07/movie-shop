@@ -1,5 +1,7 @@
+
 export type Genre = {
-    id : number;
-    value : string;
-    completed : boolean ;
+    id: string;
+    name: string;
+    deletedDate: Date | null; 
+    movies: { id: string; title: string }[];
 };

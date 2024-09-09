@@ -47,11 +47,12 @@ export async function updateGenre(updatedGenre: UpdateGenre) {
 export async function getGenres() {
     return await prisma.genre.findMany({
         where: {
-            deletedDate: null,  // Fetch only genres that haven't been "deleted"
+            deletedDate: null,  
         },
         select: {
             id: true,
             name: true,
+            deletedDate: true, 
             movies: {
                 select: {
                     id: true,

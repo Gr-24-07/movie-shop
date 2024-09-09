@@ -6,7 +6,7 @@ import { Genre } from "@prisma/client";
 import { getMovies } from "./movie";
 
 export default function GenreAssignment() {
-    const [genres, setGenres] = useState<Genre[]>([]);
+    const [genres, setGenres] = useState<Genre[]>([]); // Adjusted type to match new Genre definition
     const [movies, setMovies] = useState<any[]>([]);
     const [selectedGenreId, setSelectedGenreId] = useState<string | null>(null);
     const [selectedMovies, setSelectedMovies] = useState<string[]>([]);
@@ -15,7 +15,7 @@ export default function GenreAssignment() {
     useEffect(() => {
         async function fetchData() {
             const genresResponse = await getGenres();
-            setGenres(genresResponse);
+            setGenres(genresResponse); 
 
             const moviesResponse = await getMovies();
             setMovies(moviesResponse);
@@ -38,7 +38,6 @@ export default function GenreAssignment() {
         }
     }
 
-    
     useEffect(() => {
         if (successMessage) {
             const timer = setTimeout(() => {
@@ -49,7 +48,6 @@ export default function GenreAssignment() {
     }, [successMessage]);
 
     return (
-        
         <div className="p-6 mt-6 space-y-6 bg-gray-50 rounded-lg shadow-inner flex flex-col">
             <div>
                 <label htmlFor="genre-select" className="block text-md  text-black">Select Genre</label>
@@ -98,7 +96,7 @@ export default function GenreAssignment() {
                     onClick={handleSave}
                     className="bg-black text-white rounded-lg px-4 py-2  hover:bg-gray-700"
                 >
-                    Save Changes
+                    Assign Movies to genres
                 </button>
             </div>
 
@@ -108,6 +106,5 @@ export default function GenreAssignment() {
                 </div>
             )}
         </div>
-       
     );
 }

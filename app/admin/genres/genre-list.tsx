@@ -26,6 +26,8 @@ export default function GenreList({ genres }: GenreListProps) {
         }
         await updateGenreAPI({ id: genreId, name: newGenreName.trim() });
         setIsEditing(null);
+        // Refresh the page after the delay
+        window.location.reload();
     };
 
     const handleDelete = async (genreId: string) => {
@@ -33,6 +35,8 @@ export default function GenreList({ genres }: GenreListProps) {
         if (confirmed) {
             await deleteGenreAPI(genreId);
         }
+        // Refresh the page after the delay
+        window.location.reload();
     };
 
     const toggleDropDown = (genreId: string) => {
@@ -116,6 +120,7 @@ export default function GenreList({ genres }: GenreListProps) {
                     </tbody>
                 </table>
             </div>
+
 
             <div className="sm:hidden w-full">
                 {genres.map((genre) => (

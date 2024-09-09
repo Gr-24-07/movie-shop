@@ -29,7 +29,6 @@ export default function MovieSearch({ query }: { query?: string }) {
 
     return (
         <div className="mt-4 flex flex-col items-center md:mt-8">
-            <h1 className="text-3xl font-bold">Movie Search</h1>
             <form
                 className="flex w-full mt-4 space-x-2"
                 onSubmit={(e) => {

@@ -1,6 +1,6 @@
 import prisma from "@/lib/db";
 import MovieCard from "../components/movie-card";
-import Search from "../admin/movies/search";
+import Search from "./search";
 import GenreFilter from "./genrefilter";
 import { serializeMovie } from "@/lib/utils";
 

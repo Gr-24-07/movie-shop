@@ -1,34 +1,60 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { getGenres, updateGenre } from "@/app/actions/genres";
+import { useEffect, useState } from "react";
+import { getGenres, updateGenre, getGenreMovies } from "@/app/actions/genres"; 
 import { Genre } from "@prisma/client";
 import { getMovies } from "./movie";
 
 export default function GenreAssignment() {
-    const [genres, setGenres] = useState<Genre[]>([]); // Adjusted type to match new Genre definition
-    const [movies, setMovies] = useState<any[]>([]);
+    const [genres, setGenres] = useState<Genre[]>([]);
+    const [movies, setMovies] = useState<{ id: string; title: string }[]>([]);
     const [selectedGenreId, setSelectedGenreId] = useState<string | null>(null);
     const [selectedMovies, setSelectedMovies] = useState<string[]>([]);
+    const [existingMovies, setExistingMovies] = useState<string[]>([]);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
+    // Fetch genres and movies when the component is mounted
     useEffect(() => {
         async function fetchData() {
-            const genresResponse = await getGenres();
-            setGenres(genresResponse); 
+            try {
+                const genresResponse = await getGenres();
+                setGenres(genresResponse);
 
-            const moviesResponse = await getMovies();
-            setMovies(moviesResponse);
+                const moviesResponse = await getMovies();
+                setMovies(moviesResponse);
+            } catch (error) {
+                console.error("Failed to fetch data", error);
+            }
         }
         fetchData();
     }, []);
 
+    // Fetch the current movies assigned to the selected genre
+    useEffect(() => {
+        async function fetchExistingMovies() {
+            if (selectedGenreId) {
+                try {
+                    const currentMovies = await getGenreMovies(selectedGenreId); 
+                    setExistingMovies(currentMovies.map((movie: any) => movie.id)); 
+                } catch (error) {
+                    console.error("Failed to fetch existing movies", error);
+                }
+            }
+        }
+        fetchExistingMovies();
+    }, [selectedGenreId]);
+    
+
+    // Handle saving assigned movies to the selected genre
     async function handleSave() {
         if (selectedGenreId) {
             try {
+                
+                const updatedMovies = Array.from(new Set([...existingMovies, ...selectedMovies]));
+
                 await updateGenre({
                     id: selectedGenreId,
-                    movies: selectedMovies,
+                    movies: updatedMovies, 
                 });
                 setSuccessMessage("Movies assigned successfully!");
                 setSelectedMovies([]); 
@@ -38,19 +64,36 @@ export default function GenreAssignment() {
         }
     }
 
+    // Handle success message and clear after 2 seconds
     useEffect(() => {
         if (successMessage) {
             const timer = setTimeout(() => {
                 setSuccessMessage(null);
-            }, 3000);
+            }, 2000);
+              // Refresh the page after the delay
+              window.location.reload();
             return () => clearTimeout(timer);
         }
     }, [successMessage]);
 
+    // Optimized handleMovieSelection to manage movie checkboxes
+    const handleMovieSelection = (movieId: string, isChecked: boolean) => {
+        setSelectedMovies((prevSelectedMovies) => {
+            if (isChecked) {
+                return [...prevSelectedMovies, movieId];
+            } else {
+                return prevSelectedMovies.filter((id) => id !== movieId);
+            }
+        });
+    };
+
     return (
         <div className="p-6 mt-6 space-y-6 bg-gray-50 rounded-lg shadow-inner flex flex-col">
             <div>
-                <label htmlFor="genre-select" className="block text-md  text-black">Select Genre</label>
+                {/* Dropdown to select a genre */}
+                <label htmlFor="genre-select" className="block text-md text-black">
+                    Select Genre
+                </label>
                 <select
                     id="genre-select"
                     className="mt-2 w-full text-gray-600 text-sm border border-gray-400 rounded-lg p-2"
@@ -66,6 +109,7 @@ export default function GenreAssignment() {
                 </select>
             </div>
 
+            {/* Show movies checkboxes when a genre is selected */}
             {selectedGenreId && (
                 <div>
                     <label className="block text-sm font-medium text-gray-700">Select Movies</label>
@@ -75,14 +119,12 @@ export default function GenreAssignment() {
                                 <input
                                     type="checkbox"
                                     value={movie.id}
-                                    onChange={(e) => {
-                                        if (e.target.checked) {
-                                            setSelectedMovies([...selectedMovies, movie.id]);
-                                        } else {
-                                            setSelectedMovies(selectedMovies.filter(id => id !== movie.id));
-                                        }
-                                    }}
-                                    checked={selectedMovies.includes(movie.id)}
+                                    onChange={(e) =>
+                                        handleMovieSelection(movie.id, e.target.checked)
+                                    }
+                                    checked={
+                                        selectedMovies.includes(movie.id) || existingMovies.includes(movie.id)
+                                    }
                                 />
                                 <label className="ml-2">{movie.title}</label>
                             </div>
@@ -91,19 +133,24 @@ export default function GenreAssignment() {
                 </div>
             )}
 
+            {/* Save button to assign selected movies to the selected genre */}
             <div className="flex justify-end">
                 <button
                     onClick={handleSave}
-                    className="bg-black text-white rounded-lg px-4 py-2  hover:bg-gray-700"
+                    disabled={selectedGenreId === null || selectedMovies.length === 0}
+                    className={`rounded-lg px-4 py-2 ${
+                        selectedGenreId === null || selectedMovies.length === 0
+                            ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                            : "bg-black text-white hover:bg-gray-700"
+                    }`}
                 >
-                    Assign Movies to genres
+                    Assign Movies to Genre
                 </button>
             </div>
 
+            {/* Display success message when movies are assigned */}
             {successMessage && (
-                <div className="text-green-600 text-sm mt-2">
-                    {successMessage}
-                </div>
+                <div className="text-green-600 text-sm mt-2">{successMessage}</div>
             )}
         </div>
     );

@@ -4,6 +4,7 @@ import { createGenre } from "@/app/actions/genres";
 import { useState } from "react";
 import { z } from "zod";
 
+// Validating genre input
 const genreSchema = z.object({
     name: z.string().min(1, "Enter the genre "),
 });
@@ -26,8 +27,8 @@ export default function Input() {
 
         setIsPending(true);
 
+         // Create a new genre
         try {
-         
             await createGenre(validation.data.name);
             
             setSuccessMessage("Genre added successfully!");
@@ -40,10 +41,9 @@ export default function Input() {
 
         setTimeout(() => {
             setSuccessMessage(null);
-
-            // Refresh the page after the delay
+        }, 2000);
+        // Refresh the page after the delay
             window.location.reload();
-        }, 3000);
     }
 
     return (

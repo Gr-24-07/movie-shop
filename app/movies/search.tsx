@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 
@@ -9,6 +9,11 @@ export default function MovieSearch({ query }: { query?: string }) {
 
     const pathname = usePathname();
     const { push } = useRouter();
+
+    useEffect(() => {
+        setSearchTerm(searchParams.get("query") || "");
+    }, [searchParams]);
+
     function handleSearch(term: string) {
         console.log(`Searching... ${term}`);
 

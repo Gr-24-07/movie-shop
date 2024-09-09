@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { Genre } from "@prisma/client";
 import {
@@ -22,6 +22,10 @@ export default function GenreFilter({
 
     const pathname = usePathname();
     const { push } = useRouter();
+
+    useEffect(() => {
+        setGenreTerm(searchParams.get("genre") || "");
+    }, [searchParams]);
 
     function handlegenrefilter(term: string) {
         console.log(`filter... ${term}`);

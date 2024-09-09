@@ -46,11 +46,13 @@ export default async function Page({
 
     return (
         <div className="container space-y-6 max-w-screen-lg">
-            <div className="flex justify-center gap-2">
+            <div className="flex flex-col justify-center gap-2 md:flex-row">
                 <ReleaseDateFilter></ReleaseDateFilter>
-                <GenreFilter query={genre} genres={genres} />
-                <Search query={query} />
-                <ClearSearchParamsButton></ClearSearchParamsButton>
+                <div className="flex justify-center gap-2 flex-col sm:flex-row">
+                    <GenreFilter query={genre} genres={genres} />
+                    <Search query={query} />
+                    <ClearSearchParamsButton></ClearSearchParamsButton>
+                </div>
             </div>
             <div className="flex gap-4 justify-evenly flex-wrap">
                 {movies.map((movie) => (

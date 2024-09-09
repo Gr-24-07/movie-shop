@@ -45,7 +45,7 @@ export function ReleaseDateFilter() {
     }
 
     return (
-        <form className="flex items-center gap-4">
+        <form className="flex items-center gap-4 justify-center flex-col sm:flex-row">
             <div className="flex items-center gap-2">
                 <Label htmlFor="startDate">Start:</Label>
                 <Input

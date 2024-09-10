@@ -46,9 +46,10 @@ export function ReleaseDateFilter() {
 
     return (
         <form className="flex items-center gap-4 justify-center flex-col sm:flex-row">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 w-full sm:w-min">
                 <Label htmlFor="startDate">Start:</Label>
                 <Input
+                    className="w-full"
                     name="startDate"
                     type="date"
                     value={startDate}
@@ -58,9 +59,10 @@ export function ReleaseDateFilter() {
                     }}
                 />
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 w-full sm:w-min">
                 <Label htmlFor="endDate">End:</Label>
                 <Input
+                    className="w-full"
                     name="endDate"
                     type="date"
                     value={endDate}

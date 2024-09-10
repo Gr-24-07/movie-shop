@@ -10,6 +10,7 @@ export async function createGenre(name: string) {
             name,
         },
     });
+    
     revalidatePath("/genre");
 }
 
@@ -43,6 +44,7 @@ export async function updateGenre(updatedGenre: UpdateGenre) {
                 set: movies ? movies.map((movieId) => ({ id: movieId })) : [],
             },
         },
+        
     });
     revalidatePath("/genre");
 }
@@ -63,6 +65,9 @@ export async function getGenres() {
                     title: true,
                 },
             },
+        },
+        orderBy: {
+            name: 'asc', // Sort by genre name in ascending order
         },
     });
 }

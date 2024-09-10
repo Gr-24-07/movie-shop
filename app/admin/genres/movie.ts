@@ -10,6 +10,9 @@ export async function getMovies() {
             id: true,
             title: true,
         },
+        orderBy: {
+            title: 'asc', // Sort by movie title in ascending order
+        },
     });
 }
 revalidatePath("/genre");

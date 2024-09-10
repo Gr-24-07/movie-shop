@@ -19,23 +19,6 @@ export default async function SalesStatistics() {
         orderTotal._sum.totalAmount !== null ? orderTotal._sum.totalAmount : 0
     );
 
-    // const genreSales = await prisma.genre.findMany({
-    //     select: {
-    //         name: true,
-    //         _count: {
-    //             select: {
-    //                 movies: {
-    //                     where: {
-    //                         OrderItem: {
-    //                             some: {}
-    //                         }
-    //                     }
-    //                 }
-    //             }
-    //         },
-    //     },
-    // });
-
     const result = await prisma.genre.findMany({
         include: {
             movies: {
@@ -62,16 +45,12 @@ export default async function SalesStatistics() {
         };
     });
 
-    // const chartData = genreSales.map((item) => {
-    //     return { genre: item.name, sales: item._count.movies };
-    // });
-
     console.log(chartData);
 
     const chartConfig = {
         genre: {
             label: "Genre",
-            color: "#FFFFFF",
+            color: "var(--chart-1)",
         },
     } satisfies ChartConfig;
 

@@ -29,27 +29,25 @@ export default function GenreSalesChart<T>({
 }: GenreSalesChartProps<T>) {
     return (
         <ResponsiveContainer width="100%" height={400}>
-            <ChartContainer
-                config={config}
-                className="min-h-[200px] w-full py-4"
-            >
+            <ChartContainer config={config} className="min-h-[200px] w-full">
                 <BarChart accessibilityLayer data={data}>
                     <XAxis
                         dataKey="genre"
+                        angle={70}
                         tickLine={false}
-                        tickMargin={10}
+                        tickMargin={23}
+                        height={110}
+                        dx={7}
                         axisLine={false}
                         tickFormatter={(value) => {
-                            if (typeof value === "string" && value.length) {
-                            }
                             return value;
                         }}
                     >
                         <Label
                             className="text-xl font-bold"
                             value="Genre"
-                            offset={10}
-                            position="bottom"
+                            offset={20}
+                            position="insideBottom"
                         />
                     </XAxis>
                     <YAxis
@@ -69,7 +67,6 @@ export default function GenreSalesChart<T>({
                     </YAxis>
                     <CartesianGrid vertical={false} />
                     <ChartTooltip content={<ChartTooltipContent />} />
-                    <ChartLegend content={<ChartLegendContent />} />
                     <Bar
                         dataKey="sales"
                         fill="var(--color-desktop)"

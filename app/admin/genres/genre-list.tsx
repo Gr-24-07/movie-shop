@@ -69,7 +69,7 @@ export default function GenreList({ genres }: GenreListProps) {
                         <tr>
                             <th className="px-6 py-3 text-left text-sm tracking-wider">Genre Name</th>
                             <th className="px-6 py-3 text-left text-sm tracking-wider">Movies</th>
-                            <th className="px-6 py-3 text-sm">Actions</th>
+                            <th className="px-6 py-3 text-sm"></th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">

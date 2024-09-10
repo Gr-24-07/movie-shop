@@ -1,7 +1,7 @@
 "use client";
 
 import { type Genre } from "@prisma/client";
-import { deleteGenre as deleteGenreAPI, updateGenre as updateGenreAPI } from "@/app/actions/genres";
+import { deleteGenre as deleteGenreAPI, updateGenreName } from "@/app/actions/genres";
 import { useState } from "react";
 import { Trash, Edit, Save, ChevronDown } from "lucide-react";
 
@@ -12,15 +12,14 @@ export type GenreListProps = {
 export default function GenreList({ genres }: GenreListProps) {
     const [isEditing, setIsEditing] = useState<string | null>(null);
     const [newGenreName, setNewGenreName] = useState("");
-    const [isDropDownOpen, setIsDropDownOpen ] = useState<string | null>(null);
+    const [isDropDownOpen, setIsDropDownOpen] = useState<string | null>(null);
+    const [localGenres, setLocalGenres] = useState(genres); 
 
-
-     // Trigger editing mode for a specific genre
+    // Trigger editing mode for a specific genre
     const handleEdit = (genreId: string, currentName: string) => {
         setIsEditing(genreId);
         setNewGenreName(currentName);
     };
-
 
     // Save the updated genre name
     const handleSave = async (genreId: string) => {
@@ -28,9 +27,21 @@ export default function GenreList({ genres }: GenreListProps) {
             alert("Genre name cannot be empty.");
             return;
         }
-        await updateGenreAPI({ id: genreId, name: newGenreName.trim() });
-        setIsEditing(null);
-        window.location.reload();           // Refresh the page after the delay
+        try {
+            await updateGenreName({ id: genreId, name: newGenreName.trim() });
+
+            // Update the local genre state to reflect the name change without reloading
+            setLocalGenres((prevGenres) =>
+                prevGenres.map((genre) =>
+                    genre.id === genreId ? { ...genre, name: newGenreName.trim() } : genre
+                )
+            );
+            setIsEditing(null);
+        } catch (error) {
+            console.error("Failed to update genre name:", error);
+        }
+        // Refresh the page after the delay
+        window.location.reload();
     };
 
     // Delete a genre after user confirmation
@@ -38,8 +49,10 @@ export default function GenreList({ genres }: GenreListProps) {
         const confirmed = confirm("Are you sure? Do you want to delete this genre?");
         if (confirmed) {
             await deleteGenreAPI(genreId);
+            setLocalGenres((prevGenres) => prevGenres.filter((genre) => genre.id !== genreId)); // Update UI after deletion
+            // Refresh the page after the delay
+            window.location.reload();
         }
-        window.location.reload();           // Refresh the page after the delay
     };
 
     // Toggle dropdown visibility for a specific genre
@@ -49,8 +62,7 @@ export default function GenreList({ genres }: GenreListProps) {
 
     return (
         <div className="flex justify-center items-center min-h-screen my-4">
-            
-             {/* Table for larger screens */}
+            {/* Table for larger screens */}
             <div className="hidden sm:block w-full">
                 <table className="shadow-md rounded-lg overflow-hidden bg-slate-300 min-w-96 text-center border border-black mx-auto">
                     <thead className="bg-gray-700 text-white">
@@ -61,7 +73,7 @@ export default function GenreList({ genres }: GenreListProps) {
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
-                        {genres.map((genre) => (
+                        {localGenres.map((genre) => (
                             <tr key={genre.id} className="bg-gray-200 transition-colors hover:bg-gray-300">
                                 <td className="px-6 py-2 whitespace-nowrap text-left text-sm">
                                     {isEditing === genre.id ? (
@@ -104,14 +116,14 @@ export default function GenreList({ genres }: GenreListProps) {
                                             onClick={() => handleSave(genre.id)}
                                             className="px-4 py-1 bg-green-500 rounded-lg hover:bg-green-800"
                                         >
-                                            < Save />
+                                            <Save />
                                         </button>
                                     ) : (
                                         <button
                                             onClick={() => handleEdit(genre.id, genre.name)}
-                                            className="px-4 py-1 bg-blue-500  rounded-lg hover:bg-blue-900"
+                                            className="px-4 py-1 bg-blue-500 rounded-lg hover:bg-blue-900"
                                         >
-                                            < Edit />
+                                            <Edit />
                                         </button>
                                     )}
                                     <button
@@ -127,9 +139,9 @@ export default function GenreList({ genres }: GenreListProps) {
                 </table>
             </div>
 
-            {/* Table for for smaller screens */}
+            {/* Table for smaller screens */}
             <div className="sm:hidden w-full">
-                {genres.map((genre) => (
+                {localGenres.map((genre) => (
                     <div key={genre.id} className="border border-gray-400 rounded-lg mb-4">
                         <div className="flex justify-between items-center bg-gray-700 text-white p-4">
                             <span>{genre.name}</span>

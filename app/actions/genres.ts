@@ -75,3 +75,15 @@ export async function getGenreMovies(genreId: string) {
 
     return genreWithMovies?.movies || []; 
 }
+// Function to update only the genre's name
+export async function updateGenreName(updatedGenre: { id: string; name: string }) {
+    const { id, name } = updatedGenre;
+
+    // Only update the genre name, leaving the movies untouched
+    await prisma.genre.update({
+        where: { id },
+        data: {
+            name, // Update the genre name only
+        },
+    });
+}

@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { addToCart } from "../actions/cart";
 import { SerializedMovie } from "../actions/movies";
+import AddToCartbutton from "./add-to-cart-button";
 
 type MovieCardProps = { movie: SerializedMovie };
 
@@ -31,7 +32,12 @@ export default function MovieCard({ movie }: MovieCardProps) {
                 <p className="font-semibold">{`${currencyFormatter.format(
                     Number(movie.price)
                 )}`}</p>
-                <form
+                <AddToCartbutton
+                    movieId={movie.id}
+                    title={movie.title}
+                    price={Number(movie.price)}
+                ></AddToCartbutton>
+                {/* <form
                     action={async () => {
                         "use server";
                         await addToCart({
@@ -44,7 +50,7 @@ export default function MovieCard({ movie }: MovieCardProps) {
                     <button className="w-full p-2 text-center font-bold bg-green-500 px-2 py-3 rounded-sm hover:bg-green-600 active:bg-green-700">
                         Add To Cart
                     </button>
-                </form>
+                </form> */}
             </div>
         </div>
     );

@@ -8,11 +8,14 @@ import {
     ChartTooltip,
     ChartTooltipContent,
 } from "@/components/ui/chart";
+import { currencyFormatter } from "@/lib/formats";
 import {
     Bar,
     BarChart,
     CartesianGrid,
     Label,
+    Line,
+    LineChart,
     ResponsiveContainer,
     XAxis,
     YAxis,
@@ -23,42 +26,37 @@ type GenreSalesChartProps<T> = {
     data: T[];
 };
 
-export default function GenreSalesChart<T>({
+export default function DailySalesChart<T>({
     config,
     data,
 }: GenreSalesChartProps<T>) {
     return (
         <ResponsiveContainer width="100%" height={300} className="mt-4">
             <ChartContainer config={config} className="min-h-[200px] w-full">
-                <BarChart accessibilityLayer data={data}>
+                <LineChart
+                    accessibilityLayer
+                    data={data}
+                    margin={{ right: 30 }}
+                >
+                    <CartesianGrid />
                     <XAxis
-                        dataKey="genre"
-                        angle={70}
-                        tickLine={false}
-                        tickMargin={23}
-                        height={70}
-                        dx={7}
-                        axisLine={false}
+                        tickMargin={10}
+                        dataKey="date"
                         tickFormatter={(value) => {
                             return value;
                         }}
                     ></XAxis>
                     <YAxis
                         dataKey="sales"
-                        tickLine={false}
-                        tickMargin={10}
-                        axisLine={false}
+                        width={100}
                         allowDecimals={false}
-                        tickFormatter={(value) => value}
+                        tickFormatter={(value) =>
+                            currencyFormatter.format(value)
+                        }
                     ></YAxis>
-                    <CartesianGrid vertical={false} />
                     <ChartTooltip content={<ChartTooltipContent />} />
-                    <Bar
-                        dataKey="sales"
-                        fill="var(--color-desktop)"
-                        radius={4}
-                    />
-                </BarChart>
+                    <Line dataKey={"sales"} type="monotone"></Line>
+                </LineChart>
             </ChartContainer>
         </ResponsiveContainer>
     );

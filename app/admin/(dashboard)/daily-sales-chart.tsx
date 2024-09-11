@@ -8,6 +8,7 @@ import {
     ChartTooltip,
     ChartTooltipContent,
 } from "@/components/ui/chart";
+import { currencyFormatter } from "@/lib/formats";
 import {
     Bar,
     BarChart,
@@ -32,19 +33,26 @@ export default function DailySalesChart<T>({
     return (
         <ResponsiveContainer width="100%" height={300} className="mt-4">
             <ChartContainer config={config} className="min-h-[200px] w-full">
-                <LineChart accessibilityLayer data={data}>
+                <LineChart
+                    accessibilityLayer
+                    data={data}
+                    margin={{ right: 30 }}
+                >
                     <CartesianGrid />
                     <XAxis
+                        tickMargin={10}
                         dataKey="date"
-                        dx={7}
                         tickFormatter={(value) => {
                             return value;
                         }}
                     ></XAxis>
                     <YAxis
                         dataKey="sales"
+                        width={100}
                         allowDecimals={false}
-                        tickFormatter={(value) => value}
+                        tickFormatter={(value) =>
+                            currencyFormatter.format(value)
+                        }
                     ></YAxis>
                     <ChartTooltip content={<ChartTooltipContent />} />
                     <Line dataKey={"sales"} type="monotone"></Line>

@@ -13,6 +13,8 @@ import {
     BarChart,
     CartesianGrid,
     Label,
+    Line,
+    LineChart,
     ResponsiveContainer,
     XAxis,
     YAxis,
@@ -23,42 +25,30 @@ type GenreSalesChartProps<T> = {
     data: T[];
 };
 
-export default function GenreSalesChart<T>({
+export default function DailySalesChart<T>({
     config,
     data,
 }: GenreSalesChartProps<T>) {
     return (
         <ResponsiveContainer width="100%" height={300} className="mt-4">
             <ChartContainer config={config} className="min-h-[200px] w-full">
-                <BarChart accessibilityLayer data={data}>
+                <LineChart accessibilityLayer data={data}>
+                    <CartesianGrid />
                     <XAxis
-                        dataKey="genre"
-                        angle={70}
-                        tickLine={false}
-                        tickMargin={23}
-                        height={70}
+                        dataKey="date"
                         dx={7}
-                        axisLine={false}
                         tickFormatter={(value) => {
                             return value;
                         }}
                     ></XAxis>
                     <YAxis
                         dataKey="sales"
-                        tickLine={false}
-                        tickMargin={10}
-                        axisLine={false}
                         allowDecimals={false}
                         tickFormatter={(value) => value}
                     ></YAxis>
-                    <CartesianGrid vertical={false} />
                     <ChartTooltip content={<ChartTooltipContent />} />
-                    <Bar
-                        dataKey="sales"
-                        fill="var(--color-desktop)"
-                        radius={4}
-                    />
-                </BarChart>
+                    <Line dataKey={"sales"} type="monotone"></Line>
+                </LineChart>
             </ChartContainer>
         </ResponsiveContainer>
     );

@@ -5,7 +5,7 @@ import AddMovieForm from "./add-movie-form";
 export default async function AddMovie() {
     return (
         <>
-            <div className="flex flex-col items-center my-4 shadow-md rounded-lg">
+            <div className="container space-y-6 max-w-screen-lg">
                 <AddMovieForm></AddMovieForm>
                 <MovieTable></MovieTable>
             </div>

@@ -1,4 +1,5 @@
 import { deleteMovie } from "@/app/actions/movies";
+import { Button } from "@/components/ui/button";
 import {
     Table,
     TableHeader,
@@ -35,9 +36,9 @@ export default async function MovieTable() {
                         {movie.map((movie) => {
                             return (
                                 <TableRow key={movie.id}>
-                                    <TableCell className="p-1 border-r-2">
+                                    <TableCell className="">
                                         <Link
-                                            className="text-center text-sm font-bold text-blue-600 border-b-2 border-blue-600 p-1 "
+                                            className="text-center text-sm font-bold text-blue-600 border-b-2 border-blue-600"
                                             href={`/admin/movies/${movie.id}`}
                                         >
                                             {movie.title}
@@ -65,15 +66,15 @@ export default async function MovieTable() {
                                         ></Image>
                                     </TableCell>
                                     <TableCell>
-                                        <button
-                                            className="h-9 w-36 bg-red-500 text-white font-bold  rounded-lg "
+                                        <Button
+                                            variant="destructive"
                                             formAction={async () => {
                                                 "use server";
                                                 await deleteMovie(movie.id);
                                             }}
                                         >
                                             Delete
-                                        </button>
+                                        </Button>
                                     </TableCell>
                                 </TableRow>
                             );

@@ -47,8 +47,6 @@ export default async function SalesStatistics() {
         };
     });
 
-    console.log(chartData);
-
     const chartConfig = {
         genre: {
             label: "Genre",

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getGenres, updateGenre, getGenreMovies } from "@/app/actions/genres"; 
+import { getGenres, updateGenre, getGenreMovies } from "@/app/actions/genres";
 import { Genre } from "@prisma/client";
 import { getMovies } from "./movie";
 
@@ -34,8 +34,9 @@ export default function GenreAssignment() {
         async function fetchExistingMovies() {
             if (selectedGenreId) {
                 try {
-                    const currentMovies = await getGenreMovies(selectedGenreId); 
-                    setExistingMovies(currentMovies.map((movie: any) => movie.id)); 
+                    const currentMovies = await getGenreMovies(selectedGenreId);
+                    setExistingMovies(currentMovies.map((movie: any) => movie.id));
+                    setSelectedMovies(currentMovies.map((movie: any) => movie.id)); 
                 } catch (error) {
                     console.error("Failed to fetch existing movies", error);
                 }
@@ -43,20 +44,18 @@ export default function GenreAssignment() {
         }
         fetchExistingMovies();
     }, [selectedGenreId]);
-    
 
     // Handle saving assigned movies to the selected genre
     async function handleSave() {
         if (selectedGenreId) {
             try {
-                
-                const updatedMovies = Array.from(new Set([...existingMovies, ...selectedMovies]));
+                const updatedMovies = Array.from(new Set(selectedMovies)); 
 
                 await updateGenre({
                     id: selectedGenreId,
-                    movies: updatedMovies, 
+                    movies: updatedMovies,
                 });
-                setSuccessMessage("Movies assigned successfully!");
+                setSuccessMessage("Movies updated successfully!");
                 setSelectedMovies([]); 
             } catch (error) {
                 console.error("Failed to save changes", error);
@@ -70,8 +69,8 @@ export default function GenreAssignment() {
             const timer = setTimeout(() => {
                 setSuccessMessage(null);
             }, 2000);
-              // Refresh the page after the delay
-              window.location.reload();
+            // Refresh the page after the delay
+            window.location.reload();
             return () => clearTimeout(timer);
         }
     }, [successMessage]);
@@ -122,9 +121,7 @@ export default function GenreAssignment() {
                                     onChange={(e) =>
                                         handleMovieSelection(movie.id, e.target.checked)
                                     }
-                                    checked={
-                                        selectedMovies.includes(movie.id) || existingMovies.includes(movie.id)
-                                    }
+                                    checked={selectedMovies.includes(movie.id)}
                                 />
                                 <label className="ml-2">{movie.title}</label>
                             </div>
@@ -148,7 +145,7 @@ export default function GenreAssignment() {
                 </button>
             </div>
 
-            {/* Display success message when movies are assigned */}
+            {/* Display success message when movies are updated */}
             {successMessage && (
                 <div className="text-green-600 text-sm mt-2">{successMessage}</div>
             )}

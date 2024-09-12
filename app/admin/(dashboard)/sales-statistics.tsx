@@ -1,8 +1,5 @@
 import prisma from "@/lib/db";
 import { currencyFormatter } from "@/lib/formats";
-import { type ChartConfig } from "@/components/ui/chart";
-import GenreSalesChart from "./genre-sales-chart";
-import DailySalesChart from "./daily-sales-chart";
 
 export default async function SalesStatistics() {
     const orderTotal = await prisma.order.aggregate({
@@ -92,36 +89,14 @@ export default async function SalesStatistics() {
     } satisfies ChartConfig;
 
     return (
-        <div className="flex flex-col gap-6">
-            <div>
-                <h1 className="text-xl font-semibold">Statistics</h1>
-                <p>Total number of orders: {orderCount}</p>
-                <p>Revenue: {currencyFormatter.format(totalAmount)}</p>
-                <p>
-                    Average revenue per order:{" "}
-                    {currencyFormatter.format(totalAmount / orderCount)}
-                </p>
-            </div>
-            <div className="flex flex-col gap-6 lg:flex-row">
-                <div className="w-full lg:w-1/2">
-                    <h1 className="text-xl font-semibold text-center">
-                        Movies Sold by Genre
-                    </h1>
-                    <GenreSalesChart
-                        config={chartConfig}
-                        data={chartData}
-                    ></GenreSalesChart>
-                </div>
-                <div className="w-full lg:w-1/2">
-                    <h1 className="text-xl font-semibold text-center">
-                        Revenue by Day
-                    </h1>
-                    <DailySalesChart
-                        config={chartConfigDailySales}
-                        data={dailySales}
-                    ></DailySalesChart>
-                </div>
-            </div>
+        <div>
+            <h1 className="text-3xl font-semibold">Statistics</h1>
+            <p>Order Count: {orderCount}</p>
+            <p>Total all orders: {currencyFormatter.format(totalAmount)}</p>
+            <p>
+                Average total:{" "}
+                {currencyFormatter.format(totalAmount / orderCount)}
+            </p>
         </div>
     );
 }

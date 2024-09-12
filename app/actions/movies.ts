@@ -12,28 +12,7 @@ export type SerializedMovie = Omit<Movie, "price"> & {
 // Define and export MovieResult type
 export type MovieResult =
     | { success: true; movies: Movie[] }
-    | {
-          success: false;
-          error: string;
-      };
-
-// Define and export MovieResult type
-export type AddMovieResult =
-    | { success: true; movies: Movie[] }
-    | {
-          success: false;
-          errors: z.ZodFormattedError<
-              {
-                  title: string;
-                  price: number;
-                  releaseDate: Date;
-                  stock: number;
-                  description?: string | undefined;
-                  imageURL?: string | undefined;
-              },
-              string
-          >;
-      };
+    | { success: false; error: string };
 
 // Validation schema for movie data
 const movieValidation = z.object({
@@ -51,21 +30,16 @@ const handleError = (error: unknown, errorMessage: string): MovieResult => {
     return { success: false, error: errorMessage };
 };
 
-export async function addMovie(formData: FormData): Promise<AddMovieResult> {
-    const data = Object.fromEntries(formData.entries());
-    const validatedData = await movieValidation.safeParseAsync(data);
-    if (!validatedData.success) {
-        const formattedErrors = validatedData.error.format();
-
-        return {
-            success: false,
-            errors: formattedErrors,
-        };
+export async function addMovie(formData: FormData): Promise<MovieResult> {
+    try {
+        const data = Object.fromEntries(formData.entries());
+        const validatedData = await movieValidation.parseAsync(data);
+        const movie = await prisma.movie.create({ data: validatedData });
+        revalidatePath("/admin/movies");
+        return { success: true, movies: [[movie][0]] };
+    } catch (error) {
+        return handleError(error, "Failed to add movie");
     }
-    const movie = await prisma.movie.create({ data: validatedData.data });
-
-    revalidatePath("/admin/movies");
-    return { success: true, movies: [[movie][0]] };
 }
 
 export async function deleteMovie(id: string): Promise<MovieResult> {
@@ -81,23 +55,19 @@ export async function deleteMovie(id: string): Promise<MovieResult> {
 export async function updateMovie(
     formData: FormData,
     id: string
-): Promise<AddMovieResult> {
-    const data = Object.fromEntries(formData);
-    const validatedData = await movieValidation.safeParseAsync(data);
-    if (!validatedData.success) {
-        const formattedErrors = validatedData.error.format();
-
-        return {
-            success: false,
-            errors: formattedErrors,
-        };
+): Promise<MovieResult> {
+    try {
+        const data = Object.fromEntries(formData);
+        const validatedData = await movieValidation.parseAsync(data);
+        const movie = await prisma.movie.update({
+            where: { id },
+            data: validatedData,
+        });
+        revalidatePath("/admin/movies");
+        return { success: true, movies: [[movie][0]] };
+    } catch (error) {
+        return handleError(error, "Failed to update movie");
     }
-    const movie = await prisma.movie.update({
-        where: { id },
-        data: validatedData.data,
-    });
-    revalidatePath("/admin/movies");
-    return { success: true, movies: [[movie][0]] };
 }
 
 export async function getMovies(): Promise<MovieResult> {

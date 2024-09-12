@@ -42,13 +42,13 @@ export default function GenreFilter({
     return (
         <div className="flex flex-col items-center">
             <form
-                className="flex min-w-2 space-x-2 w-full"
+                className="flex min-w-2 space-x-2"
                 onSubmit={(e) => {
                     e.preventDefault();
                     handlegenrefilter(genreTerm);
                 }}
             >
-                <div className="relative min-w-4 w-full">
+                <div className="relative min-w-4">
                     <select
                         value={genreTerm}
                         onChange={(e) => {

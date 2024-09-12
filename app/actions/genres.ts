@@ -36,18 +36,38 @@ type UpdateGenre = {
 // To update an existing genre's name and associated movies
 export async function updateGenre(updatedGenre: UpdateGenre) {
     const { id, movies, ...data } = updatedGenre;
+
+    // Fetch the current genre with its movies
+    const currentGenre = await prisma.genre.findUnique({
+        where: { id },
+        include: { movies: { select: { id: true } } },
+    });
+
+    if (!currentGenre) {
+        throw new Error("Genre not found");
+    }
+
+    const currentMovies = currentGenre.movies.map(movie => movie.id);
+
+    // Determine which movies to add and which to remove
+    const moviesToAdd = movies ? movies.filter(movieId => !currentMovies.includes(movieId)) : [];
+    const moviesToRemove = currentMovies.filter(movieId => !movies?.includes(movieId));
+
     await prisma.genre.update({
         where: { id },
         data: {
             ...data,
             movies: {
-                set: movies ? movies.map((movieId) => ({ id: movieId })) : [],
+                disconnect: moviesToRemove.map(movieId => ({ id: movieId })),
+                connect: moviesToAdd.map(movieId => ({ id: movieId })),
             },
         },
-        
     });
+
+    // Invalidate cache or refresh path if needed
     revalidatePath("/genre");
 }
+
 
 // To get all genres that are not deleted
 export async function getGenres() {

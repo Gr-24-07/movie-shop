@@ -2,8 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Search } from "lucide-react";
 
 export default function MovieSearch({ query }: { query?: string }) {
     const [searchTerm, setSearchTerm] = useState(query || "");
@@ -44,9 +42,6 @@ export default function MovieSearch({ query }: { query?: string }) {
                     placeholder="Search"
                     className="w-full p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
-                <Button type="submit">
-                    <Search />
-                </Button>
             </form>
         </div>
     );

@@ -81,19 +81,23 @@ export async function deleteMovie(id: string): Promise<MovieResult> {
 export async function updateMovie(
     formData: FormData,
     id: string
-): Promise<MovieResult> {
-    try {
-        const data = Object.fromEntries(formData);
-        const validatedData = await movieValidation.parseAsync(data);
-        const movie = await prisma.movie.update({
-            where: { id },
-            data: validatedData,
-        });
-        revalidatePath("/admin/movies");
-        return { success: true, movies: [[movie][0]] };
-    } catch (error) {
-        return handleError(error, "Failed to update movie");
+): Promise<AddMovieResult> {
+    const data = Object.fromEntries(formData);
+    const validatedData = await movieValidation.safeParseAsync(data);
+    if (!validatedData.success) {
+        const formattedErrors = validatedData.error.format();
+
+        return {
+            success: false,
+            errors: formattedErrors,
+        };
     }
+    const movie = await prisma.movie.update({
+        where: { id },
+        data: validatedData.data,
+    });
+    revalidatePath("/admin/movies");
+    return { success: true, movies: [[movie][0]] };
 }
 
 export async function getMovies(): Promise<MovieResult> {

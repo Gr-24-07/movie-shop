@@ -5,7 +5,10 @@ import FormError from "@/app/components/form-error";
 import SubmitButton from "@/app/components/submit-button";
 import { useState } from "react";
 
-type AddMovieError = Extract<AddMovieResult, { success: false }>["errors"];
+export type AddMovieError = Extract<
+    AddMovieResult,
+    { success: false }
+>["errors"];
 
 export default function AddMovieForm() {
     const [errors, setErrors] = useState<AddMovieError | undefined>();

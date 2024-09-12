@@ -1,8 +1,27 @@
-import { addMovie } from "@/app/actions/movies";
+"use client";
+
+import { addMovie, AddMovieResult } from "@/app/actions/movies";
+import FormError from "@/app/components/form-error";
+import SubmitButton from "@/app/components/submit-button";
+import { useState } from "react";
+
+type AddMovieError = Extract<AddMovieResult, { success: false }>["errors"];
 
 export default function AddMovieForm() {
+    const [errors, setErrors] = useState<AddMovieError | undefined>();
+
+    async function handleAction(formData: FormData) {
+        const result = await addMovie(formData);
+
+        if (!result.success) {
+            setErrors(result.errors);
+        } else {
+            setErrors(undefined);
+        }
+    }
+
     return (
-        <form className="flex flex-col gap-4 w-96" action={addMovie}>
+        <form className="flex flex-col gap-4 w-96" action={handleAction}>
             <h2 className="text-2xl font-bold text-center mb-4">Add Movie</h2>
             <div className="flex flex-col gap-2">
                 <label className="text-lg font-semibold" htmlFor="title">
@@ -16,6 +35,7 @@ export default function AddMovieForm() {
                     required
                     name="title"
                 />
+                <FormError errors={errors?.title?._errors}></FormError>
             </div>
             <div className="flex flex-col gap-2">
                 <label className="text-lg font-semibold" htmlFor="description">
@@ -28,6 +48,7 @@ export default function AddMovieForm() {
                     required
                     name="description"
                 />
+                <FormError errors={errors?.description?._errors}></FormError>
             </div>
             <div className="flex flex-col gap-2">
                 <label className="text-lg font-semibold" htmlFor="price">
@@ -41,6 +62,7 @@ export default function AddMovieForm() {
                     required
                     name="price"
                 />
+                <FormError errors={errors?.price?._errors}></FormError>
             </div>
             <div className="flex flex-col gap-2">
                 <label className="text-lg font-semibold" htmlFor="releaseDate">
@@ -54,6 +76,7 @@ export default function AddMovieForm() {
                     required
                     name="releaseDate"
                 />
+                <FormError errors={errors?.releaseDate?._errors}></FormError>
             </div>
             <div className="flex flex-col gap-2">
                 <label className="text-lg font-semibold" htmlFor="stock">
@@ -67,6 +90,7 @@ export default function AddMovieForm() {
                     required
                     name="stock"
                 />
+                <FormError errors={errors?.stock?._errors}></FormError>
             </div>
             <div className="flex flex-col gap-2">
                 <label className="text-lg font-semibold" htmlFor="imageURL">
@@ -80,10 +104,9 @@ export default function AddMovieForm() {
                     required
                     name="imageURL"
                 />
+                <FormError errors={errors?.imageURL?._errors}></FormError>
             </div>
-            <button className="p-2 bg-blue-600 text-white rounded-md mt-4">
-                Add Movie
-            </button>
+            <SubmitButton>Add Movie</SubmitButton>
         </form>
     );
 }

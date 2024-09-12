@@ -103,6 +103,46 @@ async function main() {
             imageURL:
                 "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/AjV6jFJ2YFIluYo4GQf13AA1tqu.jpg",
         },
+        {
+            title: "Bad Boys: Ride or Die",
+            description:
+                "After their late former Captain is framed, Lowrey and Burnett try to clear his name, only to end up on the run themselves.",
+            price: new Decimal(155.99),
+            stock: 55,
+            releaseDate: new Date("2024-05-06"),
+            imageURL:
+                "https://image.tmdb.org/t/p/w1280/oGythE98MYleE6mZlGs5oBGkux1.jpg",
+        },
+        {
+            title: "Beetlejuice",
+            description:
+                "A newly dead New England couple seeks help from a deranged demon exorcist to scare an affluent New York family out of their home.",
+            price: new Decimal(239.99),
+            stock: 174,
+            releaseDate: new Date("1988-08-19"),
+            imageURL:
+                "https://image.tmdb.org/t/p/w1280/nnl6OWkyPpuMm595hmAxNW3rZFn.jpg",
+        },
+        {
+            title: "Twisters",
+            description:
+                "As storm season intensifies, the paths of former storm chaser Kate Carter and reckless social-media superstar Tyler Owens collide when terrifying phenomena never seen before are unleashed. The pair and their competing teams find themselves squarely in the paths of multiple storm systems converging over central Oklahoma in the fight of their lives.",
+            price: new Decimal(100.99),
+            stock: 55,
+            releaseDate: new Date("2024-07-12"),
+            imageURL:
+                "https://image.tmdb.org/t/p/w1280/pjnD08FlMAIXsfOLKQbvmO0f0MD.jpg",
+        },
+        {
+            title: "Interstellar",
+            description:
+                "The adventures of a group of explorers who make use of a newly discovered wormhole to surpass the limitations on human space travel and conquer the vast distances involved in an interstellar voyage.",
+            price: new Decimal(99.99),
+            stock: 100,
+            releaseDate: new Date("2014-11-07"),
+            imageURL:
+                "https://image.tmdb.org/t/p/w1280/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
+        },
     ];
 
     const movies = await prisma.movie.createMany({
@@ -259,6 +299,10 @@ async function main() {
         "Inside Out 2": ["Animation", "Comedy", "Family"],
         "Avengers: Infinity War": ["Action", "Adventure", "Fantasy"],
         "It Ends with Us": ["Drama", "Romance"],
+        "Bad Boys: Ride or Die": ["Action", "Chrime", "Thriller", "Comedy"],
+        Beetlejuice: ["Fantasy", "Comedy"],
+        Twisters: ["Action", "Adventure", "Thriller"],
+        Interstellar: ["Adventure", "Drama"],
     };
 
     for (const [movieTitle, genres] of Object.entries(movieGenreMap)) {

@@ -321,7 +321,7 @@ export async function getRecommendations(userId: string) {
         count,
     }));
 
-    const topGenre = sortedGenreObjects[0]?.genre || "";
+    const topGenre = sortedGenreObjects[0]?.genre || "Drama";
 
     const moviesFromTopGenre = await prisma.movie.findMany({
         where: {

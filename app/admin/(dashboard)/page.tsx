@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import SalesStatistics from "./sales-statistics";
 import UserTable from "./user-table";
 import { redirect } from "next/navigation";
+import AccessDenied from "@/app/components/access-denied";
 
 export default async function AdminPage() {
     const session = await auth();
@@ -10,7 +11,7 @@ export default async function AdminPage() {
         redirect("/signin?next=/admin");
     }
     if (session?.user.role !== "ADMIN") {
-        throw new Error("Forbidden");
+        return <AccessDenied></AccessDenied>;
     }
 
     return (

@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import MovieList from "../../components/admin/people/MovieList";
+import AccessDenied from "@/app/components/access-denied";
 
 export default async function PeoplePage() {
     const session = await auth();
@@ -9,7 +10,7 @@ export default async function PeoplePage() {
         redirect("/signin?next=/admin/people");
     }
     if (session?.user.role !== "ADMIN") {
-        throw new Error("Forbidden");
+        return <AccessDenied></AccessDenied>;
     }
     return <MovieList />;
 }

@@ -1,12 +1,12 @@
-"use client";
+"use client"; 
 
-import { createGenre } from "@/app/actions/genres"; 
-import { useState } from "react";
+import { createGenre, getGenres } from "@/app/actions/genres";  
+import { useState, useEffect } from "react";
 import { z } from "zod";
 
 // Validating genre input
 const genreSchema = z.object({
-    name: z.string().min(1, "Enter the genre "),
+    name: z.string().min(1, "Enter the genre ").toLowerCase(),
 });
 
 export default function Input() {
@@ -14,6 +14,21 @@ export default function Input() {
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [isPending, setIsPending] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [existingGenres, setExistingGenres] = useState<string[]>([]);  
+
+    // Fetch existing genres on component mount
+    useEffect(() => {
+        async function loadGenres() {
+            try {
+                const genres = await getGenres();  
+                setExistingGenres(genres.map((g: any) => g.name.toLowerCase())); 
+            } catch (error) {
+                console.error("Failed to fetch genres", error);
+            }
+        }
+
+        loadGenres();
+    }, []);
 
     async function handleSubmit() {
         setError(null);
@@ -25,14 +40,25 @@ export default function Input() {
             return;
         }
 
+        const genreName = validation.data.name;
+
+        // Check if genre already exists
+        if (existingGenres.includes(genreName)) {
+            setError("Genre already added.");
+            return;
+        }
+
         setIsPending(true);
 
-         // Create a new genre
+        // Create a new genre
         try {
-            await createGenre(validation.data.name);
+            await createGenre(genreName);
             
             setSuccessMessage("Genre added successfully!");
-            setGenre(""); 
+            setGenre("");  
+
+            // Update the list of existing genres after adding the new genre
+            setExistingGenres([...existingGenres, genreName]);
         } catch (error) {
             setError("An error occurred while adding the genre.");
         } finally {
@@ -43,11 +69,10 @@ export default function Input() {
             setSuccessMessage(null);
         }, 2000);
         // Refresh the page after the delay
-            window.location.reload();
+        window.location.reload();
     }
 
     return (
-       
         <form
             className="p-6 space-y-3 bg-gray-50 rounded-lg shadow-inner flex flex-col"
             onSubmit={(ev) => {
@@ -82,6 +107,5 @@ export default function Input() {
                 </div>
             )}
         </form>
-      
     );
 }
